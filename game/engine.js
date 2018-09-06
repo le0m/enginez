@@ -50,8 +50,8 @@ Loader.getImage = function (key) {
 const Keyboard = {}
 
 Keyboard.LEFT   = 37
-Keyboard.RIGHT  = 38
-Keyboard.UP     = 39
+Keyboard.UP     = 38
+Keyboard.RIGHT  = 39
 Keyboard.DOWN   = 40
 
 // key codes status
@@ -75,7 +75,7 @@ Keyboard._onKeyDown = function (event) {
   }
 }
 
-Keyboard._onKeyUp = function () {
+Keyboard._onKeyUp = function (event) {
   let keyCode = event.keyCode
 
   if (keyCode in this._keys) { // TODO: check how many times this fires

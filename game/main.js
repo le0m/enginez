@@ -1,31 +1,62 @@
 const map = {
-  cols: 8,
-  rows: 8,
+  cols: 12,
+  rows: 12,
   tileSize: 64,
   layers: [
     [
-      3, 3, 3, 3, 3, 3, 3, 3,
-      3, 1, 1, 1, 1, 1, 1, 3,
-      3, 1, 1, 1, 1, 2, 1, 3,
-      3, 1, 1, 1, 1, 1, 1, 3,
-      3, 1, 1, 2, 1, 1, 1, 3,
-      3, 1, 1, 1, 2, 1, 1, 3,
-      3, 1, 1, 1, 2, 1, 1, 3,
-      3, 3, 3, 1, 2, 3, 3, 3
+      3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+      3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
+      3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
+      3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
+      3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
+      3, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 3,
+      3, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 3,
+      3, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 3,
+      3, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3,
+      3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3,
+      3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3,
+      3, 3, 3, 1, 1, 2, 3, 3, 3, 3, 3, 3
     ], [
-      4, 3, 3, 3, 3, 3, 3, 4,
-      4, 0, 0, 0, 0, 0, 0, 4,
-      4, 0, 0, 0, 0, 0, 0, 4,
-      4, 0, 0, 5, 0, 0, 0, 4,
-      4, 0, 0, 0, 0, 0, 0, 4,
-      4, 0, 0, 0, 0, 0, 0, 4,
-      4, 4, 4, 0, 5, 4, 4, 4,
-      0, 3, 3, 0, 0, 3, 3, 3
+      4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+      4, 4, 4, 0, 5, 4, 4, 4, 4, 4, 4, 4,
+      4, 4, 4, 0, 0, 3, 3, 3, 3, 3, 3, 3
     ]
   ],
   getTile: function (layer, col, row) {
     return this.layers[layer][row * this.cols + col]
   }
+}
+
+function Camera (map, width, height) {
+  this.x = 0
+  this.y = 0
+  this.width = width
+  this.height = height
+  this.maxX = map.cols * map.tileSize - width
+  this.maxY = map.rows * map.tileSize - height
+}
+
+Camera.SPEED = 256 // pixels per second
+
+Camera.prototype.move = function (delta, dirX, dirY) {
+  // move camera
+  this.x += dirX * Camera.SPEED * delta
+  this.y += dirY * Camera.SPEED * delta
+
+  // clamp values
+  this.x = Math.max(0, Math.min(this.x, this.maxX))
+  this.y = Math.max(0, Math.min(this.y, this.maxY))
+
+  console.log('x:', this.x, 'y:', this.y)
 }
 
 map.LAYER_GROUND = 0
@@ -38,18 +69,41 @@ Game.load = function () {
 }
 
 Game.init = function () {
+  Keyboard.listenForEvents([Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN])
   this.tileAtlas = Loader.getImage('tiles')
+  this.camera = new Camera(map, 512, 512)
 }
 
 Game.update = function (delta) {
+  // stats
   this.delta = delta * 1000 | 0
   this.fps = 1 / delta | 0
+
+  // handle camera movement with keyboard
+  let dirX = 0
+  let dirY = 0
+
+  if (Keyboard.isDown(Keyboard.LEFT))   { dirX = -1 }
+  if (Keyboard.isDown(Keyboard.RIGHT))  { dirX = 1 }
+  if (Keyboard.isDown(Keyboard.UP))     { dirY = -1 }
+  if (Keyboard.isDown(Keyboard.DOWN))   { dirY = 1 }
+
+  this.camera.move(delta, dirX, dirY)
 }
 
 Game._drawLayer = function (layer) {
-  for (let x = 0; x < map.cols; x++) {
-    for (let y = 0; y < map.rows; y++) {
-      let tile = map.getTile(layer, x, y)
+  let startCol = Math.floor(this.camera.x / map.tileSize)
+  let endCol = startCol + Math.floor(this.camera.width / map.tileSize)
+  let startRow = Math.floor(this.camera.y / map.tileSize)
+  let endRow = startRow + Math.floor(this.camera.height / map.tileSize)
+  let offsetX = -this.camera.x + startCol * map.tileSize // ???
+  let offsetY = -this.camera.y + startRow * map.tileSize // ???
+
+  for (let c = startCol; c <= endCol; c++) {
+    for (let r = startRow; r <= endRow; r++) {
+      let tile = map.getTile(layer, c, r)
+      let x = (c - startCol) * map.tileSize + offsetX
+      let y = (r - startRow) * map.tileSize + offsetY
 
       if (tile !== 0) {
         this.ctx.drawImage(
@@ -58,8 +112,8 @@ Game._drawLayer = function (layer) {
           0,                          // source Y
           map.tileSize,               // source width
           map.tileSize,               // source height
-          x * map.tileSize,           // target X
-          y * map.tileSize,           // target Y
+          Math.round(x),              // target X
+          Math.round(y),              // target Y
           map.tileSize,               // target width
           map.tileSize                // target height
         )
