@@ -16,11 +16,31 @@ const Engine = {
   height: 0
 }
 
+/**
+ * Start the game engine loop:
+ * 1. load
+ * 2. init
+ * 3. tick (internal)
+ * 4. update
+ * 5. render
+ * 6. go to (3)
+ *
+ * Recognised options are:
+ * - width, canvas and camera width
+ * - height, canvas and camera height
+ * - cameraSpeed, camera scrolling speed
+ * - mapMargin, tiles of margin to render off-canvas
+ *
+ * @param {CanvasRenderingContext2D} context
+ * @param {Object} options
+ * @returns {Promise<>}
+ */
 Engine.run = function (context, options) {
   this.ctx          = context
   this.width        = options.width
   this.height       = options.height
   this.cameraSpeed  = options.cameraSpeed
+  this.mapMargin    = options.mapMargin || 0
 
   return Promise.all(this.load())
   .then(function (loaded) {
@@ -29,6 +49,15 @@ Engine.run = function (context, options) {
   }.bind(this))
 }
 
+/**
+ * Executes a tick of the game:
+ * 1. clear frame
+ * 2. calculate delta
+ * 3. update
+ * 4. render
+ *
+ * @param {number} elapsed
+ */
 Engine.tick = function (elapsed) {
   window.requestAnimationFrame(this.tick)
 

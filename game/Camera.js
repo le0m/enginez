@@ -5,8 +5,8 @@
 function Camera (map, options) {
   this.x        = 0
   this.y        = 0
-  this.width    = options.width || 128
-  this.height   = options.height || 128
+  this.width    = options.width || 512
+  this.height   = options.height || 512
   this.maxX     = map.cols * map.tileSize - this.width
   this.maxY     = map.rows * map.tileSize - this.height
   this.speed    = options.speed || 256 // pixels per second

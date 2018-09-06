@@ -38,7 +38,7 @@ Keyboard.listenForEvents = function (keyCodes) {
 Keyboard._onKeyDown = function (event) {
   let keyCode = event.keyCode
 
-  if (keyCode in this._keys) { // TODO: check how many times this fires --> a shit ton
+  if (keyCode in this._keys) {
     event.preventDefault()
     this._keys[keyCode] = true
   }
@@ -53,7 +53,7 @@ Keyboard._onKeyDown = function (event) {
 Keyboard._onKeyUp = function (event) {
   let keyCode = event.keyCode
 
-  if (keyCode in this._keys) { // TODO: check how many times this fires --> a shit ton
+  if (keyCode in this._keys) {
     event.preventDefault()
     this._keys[keyCode] = false
   }
