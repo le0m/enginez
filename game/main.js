@@ -55,8 +55,6 @@ Camera.prototype.move = function (delta, dirX, dirY) {
   // clamp values
   this.x = Math.max(0, Math.min(this.x, this.maxX))
   this.y = Math.max(0, Math.min(this.y, this.maxY))
-
-  console.log('x:', this.x, 'y:', this.y)
 }
 
 map.LAYER_GROUND = 0
@@ -88,6 +86,7 @@ Game.update = function (delta) {
   if (Keyboard.isDown(Keyboard.UP))     { dirY = -1 }
   if (Keyboard.isDown(Keyboard.DOWN))   { dirY = 1 }
 
+  console.log('delta:', delta)
   this.camera.move(delta, dirX, dirY)
 }
 
@@ -98,12 +97,15 @@ Game._drawLayer = function (layer) {
   let endRow = startRow + Math.floor(this.camera.height / map.tileSize)
   let offsetX = -this.camera.x + startCol * map.tileSize // ???
   let offsetY = -this.camera.y + startRow * map.tileSize // ???
+  let x = 0
+  let y = 0
+  let r = 0
 
   for (let c = startCol; c <= endCol; c++) {
-    for (let r = startRow; r <= endRow; r++) {
+    for (r = startRow; r <= endRow; r++) {
       let tile = map.getTile(layer, c, r)
-      let x = (c - startCol) * map.tileSize + offsetX
-      let y = (r - startRow) * map.tileSize + offsetY
+      x = (c - startCol) * map.tileSize + offsetX
+      y = (r - startRow) * map.tileSize + offsetY
 
       if (tile !== 0) {
         this.ctx.drawImage(
@@ -123,13 +125,25 @@ Game._drawLayer = function (layer) {
 }
 
 Game._drawGrid = function () {
+  let startCol = Math.floor(this.camera.x / map.tileSize)
+  let endCol = startCol + Math.floor(this.camera.width / map.tileSize)
+  let startRow = Math.floor(this.camera.y / map.tileSize)
+  let endRow = startRow + Math.floor(this.camera.height / map.tileSize)
+  let offsetX = -this.camera.x + startCol * map.tileSize // ???
+  let offsetY = -this.camera.y + startRow * map.tileSize // ???
+  let x = 0
+  let y = 0
+  let r = 0
   this.ctx.strokeStyle = 'black'
 
-  for (let x = 0; x < map.cols; x++) {
-    for (let y = 0; y < map.rows; y++) {
+  for (let c = startCol; c <= endCol; c++) {
+    for (r = startRow; r <= endRow; r++) {
+      x = (c - startCol) * map.tileSize + offsetX
+      y = (r - startRow) * map.tileSize + offsetY
+
       this.ctx.strokeRect(
-        x * map.tileSize,
-        y * map.tileSize,
+        Math.round(x),
+        Math.round(y),
         map.tileSize,
         map.tileSize
       )
