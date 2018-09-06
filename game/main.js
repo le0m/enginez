@@ -41,7 +41,7 @@ map.LAYER_ABOVE = 1
 
 Engine.load = function () {
   return [
-    Loader.loadImage('tiles', 'assets/tiles.png')
+    Loader.loadImage('tiles', 'assets/tilesheet.png')
   ]
 }
 
@@ -52,7 +52,7 @@ Engine.init = function () {
   this.camera = new Camera(map, {
     width: this.width,
     height: this.height,
-    speed: 256
+    speed: this.cameraSpeed
   })
 }
 
@@ -165,5 +165,5 @@ Engine._drawDebug = function () {
 window.onload = function () {
   let context = document.getElementById('canvas').getContext('2d')
 
-  Engine.run(context, { width: 512, height: 512 })
+  Engine.run(context, { width: 512, height: 512, cameraSpeed: 256 })
 }

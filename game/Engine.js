@@ -10,14 +10,17 @@ const Engine = {
   tileAtlas: null,
   fps: 0,
   delta: 0,
+  camera: null,
+  cameraSpeed: 0,
   width: 0,
   height: 0
 }
 
 Engine.run = function (context, options) {
-  this.ctx = context
-  this.width = options.width
-  this.height = options.height
+  this.ctx          = context
+  this.width        = options.width
+  this.height       = options.height
+  this.cameraSpeed  = options.cameraSpeed
 
   return Promise.all(this.load())
   .then(function (loaded) {
@@ -41,8 +44,8 @@ Engine.tick = function (elapsed) {
   this.render()
 }.bind(Engine) // WTF: why this method needs this??
 
-Engine.load =   function () {}
-Engine.init =   function () {}
+Engine.load   = function () {}
+Engine.init   = function () {}
 Engine.update = function (delta) {}
 Engine.render = function () {}
 

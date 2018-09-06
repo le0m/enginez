@@ -26,9 +26,7 @@ Keyboard.listenForEvents = function (keyCodes) {
   window.addEventListener('keydown', this._onKeyDown.bind(this))
   window.addEventListener('keyup', this._onKeyUp.bind(this))
 
-  keyCodes.forEach((keyCode) => {
-    this._keys[keyCode] = false
-  })
+  keyCodes.forEach((keyCode) => { this._keys[keyCode] = false })
 }
 
 /**
