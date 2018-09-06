@@ -104,24 +104,12 @@ Engine.init = function () {
     speed: this.cameraSpeed
   })
 
-  // canvas for each layer
-  this.layerCanvas = map.layers.map(() => {
-    let c = document.createElement('canvas')
-
-    c.width = this.width
-    c.height = this.height
-
-    return c
-  })
-
   // initial render
   this._drawMap()
 }
 
 
 Engine.update = function (delta) {
-  this.hasScrolled = false
-
   // stats
   this.delta = delta * 1000 | 0
   this.fps = 1 / delta | 0
@@ -137,23 +125,12 @@ Engine.update = function (delta) {
 
   if (dirX !== 0 || dirY !== 0) {
     this.camera.move(delta, dirX, dirY)
-    this.hasScrolled = true
   }
 }
 
 
 Engine.render = function () {
-  // re-draw map if scrolled
-  if (this.hasScrolled) {
-    this._drawMap()
-  }
-
-  // draw all layers to game context
-  map.layers.forEach((layer, index) => {
-    this.ctx.drawImage(this.layerCanvas[index], 0, 0)
-  })
-
-  // extra layers
+  this._drawMap()
   //this._drawGrid()
   this._drawDebug()
 }
@@ -165,12 +142,8 @@ Engine._drawMap = function () {
 }
 
 Engine._drawLayer = function (layer) {
-  let context = this.getLayerContext(layer)
   let view = this.camera.view
   let x = 0, y = 0, r = 0, srcX = 0, srcY = 0
-
-  // clear layer context
-  context.clearRect(0, 0, this.width, this.height)
 
   // add a margin (TODO: better way?)
   view.endRow += this.mapMargin
@@ -185,7 +158,7 @@ Engine._drawLayer = function (layer) {
       srcY = ((tile - 1) / map.tileCols | 0) * map.tileSize
 
       if (tile !== 0) {
-        context.drawImage(
+        this.ctx.drawImage(
           this.tileAtlas,   // image
           srcX,             // source X
           srcY,             // source Y

@@ -14,17 +14,7 @@ const Engine = {
   cameraSpeed: 0,
   width: 0,
   height: 0,
-  mapMargin: 0,
-  layerCanvas: [],
-  _layerContext: {},
-  getLayerContext: function (layer) {
-    if (!(layer in this._layerContext)) {
-      this._layerContext[layer] = this.layerCanvas[layer].getContext('2d')
-    }
-
-    return this._layerContext[layer]
-  },
-  hasScrolled: false
+  mapMargin: 0
 }
 
 /**
