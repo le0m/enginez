@@ -74,26 +74,22 @@ Engine.update = function (delta) {
 }
 
 Engine.render = function () {
-  this._drawLayer(map.LAYER_GROUND)
-  this._drawLayer(map.LAYER_ABOVE)
+  map.layers.forEach((layer, index) => {
+    this._drawLayer(index)
+  })
   this._drawGrid()
   this._drawDebug()
 }
 
 Engine._drawLayer = function (layer) {
-  let startCol = Math.floor(this.camera.x / map.tileSize)
-  let endCol = startCol + Math.floor(this.camera.width / map.tileSize)
-  let startRow = Math.floor(this.camera.y / map.tileSize)
-  let endRow = startRow + Math.floor(this.camera.height / map.tileSize)
-  let offsetX = -this.camera.x + startCol * map.tileSize // ???
-  let offsetY = -this.camera.y + startRow * map.tileSize // ???
+  let view = this.camera.view
   let x = 0, y = 0, r = 0
 
-  for (let c = startCol; c <= endCol; c++) {
-    for (r = startRow; r <= endRow; r++) {
+  for (let c = view.startCol; c <= view.endCol; c++) {
+    for (r = view.startRow; r <= view.endRow; r++) {
       let tile = map.getTile(layer, c, r)
-      x = (c - startCol) * map.tileSize + offsetX
-      y = (r - startRow) * map.tileSize + offsetY
+      x = (c - view.startCol) * map.tileSize + view.offsetX
+      y = (r - view.startRow) * map.tileSize + view.offsetY
 
       if (tile !== 0) {
         this.ctx.drawImage(
@@ -113,25 +109,20 @@ Engine._drawLayer = function (layer) {
 }
 
 Engine._drawGrid = function () {
-  let startCol = Math.floor(this.camera.x / map.tileSize)
-  let endCol = startCol + Math.floor(this.camera.width / map.tileSize)
-  let startRow = Math.floor(this.camera.y / map.tileSize)
-  let endRow = startRow + Math.floor(this.camera.height / map.tileSize)
-  let offsetX = -this.camera.x + startCol * map.tileSize // ???
-  let offsetY = -this.camera.y + startRow * map.tileSize // ???
+  let view = this.camera.view
   let x = 0, y = 0, r = 0
   this.ctx.strokeStyle = 'black'
 
-  for (let c = startCol; c <= endCol; c++) {
-    for (r = startRow; r <= endRow; r++) {
-      x = (c - startCol) * map.tileSize + offsetX
-      y = (r - startRow) * map.tileSize + offsetY
+  for (let c = view.startCol; c <= view.endCol; c++) {
+    for (r = view.startRow; r <= view.endRow; r++) {
+      x = (c - view.startCol) * map.tileSize + view.offsetX
+      y = (r - view.startRow) * map.tileSize + view.offsetY
 
       this.ctx.strokeRect(
-        Math.round(x),
-        Math.round(y),
-        map.tileSize,
-        map.tileSize
+        Math.round(x),    // target X
+        Math.round(y),    // target Y
+        map.tileSize,     // target width
+        map.tileSize      // target height
       )
     }
   }
