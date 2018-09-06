@@ -13,7 +13,18 @@ const Engine = {
   camera: null,
   cameraSpeed: 0,
   width: 0,
-  height: 0
+  height: 0,
+  mapMargin: 0,
+  layerCanvas: [],
+  _layerContext: {},
+  getLayerContext: function (layer) {
+    if (!(layer in this._layerContext)) {
+      this._layerContext[layer] = this.layerCanvas[layer].getContext('2d')
+    }
+
+    return this._layerContext[layer]
+  },
+  hasScrolled: false
 }
 
 /**
@@ -37,9 +48,9 @@ const Engine = {
  */
 Engine.run = function (context, options) {
   this.ctx          = context
-  this.width        = options.width
-  this.height       = options.height
-  this.cameraSpeed  = options.cameraSpeed
+  this.width        = options.width || 512
+  this.height       = options.height || 512
+  this.cameraSpeed  = options.cameraSpeed || 256
   this.mapMargin    = options.mapMargin || 0
 
   return Promise.all(this.load())
