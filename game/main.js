@@ -36,43 +36,27 @@ const map = {
   }
 }
 
-function Camera (map, width, height) {
-  this.x = 0
-  this.y = 0
-  this.width = width
-  this.height = height
-  this.maxX = map.cols * map.tileSize - width
-  this.maxY = map.rows * map.tileSize - height
-}
-
-Camera.SPEED = 256 // pixels per second
-
-Camera.prototype.move = function (delta, dirX, dirY) {
-  // move camera
-  this.x += dirX * Camera.SPEED * delta
-  this.y += dirY * Camera.SPEED * delta
-
-  // clamp values
-  this.x = Math.max(0, Math.min(this.x, this.maxX))
-  this.y = Math.max(0, Math.min(this.y, this.maxY))
-}
-
 map.LAYER_GROUND = 0
 map.LAYER_ABOVE = 1
 
-Game.load = function () {
+Engine.load = function () {
   return [
     Loader.loadImage('tiles', 'assets/tiles.png')
   ]
 }
 
-Game.init = function () {
+Engine.init = function () {
   Keyboard.listenForEvents([Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN])
   this.tileAtlas = Loader.getImage('tiles')
-  this.camera = new Camera(map, 512, 512)
+
+  this.camera = new Camera(map, {
+    width: this.width,
+    height: this.height,
+    speed: 256
+  })
 }
 
-Game.update = function (delta) {
+Engine.update = function (delta) {
   // stats
   this.delta = delta * 1000 | 0
   this.fps = 1 / delta | 0
@@ -86,20 +70,24 @@ Game.update = function (delta) {
   if (Keyboard.isDown(Keyboard.UP))     { dirY = -1 }
   if (Keyboard.isDown(Keyboard.DOWN))   { dirY = 1 }
 
-  console.log('delta:', delta)
   this.camera.move(delta, dirX, dirY)
 }
 
-Game._drawLayer = function (layer) {
+Engine.render = function () {
+  this._drawLayer(map.LAYER_GROUND)
+  this._drawLayer(map.LAYER_ABOVE)
+  this._drawGrid()
+  this._drawDebug()
+}
+
+Engine._drawLayer = function (layer) {
   let startCol = Math.floor(this.camera.x / map.tileSize)
   let endCol = startCol + Math.floor(this.camera.width / map.tileSize)
   let startRow = Math.floor(this.camera.y / map.tileSize)
   let endRow = startRow + Math.floor(this.camera.height / map.tileSize)
   let offsetX = -this.camera.x + startCol * map.tileSize // ???
   let offsetY = -this.camera.y + startRow * map.tileSize // ???
-  let x = 0
-  let y = 0
-  let r = 0
+  let x = 0, y = 0, r = 0
 
   for (let c = startCol; c <= endCol; c++) {
     for (r = startRow; r <= endRow; r++) {
@@ -124,16 +112,14 @@ Game._drawLayer = function (layer) {
   }
 }
 
-Game._drawGrid = function () {
+Engine._drawGrid = function () {
   let startCol = Math.floor(this.camera.x / map.tileSize)
   let endCol = startCol + Math.floor(this.camera.width / map.tileSize)
   let startRow = Math.floor(this.camera.y / map.tileSize)
   let endRow = startRow + Math.floor(this.camera.height / map.tileSize)
   let offsetX = -this.camera.x + startCol * map.tileSize // ???
   let offsetY = -this.camera.y + startRow * map.tileSize // ???
-  let x = 0
-  let y = 0
-  let r = 0
+  let x = 0, y = 0, r = 0
   this.ctx.strokeStyle = 'black'
 
   for (let c = startCol; c <= endCol; c++) {
@@ -151,7 +137,7 @@ Game._drawGrid = function () {
   }
 }
 
-Game._drawDebug = function () {
+Engine._drawDebug = function () {
   this.ctx.fillStyle = 'black'
   this.ctx.fillRect(
     10,
@@ -159,6 +145,7 @@ Game._drawDebug = function () {
     50,
     40
   )
+
   this.ctx.fillStyle = 'white'
   // this.ctx.textAlign = 'center'
   // this.ctx.textBaseline = 'middle'
@@ -180,9 +167,12 @@ Game._drawDebug = function () {
   )
 }
 
-Game.render = function () {
-  this._drawLayer(map.LAYER_GROUND)
-  this._drawLayer(map.LAYER_ABOVE)
-  this._drawGrid()
-  this._drawDebug()
+//
+// Start up function
+//
+
+window.onload = function () {
+  let context = document.getElementById('canvas').getContext('2d')
+
+  Engine.run(context, { width: 512, height: 512 })
 }
