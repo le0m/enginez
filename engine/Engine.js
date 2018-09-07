@@ -1,3 +1,5 @@
+'use strict'
+
 //
 // Engine object
 //
@@ -5,13 +7,12 @@
 //
 
 const Engine = {
+  _previousElapsed: 0,
   ctx: null,
-  previousElapsed: 0,
   tileAtlas: null,
   fps: 0,
   delta: 0,
   camera: null,
-  cameraSpeed: 0,
   width: 0,
   height: 0,
   mapMargin: 0
@@ -27,10 +28,9 @@ const Engine = {
  * 6. go to (3)
  *
  * Recognised options are:
- * - width, canvas and camera width
- * - height, canvas and camera height
- * - cameraSpeed, camera scrolling speed
- * - mapMargin, tiles of margin to render off-canvas
+ * - `width` canvas and camera width
+ * - `height` canvas and camera height
+ * - `mapMargin` tiles of margin to render off-canvas
  *
  * @param {CanvasRenderingContext2D} context
  * @param {Object} options
@@ -40,7 +40,6 @@ Engine.run = function (context, options) {
   this.ctx          = context
   this.width        = options.width || 512
   this.height       = options.height || 512
-  this.cameraSpeed  = options.cameraSpeed || 256
   this.mapMargin    = options.mapMargin || 0
 
   return Promise.all(this.load())
@@ -66,9 +65,9 @@ Engine.tick = function (elapsed) {
   this.ctx.clearRect(0, 0, this.width, this.height)
 
   // compute delta
-  let delta = (elapsed - this.previousElapsed) / 1000.0
+  let delta = (elapsed - this._previousElapsed) / 1000.0
   delta = Math.min(0.25, delta) // cap delta for a more consistent behavior
-  this.previousElapsed = elapsed
+  this._previousElapsed = elapsed
 
   this.update(delta)
   this.render()

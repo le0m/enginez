@@ -1,3 +1,5 @@
+'use strict'
+
 //
 // Asset loader
 //
@@ -20,6 +22,7 @@ Loader.loadImage = function (key, src) {
   let d = new Promise(function (resolve, reject) {
     img.onload = function () {
       this.images[key] = img
+      console.log('Loaded image: ' + img.src)
       resolve(img)
     }.bind(this)
 

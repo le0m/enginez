@@ -1,113 +1,35 @@
-const map = {
-  cols: 16,
-  rows: 16,
-  tileSize: 128,
-  tileCols: 18,
-  tileRows: 7,
-  layers: [
-    [
-      58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58,
-      58, 76, 76, 76, 74, 73,  1,  1,  1, 38, 38, 38,  3,  3,  4, 58,
-      58, 76, 76, 75, 74,  1,  1,  1,  1, 37, 37, 38,  3,  4,  4, 58,
-      58, 76, 75, 74, 73,  1,  1,  1,  1,  1, 37, 37, 38, 38, 37, 58,
-      58, 74, 74, 43,  6,  6, 24,  1,  1,  1, 38, 37, 38, 37, 37, 58,
-      58, 73,  1,  1,  1,  1,  5,  1,  1,  1, 37, 37, 37, 38, 38, 58,
-      58,  1,  1,  1,  1,  1,  5,  1,  1,  1, 37, 38, 38, 37, 37, 58,
-      58,  1,  1,  1,  1,  1, 27,  6,  6, 25,  1, 38, 37, 37, 38, 58,
-      58,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1, 38, 38, 38, 58,
-      58,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1, 37, 37, 58,
-      58,  1,  1, 76,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1, 58,
-      58,  1,  1,  1,  1,  1, 41,  6,  6,  6,  6, 25,  1,  1,  1, 58,
-      58,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 58,
-      58, 22, 22,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 58,
-      58, 22, 21,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1, 58,
-      58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58
-    ],
-    [
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0, 17,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0, 35,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0, 62,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0, 15,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0, 33,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0, 54,  0,117,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0, 62,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0, 62,  0, 64, 52,  0,  0,119,  0,114,115,  0,  0,  0,  0,
-       0,  0,  0, 63,  0,  0,  0,  0,  0,  0,  0,  0,101, 83,  0,  0,
-       0,  0,  0,  0,  0, 81, 51,  0,  0,  0,  0,116,101,101,  0,  0,
-       0,  0,  0,  0,  0, 99, 81,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-    ],
-    [
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0, 53,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-    ],
-    [
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0, 72,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-       0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-    ]
-  ],
-  getTile: function (layer, col, row) {
-    return this.layers[layer][row * this.cols + col]
-  }
-}
+'use strict'
 
-map.LAYER_GROUND = 0
-map.LAYER_ABOVE = 1
+//
+// Engine setup
+//
 
+// Load
 
 Engine.load = function () {
   return [
-    Loader.loadImage('tiles', 'assets/tilesheet.png')
+    Loader.loadImage(assets.key, assets.src)
   ]
 }
 
+// Init
 
 Engine.init = function () {
   Keyboard.listenForEvents([Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN])
-  this.tileAtlas = Loader.getImage('tiles')
+  this.tileAtlas = Loader.getImage(assets.key)
 
-  this.camera = new Camera(map, {
+  this.camera = new Camera({
+    cols: map.cols,
+    rows: map.rows,
     width: this.width,
     height: this.height,
-    speed: this.cameraSpeed
+    speed: config.camera.speed,
+    startX: config.camera.startX,
+    startY: config.camera.startY
   })
-
-  // initial render
-  this._drawMap()
 }
 
+// Update
 
 Engine.update = function (delta) {
   // stats
@@ -128,6 +50,7 @@ Engine.update = function (delta) {
   }
 }
 
+// Render
 
 Engine.render = function () {
   this._drawMap()
@@ -145,29 +68,30 @@ Engine._drawLayer = function (layer) {
   let view = this.camera.view
   let x = 0, y = 0, r = 0, srcX = 0, srcY = 0
 
-  // add a margin (TODO: better way?)
+  // add a margin
   view.endRow += this.mapMargin
   view.endCol += this.mapMargin
+  // TODO: use `mapMargin` to draw extra rounds of tiles off-canvas
 
   for (let c = view.startCol; c <= view.endCol; c++) {
     for (r = view.startRow; r <= view.endRow; r++) {
       let tile = map.getTile(layer, c, r)
-      x = (c - view.startCol) * map.tileSize + view.offsetX
-      y = (r - view.startRow) * map.tileSize + view.offsetY
-      srcX = ((tile - 1) % map.tileCols) * map.tileSize
-      srcY = ((tile - 1) / map.tileCols | 0) * map.tileSize
+      x = (c - view.startCol) * assets.tileSize + view.offsetX
+      y = (r - view.startRow) * assets.tileSize + view.offsetY
+      srcX = ((tile - 1) % assets.tileCols) * assets.tileSize
+      srcY = ((tile - 1) / assets.tileCols | 0) * assets.tileSize
 
       if (tile !== 0) {
         this.ctx.drawImage(
           this.tileAtlas,   // image
           srcX,             // source X
           srcY,             // source Y
-          map.tileSize,     // source width
-          map.tileSize,     // source height
+          assets.tileSize,  // source width
+          assets.tileSize,  // source height
           Math.round(x),    // target X
           Math.round(y),    // target Y
-          map.tileSize,     // target width
-          map.tileSize      // target height
+          assets.tileSize,  // target width
+          assets.tileSize   // target height
         )
       }
     }
@@ -181,14 +105,14 @@ Engine._drawGrid = function () {
 
   for (let c = view.startCol; c <= view.endCol; c++) {
     for (r = view.startRow; r <= view.endRow; r++) {
-      x = (c - view.startCol) * map.tileSize + view.offsetX
-      y = (r - view.startRow) * map.tileSize + view.offsetY
+      x = (c - view.startCol) * assets.tileSize + view.offsetX
+      y = (r - view.startRow) * assets.tileSize + view.offsetY
 
       this.ctx.strokeRect(
         Math.round(x),    // target X
         Math.round(y),    // target Y
-        map.tileSize,     // target width
-        map.tileSize      // target height
+        assets.tileSize,  // target width
+        assets.tileSize   // target height
       )
     }
   }
@@ -228,10 +152,5 @@ Engine._drawDebug = function () {
 window.onload = function () {
   let context = document.getElementById('canvas').getContext('2d')
 
-  Engine.run(context, {
-    width: 1280,
-    height: 720,
-    cameraSpeed: 512,
-    mapMargin: 1
-  })
+  Engine.run(context, config)
 }
