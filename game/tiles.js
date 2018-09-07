@@ -1,3 +1,6 @@
 'use strict'
 
-const tiles = {}
+const tiles = {
+  0: {},
+  1: {}
+}

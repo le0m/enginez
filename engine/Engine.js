@@ -15,7 +15,16 @@ const Engine = {
   camera: null,
   width: 0,
   height: 0,
-  mapMargin: 0
+  mapMargin: 0,
+  _layerContext: {},
+  layerCanvas: [],
+  layerContext: function (layer) {
+    if (!(layer in this._layerContext)) {
+      this._layerContext = this.layerCanvas[layer].getContext('2d')
+    }
+
+    return this._layerContext
+  }
 }
 
 /**

@@ -28,6 +28,18 @@ Engine.init = function () {
     startX: config.camera.startX,
     startY: config.camera.startY
   })
+
+  // create a canvas for each layer
+  this.layerCanvas = map.layers.map((layer) => {
+    let c = document.createElement('canvas')
+    c.width = this.width
+    c.height = this.height
+
+    return c
+  })
+
+  // initial draw
+  Promise.all(this._drawMap()).then(() => {}) // TODO: use this.render() ?
 }
 
 // Update
@@ -38,9 +50,7 @@ Engine.update = function (delta) {
   this.fps = 1 / delta | 0
 
   // movement
-  let dir = { x: 0, y: 0 }
-
-  dir = Keyboard.getDirection()
+  let dir = Keyboard.getDirection() || { x: 0, y: 0 }
 
   if (Touch.isMoving) {
     dir = Touch.getDirection()
@@ -54,14 +64,16 @@ Engine.update = function (delta) {
 // Render
 
 Engine.render = function () {
-  this._drawMap()
-  //this._drawGrid()
-  this._drawDebug()
+  Promise.all(this._drawMap()).then(() => {
+    //this._drawGrid()
+    this._drawDebug()
+  })
 }
 
 Engine._drawMap = function () {
-  map.layers.forEach((layer, index) => {
-    this._drawLayer(index)
+  // TODO: change forEach() with map()
+  return map.layers.forEach((layer, index) => {
+    return this._drawLayer(index)
   })
 }
 
@@ -74,29 +86,33 @@ Engine._drawLayer = function (layer) {
   view.endCol += this.mapMargin
   // TODO: use `mapMargin` to draw extra rounds of tiles off-canvas
 
-  for (let c = view.startCol; c <= view.endCol; c++) {
-    for (r = view.startRow; r <= view.endRow; r++) {
-      let tile = map.getTile(layer, c, r)
-      x = (c - view.startCol) * assets.tileSize + view.offsetX
-      y = (r - view.startRow) * assets.tileSize + view.offsetY
-      srcX = ((tile - 1) % assets.tileCols) * assets.tileSize
-      srcY = ((tile - 1) / assets.tileCols | 0) * assets.tileSize
+  return new Promise(function (resolve) {
+    for (let c = view.startCol; c <= view.endCol; c++) {
+      for (r = view.startRow; r <= view.endRow; r++) {
+        let tile = map.getTile(layer, c, r)
+        x = (c - view.startCol) * assets.tileSize + view.offsetX
+        y = (r - view.startRow) * assets.tileSize + view.offsetY
+        srcX = ((tile - 1) % assets.tileCols) * assets.tileSize
+        srcY = ((tile - 1) / assets.tileCols | 0) * assets.tileSize
 
-      if (tile !== 0) {
-        this.ctx.drawImage(
-          this.tileAtlas,   // image
-          srcX,             // source X
-          srcY,             // source Y
-          assets.tileSize,  // source width
-          assets.tileSize,  // source height
-          Math.round(x),    // target X
-          Math.round(y),    // target Y
-          assets.tileSize,  // target width
-          assets.tileSize   // target height
-        )
+        if (tile !== 0) {
+          this.ctx.drawImage(
+            this.tileAtlas,   // image
+            srcX,             // source X
+            srcY,             // source Y
+            assets.tileSize,  // source width
+            assets.tileSize,  // source height
+            Math.round(x),    // target X
+            Math.round(y),    // target Y
+            assets.tileSize,  // target width
+            assets.tileSize   // target height
+          )
+        }
       }
     }
-  }
+
+    resolve(layer)
+  }.bind(this))
 }
 
 Engine._drawGrid = function () {
