@@ -16,9 +16,10 @@ const Engine = {
   width: 0,
   height: 0,
   mapMargin: 0,
+  grid: false,
   _layerContext: {},
   layerCanvas: [],
-  layerContext: function (layer) {
+  getLayerContext: function (layer) {
     if (!(layer in this._layerContext)) {
       this._layerContext = this.layerCanvas[layer].getContext('2d')
     }
@@ -39,17 +40,19 @@ const Engine = {
  * Recognised options are:
  * - `width` canvas and camera width
  * - `height` canvas and camera height
- * - `mapMargin` tiles of margin to render off-canvas
+ * - `mapMargin` tiles of margin to render outside camera view
+ * - `grid` whether to show a grid above the map or not
  *
  * @param {CanvasRenderingContext2D} context
  * @param {Object} options
  * @returns {Promise<>}
  */
 Engine.run = function (context, options) {
-  this.ctx          = context
-  this.width        = options.width || 512
-  this.height       = options.height || 512
-  this.mapMargin    = options.mapMargin || 0
+  this.ctx        = context
+  this.width      = options.width || 512
+  this.height     = options.height || 512
+  this.mapMargin  = options.mapMargin || 0
+  this.grid       = options.grid || false
 
   return Promise.all(this.load())
   .then(function (loaded) {
