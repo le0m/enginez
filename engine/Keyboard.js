@@ -4,7 +4,9 @@
 // Keyboard handler
 //
 
-const Keyboard = {}
+const Keyboard = {
+  isMoving: false
+}
 
 Keyboard.LEFT   = 37
 Keyboard.UP     = 38
@@ -43,6 +45,7 @@ Keyboard._onKeyDown = function (event) {
   if (keyCode in this._keys) {
     event.preventDefault()
     this._keys[keyCode] = true
+    this.isMoving = true
   }
 }
 
@@ -58,6 +61,7 @@ Keyboard._onKeyUp = function (event) {
   if (keyCode in this._keys) {
     event.preventDefault()
     this._keys[keyCode] = false
+    this.isMoving = false
   }
 }
 
@@ -73,4 +77,15 @@ Keyboard.isDown = function (keyCode) {
   }
 
   return this._keys[keyCode]
+}
+
+Keyboard.getDirection = function () {
+  let dir = { x: 0, y: 0 }
+
+  if (Keyboard.isDown(Keyboard.LEFT))   { dir.x = -1 }
+  if (Keyboard.isDown(Keyboard.RIGHT))  { dir.x = 1 }
+  if (Keyboard.isDown(Keyboard.UP))     { dir.y = -1 }
+  if (Keyboard.isDown(Keyboard.DOWN))   { dir.y = 1 }
+
+  return dir
 }

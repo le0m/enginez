@@ -15,8 +15,9 @@ Engine.load = function () {
 // Init
 
 Engine.init = function () {
-  Keyboard.listenForEvents([Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN])
   this.tileAtlas = Loader.getImage(assets.key)
+  Keyboard.listenForEvents([Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN])
+  Touch.listenForEvents(assets.tileSize) // MOBILE: tileSize / 4
 
   this.camera = new Camera({
     cols: map.cols,
@@ -36,17 +37,19 @@ Engine.update = function (delta) {
   this.delta = delta * 1000 | 0
   this.fps = 1 / delta | 0
 
-  // handle camera movement with keyboard
-  let dirX = 0
-  let dirY = 0
+  // movement
+  let dir = { x: 0, y: 0 }
 
-  if (Keyboard.isDown(Keyboard.LEFT))   { dirX = -1 }
-  if (Keyboard.isDown(Keyboard.RIGHT))  { dirX = 1 }
-  if (Keyboard.isDown(Keyboard.UP))     { dirY = -1 }
-  if (Keyboard.isDown(Keyboard.DOWN))   { dirY = 1 }
+  if (Keyboard.isMoving) {
+    dir = Keyboard.getDirection()
+  }
 
-  if (dirX !== 0 || dirY !== 0) {
-    this.camera.move(delta, dirX, dirY)
+  if (Touch.isMoving) {
+    dir = Touch.getDirection()
+  }
+
+  if (dir.x !== 0 || dir.y !== 0 || config.debug) {
+    this.camera.move(delta, dir.x, dir.y)
   }
 }
 
@@ -54,7 +57,7 @@ Engine.update = function (delta) {
 
 Engine.render = function () {
   this._drawMap()
-  //this._drawGrid()
+  this._drawGrid()
   this._drawDebug()
 }
 

@@ -3,7 +3,7 @@
 //
 // Engine object
 //
-// check if need collision detection or camera follow: https://github.com/mozdevs/gamedev-js-tiles/blob/gh-pages/square/logic-grid.js
+// if need collision detection or camera follow: https://github.com/mozdevs/gamedev-js-tiles/blob/gh-pages/square/logic-grid.js
 //
 
 const Engine = {
