@@ -40,9 +40,7 @@ Engine.update = function (delta) {
   // movement
   let dir = { x: 0, y: 0 }
 
-  if (Keyboard.isMoving) {
-    dir = Keyboard.getDirection()
-  }
+  dir = Keyboard.getDirection()
 
   if (Touch.isMoving) {
     dir = Touch.getDirection()
@@ -57,7 +55,7 @@ Engine.update = function (delta) {
 
 Engine.render = function () {
   this._drawMap()
-  this._drawGrid()
+  //this._drawGrid()
   this._drawDebug()
 }
 

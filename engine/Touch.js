@@ -33,6 +33,12 @@ Touch.listenForEvents = function (sensibility) {
   window.addEventListener('touchcancel', this._onTouchCancel.bind(this))
 }
 
+/**
+ * Initializes `start` and `curr` properties.
+ *
+ * @param {TouchEvent} event
+ * @private
+ */
 Touch._onTouchStart = function (event) {
   this.startX = this.currX = event.touches[0].pageX - event.touches[0].target.offsetLeft
   this.startY = this.currY = event.touches[0].pageY - event.touches[0].target.offsetTop
@@ -40,6 +46,12 @@ Touch._onTouchStart = function (event) {
   event.preventDefault()
 }
 
+/**
+ * Keep `curr` properties updated on position change.
+ *
+ * @param {TouchEvent} event
+ * @private
+ */
 Touch._onTouchMove = function (event) {
   this.currX = event.touches[0].pageX - event.touches[0].target.offsetLeft
   this.currY = event.touches[0].pageY - event.touches[0].target.offsetTop
@@ -48,18 +60,36 @@ Touch._onTouchMove = function (event) {
   event.preventDefault()
 }
 
+/**
+ * Initializes `end` and updates `curr` properties.
+ *
+ * @param {TouchEvent} event
+ * @private
+ */
 Touch._onTouchEnd = function (event) {
   this.endX = this.currX = event.changedTouches[0].pageX - event.changedTouches[0].target.offsetLeft
   this.endY = this.currY = event.changedTouches[0].pageY - event.changedTouches[0].target.offsetTop
   this.isMoving = false
 }
 
+/**
+ * Called in certain situations, like the finger went off the screen.
+ * Same behavior as `Touch._onTouchEnd()`.
+ *
+ * @param {TouchEvent} event
+ * @private
+ */
 Touch._onTouchCancel = function (event) {
   this.endX = this.currX = event.changedTouches[0].pageX - event.changedTouches[0].target.offsetLeft
   this.endY = this.currY = event.changedTouches[0].pageY - event.changedTouches[0].target.offsetTop
   this.isMoving = false
 }
 
+/**
+ * Get X/Y direction of current movement.
+ *
+ * @returns {{x: number, y: number}}
+ */
 Touch.getDirection = function () {
   let dir = { x: 0, y: 0 }
 

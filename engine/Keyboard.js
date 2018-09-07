@@ -4,9 +4,7 @@
 // Keyboard handler
 //
 
-const Keyboard = {
-  isMoving: false
-}
+const Keyboard = {}
 
 Keyboard.LEFT   = 37
 Keyboard.UP     = 38
@@ -45,7 +43,6 @@ Keyboard._onKeyDown = function (event) {
   if (keyCode in this._keys) {
     event.preventDefault()
     this._keys[keyCode] = true
-    this.isMoving = true
   }
 }
 
@@ -61,7 +58,6 @@ Keyboard._onKeyUp = function (event) {
   if (keyCode in this._keys) {
     event.preventDefault()
     this._keys[keyCode] = false
-    this.isMoving = false
   }
 }
 
