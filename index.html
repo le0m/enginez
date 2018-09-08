@@ -10,20 +10,44 @@
 
     <title>EngineZ -- Game Engine</title>
 
-    <script src="engine/Loader.js"></script>
-    <script src="engine/Keyboard.js"></script>
-    <script src="engine/Touch.js"></script>
-    <script src="engine/Camera.js"></script>
-    <script src="engine/Engine.js"></script>
+    <script src="src/engine/Loader.js"></script>
+    <script src="src/engine/Keyboard.js"></script>
+    <script src="src/engine/Touch.js"></script>
+    <script src="src/engine/UI.js"></script>
+    <script src="src/engine/Camera.js"></script>
+    <script src="src/engine/Engine.js"></script>
 
-    <script src="game/assets.js"></script>
-    <script src="game/map.js"></script>
-    <script src="game/config.js"></script>
+    <script src="src/game/assets.js"></script>
+    <script src="src/game/map.js"></script>
+    <script src="src/game/config.js"></script>
 
-    <script src="game/main.js"></script>
+    <script src="src/game/main.js"></script>
+
+    <style>
+      .container {
+        position: relative;
+      }
+
+      .container canvas, .container div {
+        position: absolute;
+      }
+
+      #canvas {
+        z-index: 0;
+      }
+
+      #ui {
+        z-index: 1;
+        width: 1280px;
+        height: 720px;
+      }
+    </style>
   </head>
 
   <body>
-    <canvas id="canvas" width="1280" height="720"></canvas>
+    <div class="container">
+      <canvas id="canvas" width="1280" height="720"></canvas>
+      <div id="ui"></div>
+    </div>
   </body>
 </html>

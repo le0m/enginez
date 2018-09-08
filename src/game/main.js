@@ -37,6 +37,9 @@ Engine.init = function () {
     startY: config.camera.startY
   })
 
+  // init UI
+  UI.init(this.camera.view)
+
   if (this.offCanvas) {
     // create a canvas for each layer
     this.layerCanvas = map.layers.map(() => {
@@ -184,8 +187,8 @@ Engine._drawDebug = function () {
 // Start up function
 //
 
-window.onload = function () {
+window.addEventListener('load', function () {
   let context = document.getElementById('canvas').getContext('2d')
 
   Engine.run(context, config)
-}
+})
