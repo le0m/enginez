@@ -39,7 +39,7 @@ Engine.init = function () {
   })
 
   // initial draw
-  this.render()
+  //this.render()
 }
 
 // Update
@@ -65,10 +65,12 @@ Engine.update = function (delta) {
 
 Engine.render = function () {
   Promise.all(this._drawMap()).then((layers) => {
-    // draw layers to main canvas
-    layers.map((layer) => {
-      this.ctx.drawImage(this.layerCanvas[layer], 0, 0)
-    })
+    if (this.offCanvas) {
+      // draw layers to main canvas
+      layers.map((layer) => {
+        this.ctx.drawImage(this.layerCanvas[layer], 0, 0)
+      })
+    }
 
     if (this.grid) { this._drawGrid() }
     if (this.debug) { this._drawDebug() }
@@ -85,26 +87,29 @@ Engine._drawMap = function () {
 }
 
 Engine._drawLayer = function (layer) {
-  let context = this.getLayerContext(layer)
+  let context = this.offCanvas ? this.getLayerContext(layer) : this.ctx
   let view = this.camera.view
   let x = 0, y = 0, r = 0, srcX = 0, srcY = 0
 
-  context.clearRect(0, 0, this.width, this.height)
+  if (this.offCanvas) {
+    context.clearRect(0, 0, this.width, this.height)
+  }
 
   // add a margin
-  view.endRow += this.mapMargin
   view.endCol += this.mapMargin
+  view.endRow += this.mapMargin
   // TODO: use `mapMargin` to draw extra rounds of tiles off-canvas
 
   for (let c = view.startCol; c <= view.endCol; c++) {
     for (r = view.startRow; r <= view.endRow; r++) {
       let tile = map.getTile(layer, c, r)
-      x = (c - view.startCol) * assets.tileSize + view.offsetX
-      y = (r - view.startRow) * assets.tileSize + view.offsetY
-      srcX = ((tile - 1) % assets.tileCols) * assets.tileSize
-      srcY = ((tile - 1) / assets.tileCols | 0) * assets.tileSize
 
       if (tile !== 0) {
+        x = (c - view.startCol) * assets.tileSize + view.offsetX
+        y = (r - view.startRow) * assets.tileSize + view.offsetY
+        srcX = ((tile - 1) % assets.tileCols) * assets.tileSize
+        srcY = ((tile - 1) / assets.tileCols | 0) * assets.tileSize
+
         context.drawImage(
           this.tileAtlas,   // image
           srcX,             // source X

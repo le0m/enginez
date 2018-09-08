@@ -25,7 +25,8 @@ const Engine = {
     }
 
     return this._layerContext
-  }
+  },
+  offCanvas: false
 }
 
 /**
@@ -53,6 +54,7 @@ Engine.run = function (context, options) {
   this.height     = options.height || 512
   this.mapMargin  = options.mapMargin || 0
   this.grid       = options.grid || false
+  this.offCanvas  = options.offCanvas || false
 
   return Promise.all(this.load())
   .then(function (loaded) {
@@ -77,8 +79,8 @@ Engine.tick = function (elapsed) {
   this.ctx.clearRect(0, 0, this.width, this.height)
 
   // compute delta
-  let delta = (elapsed - this._previousElapsed) / 1000.0
-  delta = Math.min(0.25, delta) // cap delta for a more consistent behavior
+  let delta = (elapsed - this._previousElapsed) / 1000
+  delta = Math.min(0.250, delta) // cap delta for a more consistent behavior
   this._previousElapsed = elapsed
 
   this.update(delta)
