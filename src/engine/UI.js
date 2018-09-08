@@ -24,6 +24,7 @@ UI._handleClick = function (event) {
   let startRow = this.view.startRow
   let tileSize = assets.tileSize
 
+  console.log(startCol)
   /**
    * - ( pos.x / tileSize | 0)
    */

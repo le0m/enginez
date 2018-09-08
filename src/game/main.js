@@ -160,20 +160,20 @@ Engine._drawGrid = function () {
 Engine._drawCellNumbers = function () {
   let view = this.camera.view
   let num = 0
-  let x = 0, y = 0, r = 0
+  let x = 0, y = 0, c = 0
   this.ctx.fillStyle = 'black'
   this.ctx.font = '16px sans-serif'
 
-  for (let c = view.startCol; c <= view.endCol; c++) {
-    for (r = view.startRow; r <= view.endRow; r++) {
+  for (let r = view.startRow; r <= view.endRow; r++) {
+    for (c = view.startCol; c <= view.endCol; c++) {
       x = (c - view.startCol) * assets.tileSize + view.offsetX + assets.tileSize / 8 // it's a long text
       y = (r - view.startRow) * assets.tileSize + view.offsetY + assets.tileSize / 2
       num++
 
       this.ctx.fillText(
         `[ ${ num } (${ c + ' | ' + r }) ]`,
-        x | 0,                  // x
-        y | 0,                  // y
+        x | 0,
+        y | 0,
         assets.tileSize * 3 / 4 // max width, font auto-scale
       )
     }
@@ -185,7 +185,7 @@ Engine._drawDebug = function () {
   this.ctx.fillRect(
     10,  // x
     10,  // y
-    50,  // width
+    80,  // width
     40   // height
   )
   this.ctx.fillStyle = 'white'
@@ -195,7 +195,6 @@ Engine._drawDebug = function () {
     `FPS: ${ this.fps }`,
     15,  // x
     25,  // y
-    45   // max width
   )
 
   // delta
@@ -203,7 +202,6 @@ Engine._drawDebug = function () {
     `Δ: ${ this.delta }ms`,
     15,  // x
     45,  // y
-    45   // max width
   )
 }
 

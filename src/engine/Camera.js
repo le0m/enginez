@@ -52,8 +52,8 @@ Camera.prototype.move = function (delta, dirX, dirY) {
   this.y += dirY * this.speed * delta
 
   // clamp values
-  this.x = Math.max(0, Math.min(this.x, this.maxX))
-  this.y = Math.max(0, Math.min(this.y, this.maxY))
+  this.x = Math.max(0, Math.min(this.x, this.maxX)) | 0
+  this.y = Math.max(0, Math.min(this.y, this.maxY)) | 0
 
   this._updateView()
 }
