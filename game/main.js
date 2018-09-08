@@ -79,7 +79,6 @@ Engine.render = function () {
       })
     }
 
-    console.log(this.debug)
     if (config.grid)  { this._drawGrid() }
     if (config.debug) { this._drawDebug() }
   })
