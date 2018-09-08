@@ -21,6 +21,7 @@ const Engine = {
   },
   fps: 0,
   delta: 0,
+  offCanvas: false,
   camera: null,
   width: 0,
   height: 0,
@@ -33,8 +34,7 @@ const Engine = {
     }
 
     return this._layerContext
-  },
-  offCanvas: false
+  }
 }
 
 /**
