@@ -15,10 +15,18 @@ Engine.load = function () {
 // Init
 
 Engine.init = function () {
-  this.tileAtlas = Loader.getImage(assets.key)
+  // init input
   Keyboard.listenForEvents([Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN])
   Touch.listenForEvents(assets.tileSize) // MOBILE: tileSize / 4
 
+  // init atlas
+  this.tileAtlas = Loader.getImage(assets.key)
+  this.tileCanvas = document.createElement('canvas')
+  this.tileCanvas.width = assets.tileSize * assets.tileCols
+  this.tileCanvas.height = assets.tileSize * assets.tileRows
+  this.getTileContext().drawImage(this.tileAtlas, 0, 0)
+
+  // init camera
   this.camera = new Camera({
     cols: map.cols,
     rows: map.rows,
@@ -29,17 +37,16 @@ Engine.init = function () {
     startY: config.camera.startY
   })
 
-  // create a canvas for each layer
-  this.layerCanvas = map.layers.map(() => {
-    let c = document.createElement('canvas')
-    c.width = this.width
-    c.height = this.height
+  if (this.offCanvas) {
+    // create a canvas for each layer
+    this.layerCanvas = map.layers.map(() => {
+      let c = document.createElement('canvas')
+      c.width = this.width
+      c.height = this.height
 
-    return c
-  })
-
-  // initial draw
-  //this.render()
+      return c
+    })
+  }
 }
 
 // Update
@@ -72,8 +79,9 @@ Engine.render = function () {
       })
     }
 
-    if (this.grid) { this._drawGrid() }
-    if (this.debug) { this._drawDebug() }
+    console.log(this.debug)
+    if (config.grid)  { this._drawGrid() }
+    if (config.debug) { this._drawDebug() }
   })
 }
 
@@ -111,7 +119,7 @@ Engine._drawLayer = function (layer) {
         srcY = ((tile - 1) / assets.tileCols | 0) * assets.tileSize
 
         context.drawImage(
-          this.tileAtlas,   // image
+          this.tileCanvas,  // image
           srcX,             // source X
           srcY,             // source Y
           assets.tileSize,  // source width

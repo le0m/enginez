@@ -10,15 +10,23 @@ const Engine = {
   _previousElapsed: 0,
   ctx: null,
   tileAtlas: null,
+  tileCanvas: null,
+  _tileContext: null,
+  getTileContext: function () {
+    if (this._tileContext === null) {
+      this._tileContext = this.tileCanvas.getContext('2d')
+    }
+
+    return this._tileContext
+  },
   fps: 0,
   delta: 0,
   camera: null,
   width: 0,
   height: 0,
   mapMargin: 0,
-  grid: false,
-  _layerContext: {},
   layerCanvas: [],
+  _layerContext: {},
   getLayerContext: function (layer) {
     if (!(layer in this._layerContext)) {
       this._layerContext = this.layerCanvas[layer].getContext('2d')
@@ -53,7 +61,6 @@ Engine.run = function (context, options) {
   this.width      = options.width || 512
   this.height     = options.height || 512
   this.mapMargin  = options.mapMargin || 0
-  this.grid       = options.grid || false
   this.offCanvas  = options.offCanvas || false
 
   return Promise.all(this.load())
@@ -78,9 +85,11 @@ Engine.tick = function (elapsed) {
   // clear previous frame
   this.ctx.clearRect(0, 0, this.width, this.height)
 
+  // round to 3 decimals (fast)
+  elapsed = (elapsed * 1000 | 0) / 1000
+
   // compute delta
   let delta = (elapsed - this._previousElapsed) / 1000
-  delta = (delta * 1000 | 0) / 1000 // round to 3 decimals, fast
   delta = Math.min(0.250, delta) // cap delta for a more consistent behavior
   this._previousElapsed = elapsed
 
