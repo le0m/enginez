@@ -80,6 +80,7 @@ Engine.tick = function (elapsed) {
 
   // compute delta
   let delta = (elapsed - this._previousElapsed) / 1000
+  delta = (delta * 1000 | 0) / 1000 // round to 3 decimals, fast
   delta = Math.min(0.250, delta) // cap delta for a more consistent behavior
   this._previousElapsed = elapsed
 
