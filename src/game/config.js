@@ -21,7 +21,8 @@ const config = {
     startX: 640,
     startY: 360
   },
-  grid: false,
+  grid: true,
+  cellNumbers: true,
   debug: true,
   offCanvas: false
 }

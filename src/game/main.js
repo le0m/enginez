@@ -82,8 +82,9 @@ Engine.render = function () {
       })
     }
 
-    if (config.grid)  { this._drawGrid() }
-    if (config.debug) { this._drawDebug() }
+    if (config.grid)        { this._drawGrid() }
+    if (config.cellNumbers) { this._drawCellNumbers() }
+    if (config.debug)       { this._drawDebug() }
   })
 }
 
@@ -156,30 +157,53 @@ Engine._drawGrid = function () {
   }
 }
 
+Engine._drawCellNumbers = function () {
+  let view = this.camera.view
+  let num = 0
+  let x = 0, y = 0, r = 0
+  this.ctx.fillStyle = 'black'
+  this.ctx.font = '16px sans-serif'
+
+  for (let c = view.startCol; c <= view.endCol; c++) {
+    for (r = view.startRow; r <= view.endRow; r++) {
+      x = (c - view.startCol) * assets.tileSize + view.offsetX + assets.tileSize / 8 // it's a long text
+      y = (r - view.startRow) * assets.tileSize + view.offsetY + assets.tileSize / 2
+      num++
+
+      this.ctx.fillText(
+        `[ ${ num } (${ c + ' | ' + r }) ]`,
+        x | 0,                  // x
+        y | 0,                  // y
+        assets.tileSize * 3 / 4 // max width, font auto-scale
+      )
+    }
+  }
+}
+
 Engine._drawDebug = function () {
   this.ctx.fillStyle = 'black'
   this.ctx.fillRect(
-    10,
-    10,
-    50,
-    40
+    10,  // x
+    10,  // y
+    50,  // width
+    40   // height
   )
   this.ctx.fillStyle = 'white'
 
   // FPS
   this.ctx.fillText(
     `FPS: ${ this.fps }`,
-    15,
-    25,
-    45
+    15,  // x
+    25,  // y
+    45   // max width
   )
 
   // delta
   this.ctx.fillText(
     `Δ: ${ this.delta }ms`,
-    15,
-    45,
-    45
+    15,  // x
+    45,  // y
+    45   // max width
   )
 }
 

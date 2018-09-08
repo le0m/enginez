@@ -20,6 +20,13 @@ UI.init = function (view) {
 
 UI._handleClick = function (event) {
   let pos = this._getPosition(event)
+  let startCol = this.view.startCol
+  let startRow = this.view.startRow
+  let tileSize = assets.tileSize
+
+  /**
+   * - ( pos.x / tileSize | 0)
+   */
 }
 
 /**
