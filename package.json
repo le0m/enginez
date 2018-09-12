@@ -1,21 +1,32 @@
 {
-  "name": "enginez",
-  "version": "0.0.3",
-  "description": "JS game entine for tile RTS games.",
+  "name": "engine-z",
+  "version": "0.0.1",
+  "description": "JS game engine for tile-based RTS.",
   "main": "index.html",
   "author": "Leo Mainardi <mainardi.leo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "uglifyjs src/**/*.js --mangle --compress --screw-ie8 --source-map --output dist/app.min.js",
-    "serve": "http-server ./"
+    "start": "webpack-dev-server --color --progress --env.development --config build/webpack.config",
+    "build": "webpack --env.production --config build/webpack.config",
+    "lint": "eslint --ext .js src"
   },
   "devDependencies": {
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "http-server": "^0.11.1",
-    "uglify-es": "^3.3.9"
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-eslint": "^9.0.0",
+    "babel-loader": "^8.0.2",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.5.0",
+    "eslint-loader": "^2.1.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "standard": "^12.0.1",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.18.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8"
   }
 }

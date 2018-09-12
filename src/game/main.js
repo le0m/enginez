@@ -40,6 +40,9 @@ Engine.init = function () {
   // init UI
   UI.init(this.camera.view)
 
+  // init State
+  State.init(map.cols, map.rows)
+
   if (this.offCanvas) {
     // create a canvas for each layer
     this.layerCanvas = map.layers.map(() => {
@@ -58,6 +61,9 @@ Engine.update = function (delta) {
   // stats
   this.delta = delta * 1000 | 0
   this.fps = 1 / delta | 0
+
+  // events
+  Queue.dispatch()
 
   // movement
   let dir = Keyboard.getDirection() || { x: 0, y: 0 }
@@ -109,7 +115,7 @@ Engine._drawLayer = function (layer) {
   // add a margin
   view.endCol += this.mapMargin
   view.endRow += this.mapMargin
-  // TODO: use `mapMargin` to draw extra rounds of tiles off-canvas
+  // TODO: remove this when changing the rendering engine
 
   for (let c = view.startCol; c <= view.endCol; c++) {
     for (r = view.startRow; r <= view.endRow; r++) {
@@ -127,8 +133,8 @@ Engine._drawLayer = function (layer) {
           srcY,             // source Y
           assets.tileSize,  // source width
           assets.tileSize,  // source height
-          Math.round(x),    // target X
-          Math.round(y),    // target Y
+          x | 0,            // target X
+          y | 0,            // target Y
           assets.tileSize,  // target width
           assets.tileSize   // target height
         )

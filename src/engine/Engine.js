@@ -12,13 +12,6 @@ const Engine = {
   tileAtlas: null,
   tileCanvas: null,
   _tileContext: null,
-  getTileContext: function () {
-    if (this._tileContext === null) {
-      this._tileContext = this.tileCanvas.getContext('2d')
-    }
-
-    return this._tileContext
-  },
   fps: 0,
   delta: 0,
   offCanvas: false,
@@ -28,12 +21,20 @@ const Engine = {
   mapMargin: 0,
   layerCanvas: [],
   _layerContext: {},
+  state: {},
   getLayerContext: function (layer) {
     if (!(layer in this._layerContext)) {
       this._layerContext = this.layerCanvas[layer].getContext('2d')
     }
 
     return this._layerContext
+  },
+  getTileContext: function () {
+    if (this._tileContext === null) {
+      this._tileContext = this.tileCanvas.getContext('2d')
+    }
+
+    return this._tileContext
   }
 }
 

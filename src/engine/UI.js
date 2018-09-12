@@ -5,34 +5,38 @@
 //
 
 const UI = {
-  view: null,
+  view: null, // reference to Camera.view
   canvas: null,
   div: null
 }
 
+UI.EVENT_TILE_CLICKED = 0
+
 UI.init = function (view) {
+  this.view = view
   this.canvas = document.getElementById('canvas')
   this.div = document.getElementById('ui')
-  this.view = view // reference to Camera.view
 
   this.div.addEventListener('click', this._handleClick.bind(this))
 }
 
 UI._handleClick = function (event) {
   let pos = this._getPosition(event)
-  let startCol = this.view.startCol
-  let startRow = this.view.startRow
-  let tileSize = assets.tileSize
+  let col = this.view.startCol + ((pos.x - this.view.offsetX) / assets.tileSize | 0)
+  let row = this.view.startRow + ((pos.y - this.view.offsetY) / assets.tileSize | 0)
 
-  console.log(startCol)
-  /**
-   * - ( pos.x / tileSize | 0)
-   */
+  console.log(`clicked:`, col, row)
+  Queue.add('click', {
+    col: col,
+    row: row
+  })
 }
 
 /**
  * Normalized position, for mouse and touch.
  *
+ * @param {MouseEvent|TouchEvent} event
+ * @return {{ x: number, y: number}}
  * @private
  */
 UI._getPosition = function (event) {

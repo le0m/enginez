@@ -79,6 +79,18 @@ const map = {
   ],
   getTile: function (layer, col, row) {
     return this.layers[layer][row * this.cols + col]
+  },
+  getTileObject: function (col, row) {
+    console.log(`getting tile:`, col, row)
+    // check first 2 layers
+    let tile = this.getTile(1, col, row)
+
+    if (tile === 0) {
+      tile = this.getTile(0, col, row)
+    }
+    console.log(`got tile:`, tile)
+
+    return tiles.getObject(tile)
   }
 }
 
