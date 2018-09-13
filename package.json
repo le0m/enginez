@@ -6,8 +6,8 @@
   "author": "Leo Mainardi <mainardi.leo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --color --progress --env.development --config build/webpack.config",
-    "build": "webpack --env.production --config build/webpack.config",
+    "start": "webpack-dev-server --color --progress --env.development --config build/webpack.dev.config",
+    "build": "webpack --env.production --config build/webpack.prod.config",
     "lint": "eslint --ext .js src"
   },
   "devDependencies": {

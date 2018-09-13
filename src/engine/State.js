@@ -1,29 +1,36 @@
-'use strict'
-
-const State = {
-  cols: 0,
-  rows: 0,
-  tileStates: []
-}
-
-State.init = function (cols, rows) {
-  this.cols = cols
-  this.rows = rows
-
-  // init states
-  for (let s = 0; s < cols * rows; s++) {
-    this.tileStates.push({})
+/**
+ * Stores current game state.
+ * Can also save and load a game (TODO).
+ */
+export default class State {
+  /**
+   * Set grid dimensions.
+   *
+   * @param {number} cols
+   * @param {number} rows
+   */
+  constructor (cols, rows) {
+    this.cols = cols
+    this.rows = rows
+    this.tileStates = []
   }
-}
 
-State.getTileState = function (col, row) {
-  console.log(`getting state:`, col, row)
-  return this.tileStates[row * this.cols + col]
-}
+  init () {
+    // init states
+    for (let s = 0; s < this.cols * this.rows; s++) {
+      this.tileStates.push({})
+    }
+  }
 
-State.setTileState = function (col, row, state) {
-  this.tileStates[row * this.cols + col] = state
-}
+  getTileState (col, row) {
+    console.log(`getting state:`, col, row)
+    return this.tileStates[row * this.cols + col]
+  }
 
-State.save = function () {}
-State.load = function () {}
+  setTileState (col, row, state) {
+    this.tileStates[row * this.cols + col] = state
+  }
+
+  save () {}
+  load () {}
+}
