@@ -18,22 +18,22 @@ export default class Engine {
    */
   constructor (context, options) {
     /* eslint-disable no-multi-spaces */
-    this._previousElapsed   = 0
-    this._tileCanvasContext = null
-    this._layerContext      = {}
+    this._previousElapsed         = 0
+    this._tileAtlasCanvasContext  = null
+    this._layerContext            = {}
 
-    this.ctx                = context
-    this.width              = options.width || 512
-    this.height             = options.height || 512
-    this.mapMargin          = options.mapMargin || 0
-    this.state              = options.state || {}
-    this.offCanvas          = options.offCanvas || false
-    this.tileAtlas          = null
-    this.tileAtlasCanvas    = null
-    this.fps                = 0
-    this.delta              = 0
-    this.camera             = null
-    this.layerCanvas        = []
+    this.ctx                      = context
+    this.width                    = options.width || 512
+    this.height                   = options.height || 512
+    this.mapMargin                = options.mapMargin || 0
+    this.state                    = options.state || {}
+    this.offCanvas                = options.offCanvas || false
+    this.tileAtlas                = null
+    this.tileAtlasCanvas          = null
+    this.fps                      = 0
+    this.delta                    = 0
+    this.camera                   = null
+    this.layerCanvas              = []
   }
 
   getLayerContext (layer) {
@@ -44,12 +44,12 @@ export default class Engine {
     return this._layerContext
   }
 
-  getTileCanvasContext () {
-    if (this._tileCanvasContext === null) {
-      this._tileCanvasContext = this.tileCanvas.getContext('2d')
+  getTileAtlasCanvasContext () {
+    if (this._tileAtlasCanvasContext === null) {
+      this._tileAtlasCanvasContext = this.tileAtlasCanvas.getContext('2d')
     }
 
-    return this._tileCanvasContext
+    return this._tileAtlasCanvasContext
   }
 
   /**
@@ -64,7 +64,7 @@ export default class Engine {
     return Promise.all(this.load())
       .then(() => {
         this.init()
-        window.requestAnimationFrame(this.tick)
+        window.requestAnimationFrame(this.tick.bind(this))
       })
   }
 
@@ -78,7 +78,7 @@ export default class Engine {
    * @param {number} elapsed
    */
   tick (elapsed) {
-    window.requestAnimationFrame(this.tick)
+    window.requestAnimationFrame(this.tick.bind(this))
 
     // clear previous frame
     this.ctx.clearRect(0, 0, this.width, this.height)

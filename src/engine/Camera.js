@@ -67,15 +67,6 @@ export default class Camera {
   }
 
   /**
-   * Gets current view dimensions and position.
-   *
-   * @return {{startCol: number, endCol: number, startRow: number, endRow: number, offsetX: number, offsetY: number}|*}
-   */
-  getView () {
-    return this.view
-  }
-
-  /**
    * Updates `view` coordinates.
    *
    * @private

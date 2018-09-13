@@ -2,6 +2,7 @@
 
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = function (env, argv) {
   return {
@@ -23,7 +24,11 @@ module.exports = function (env, argv) {
         template: 'index.html',
         filename: 'index.html',
         minify: false
-      })
+      }),
+      new CopyWebpackPlugin([{
+        from: path.resolve(__dirname, '../static'),
+        to: 'static'
+      }])
     ],
 
     module: {

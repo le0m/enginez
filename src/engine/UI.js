@@ -3,21 +3,20 @@
  */
 export default class UI {
   /**
-   * Some external functions are required to work:
-   * - `getView`, from Camera object
-   * - `addMessage`, from Queue object
+   * - `view`, property from Camera object
+   * - `queue`, Queue object
    *
    * @param {number} tileSize
-   * @param {Function} getView
-   * @param {Function} addMessage
+   * @param {Object} view
+   * @param {Queue} queue
    */
-  constructor (tileSize, getView, addMessage) {
+  constructor (tileSize, view, queue) {
     /* eslint-disable no-multi-spaces */
-    this._getView     = getView
-    this._addMessage  = addMessage
-    this.tileSize     = tileSize
-    this.canvas       = null
-    this.div          = null
+    this._view    = view
+    this._queue   = queue
+    this.tileSize = tileSize
+    this.canvas   = null
+    this.div      = null
   }
 
   init () {
@@ -29,11 +28,11 @@ export default class UI {
 
   _handleClick (event) {
     let pos = this._getPosition(event)
-    let col = this._getView().startCol + ((pos.x - this._getView().offsetX) / this.tileSize | 0)
-    let row = this._getView().startRow + ((pos.y - this._getView().offsetY) / this.tileSize | 0)
+    let col = this._view.startCol + ((pos.x - this._view.offsetX) / this.tileSize | 0)
+    let row = this._view.startRow + ((pos.y - this._view.offsetY) / this.tileSize | 0)
 
     console.log(`clicked:`, col, row)
-    this._addMessage('click', {
+    this._queue.add('click', {
       col: col,
       row: row
     })

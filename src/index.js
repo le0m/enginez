@@ -27,11 +27,12 @@ class GameEngine extends Engine {
       rows: config.map.rows,
       width: this.width,
       height: this.height,
+      tileSize: config.assets.tileSize,
       speed: config.camera.speed,
       startX: config.camera.startX,
       startY: config.camera.startY
     })
-    this.ui = new UI(config.assets.tileSize, this.camera.getView, this.queue.add)
+    this.ui = new UI(config.assets.tileSize, this.camera.view, this.queue)
   }
 
   load () {
@@ -50,7 +51,7 @@ class GameEngine extends Engine {
     this.tileAtlasCanvas = document.createElement('canvas')
     this.tileAtlasCanvas.width = config.assets.tileSize * config.assets.tileCols
     this.tileAtlasCanvas.height = config.assets.tileSize * config.assets.tileRows
-    this.getTileCanvasContext().drawImage(this.tileAtlas, 0, 0)
+    this.getTileAtlasCanvasContext().drawImage(this.tileAtlas, 0, 0)
 
     this.ui.init()
   }
@@ -66,7 +67,7 @@ class GameEngine extends Engine {
     // movement
     let dir = this.keyboard.getDirection() || { x: 0, y: 0 }
 
-    if (Touch.isMoving) {
+    if (this.touch.isMoving) {
       dir = this.touch.getDirection()
     }
 
@@ -90,20 +91,14 @@ class GameEngine extends Engine {
   }
 
   _drawLayer (layer) {
-    let view = this.camera.getView()
+    let view = this.camera.view
     let x = 0, y = 0, r = 0, srcX = 0, srcY = 0
     let tileSize = config.assets.tileSize
     let tileCols = config.assets.tileCols
 
-    this.ctx.clearRect(0, 0, this.width, this.height)
-
-    // add a margin
-    view.endCol += this.mapMargin
-    view.endRow += this.mapMargin
-    // TODO: do this "better" when changing the rendering engine
-
-    for (let c = view.startCol; c <= view.endCol; c++) {
-      for (r = view.startRow; r <= view.endRow; r++) {
+    // TODO: "better" margin when changing the rendering engine
+    for (let c = view.startCol; c <= view.endCol + this.mapMargin; c++) {
+      for (r = view.startRow; r <= view.endRow + this.mapMargin; r++) {
         let tile = getTile(layer, c, r)
 
         if (tile !== 0) {
@@ -134,8 +129,9 @@ class GameEngine extends Engine {
     this.ctx.strokeStyle = 'black'
     let tileSize = config.assets.tileSize
 
-    for (let c = view.startCol; c <= view.endCol; c++) {
-      for (r = view.startRow; r <= view.endRow; r++) {
+    // TODO: "better" margin when changing the rendering engine
+    for (let c = view.startCol; c <= view.endCol + this.mapMargin; c++) {
+      for (r = view.startRow; r <= view.endRow + this.mapMargin; r++) {
         x = (c - view.startCol) * tileSize + view.offsetX
         y = (r - view.startRow) * tileSize + view.offsetY
 
@@ -157,8 +153,9 @@ class GameEngine extends Engine {
     this.ctx.font = '16px sans-serif'
     let tileSize = config.assets.tileSize
 
-    for (let r = view.startRow; r <= view.endRow; r++) {
-      for (c = view.startCol; c <= view.endCol; c++) {
+    // TODO: "better" margin when changing the rendering engine
+    for (let r = view.startRow; r <= view.endRow + this.mapMargin; r++) {
+      for (c = view.startCol; c <= view.endCol + this.mapMargin; c++) {
         x = (c - view.startCol) * tileSize + view.offsetX + tileSize / 8 // it's a long text
         y = (r - view.startRow) * tileSize + view.offsetY + tileSize / 2
         num++
@@ -202,4 +199,3 @@ class GameEngine extends Engine {
 let context = document.getElementById('canvas').getContext('2d')
 const game = new GameEngine(context, config)
 game.run()
-  .then(() => { console.log(`Goodbye o/`) })
