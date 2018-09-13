@@ -98,6 +98,7 @@ Touch.getDirection = function () {
   let deltaY = this.currY - this.startY
 
   if (Math.abs(deltaX) > this.sensitivity) {
+    /* eslint-disable no-multi-spaces */
     if (deltaX > 0) { dir.x = -1 } // left
     if (deltaX < 0) { dir.x = 1 }  // right
   }

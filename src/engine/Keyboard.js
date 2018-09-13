@@ -6,6 +6,7 @@
 
 const Keyboard = {}
 
+/* eslint-disable no-multi-spaces */
 Keyboard.LEFT   = 37
 Keyboard.UP     = 38
 Keyboard.RIGHT  = 39
@@ -68,7 +69,7 @@ Keyboard._onKeyUp = function (event) {
  * @returns {boolean}
  */
 Keyboard.isDown = function (keyCode) {
-  if (!keyCode in this._keys) {
+  if (!(keyCode in this._keys)) {
     throw new Error('Keycode ' + keyCode + ' is not being listened to')
   }
 

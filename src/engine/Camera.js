@@ -20,6 +20,7 @@
  * @constructor
  */
 function Camera (options) {
+  /* eslint-disable no-multi-spaces */
   this.x        = options.startX || 0
   this.y        = options.startY || 0
   this.width    = options.width || 512
@@ -64,6 +65,7 @@ Camera.prototype.move = function (delta, dirX, dirY) {
  * @private
  */
 Camera.prototype._updateView = function () {
+  /* eslint-disable no-multi-spaces */
   this.view.startCol  = this.x / assets.tileSize | 0
   this.view.endCol    = this.view.startCol + (this.width / assets.tileSize | 0)
   this.view.startRow  = this.y / assets.tileSize | 0

@@ -106,6 +106,7 @@ Engine._drawMap = function () {
 Engine._drawLayer = function (layer) {
   let context = this.offCanvas ? this.getLayerContext(layer) : this.ctx
   let view = this.camera.view
+  /* eslint-disable one-var */
   let x = 0, y = 0, r = 0, srcX = 0, srcY = 0
 
   if (this.offCanvas) {
@@ -128,6 +129,7 @@ Engine._drawLayer = function (layer) {
         srcY = ((tile - 1) / assets.tileCols | 0) * assets.tileSize
 
         context.drawImage(
+          /* eslint-disable no-multi-spaces */
           this.tileCanvas,  // image
           srcX,             // source X
           srcY,             // source Y
@@ -154,8 +156,8 @@ Engine._drawGrid = function () {
       y = (r - view.startRow) * assets.tileSize + view.offsetY
 
       this.ctx.strokeRect(
-        Math.round(x),    // target X
-        Math.round(y),    // target Y
+        x | 0,    // target X
+        y | 0,    // target Y
         assets.tileSize,  // target width
         assets.tileSize   // target height
       )

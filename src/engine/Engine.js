@@ -58,6 +58,7 @@ const Engine = {
  * @returns {Promise<>}
  */
 Engine.run = function (context, options) {
+  /* eslint-disable no-multi-spaces */
   this.ctx        = context
   this.width      = options.width || 512
   this.height     = options.height || 512
@@ -65,10 +66,10 @@ Engine.run = function (context, options) {
   this.offCanvas  = options.offCanvas || false
 
   return Promise.all(this.load())
-  .then(function (loaded) {
-    this.init()
-    window.requestAnimationFrame(this.tick)
-  }.bind(this))
+    .then(function () {
+      this.init()
+      window.requestAnimationFrame(this.tick)
+    }.bind(this))
 }
 
 /**
@@ -98,8 +99,8 @@ Engine.tick = function (elapsed) {
   this.render()
 }.bind(Engine) // WTF: why this method needs this??
 
+/* eslint-disable no-multi-spaces */
 Engine.load   = function () {}
 Engine.init   = function () {}
 Engine.update = function (delta) {}
 Engine.render = function () {}
-

@@ -1,5 +1,6 @@
 'use strict'
 
+/*
 const configMobile = {
   width: 320,
   height: 320,
@@ -11,6 +12,7 @@ const configMobile = {
   },
   debug: true
 }
+*/
 
 const config = {
   width: 1280,

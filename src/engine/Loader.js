@@ -26,7 +26,7 @@ Loader.loadImage = function (key, src) {
       resolve(img)
     }.bind(this)
 
-    img.onerror = function (err) {
+    img.onerror = function () {
       reject('Could not load image: ' + src)
     }
   }.bind(this))

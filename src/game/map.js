@@ -1,5 +1,6 @@
 'use strict'
 
+/* eslint-disable no-multi-spaces, comma-spacing */
 const map = {
   cols: 16,
   rows: 16,
