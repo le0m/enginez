@@ -17,7 +17,7 @@ class GameEngine extends Engine {
 
     this.loader = new Loader()
     this.state = new State(config.map.cols, config.map.rows)
-    this.queue = new Queue(getTileObject, this.state.getTileState, this.state.setTileState)
+    this.queue = new Queue(getTileObject, this.state)
     this.keyboard = new Keyboard()
     this.touch = new Touch(config.assets.tileSize)
     this.tileAtlas = null

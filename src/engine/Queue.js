@@ -9,14 +9,12 @@ export default class Queue {
    * - `setState`, from State object
    *
    * @param {Function} getObject
-   * @param {Function} getState
-   * @param {Function} setState
+   * @param {State} state
    */
-  constructor (getObject, getState, setState) {
+  constructor (getObject, state) {
     this._events = []
     this._getObject = getObject
-    this._getState = getState
-    this._setState = setState
+    this._state = state
   }
 
   add (name, data) {
@@ -41,13 +39,12 @@ export default class Queue {
 
   _dispatchEvent (event) {
     let tile = this._getObject(event.col, event.row)
-    console.log(`dispatching to:`, tile)
 
     if (tile !== null) {
-      let state = this._getState(event.col, event.row)
+      let state = this._state.getTileState(event.col, event.row)
       let newState = tile.on(event, state)
 
-      this._setState(event.col, event.row, newState)
+      this._state.setTileState(event.col, event.row, newState)
     }
   }
 }

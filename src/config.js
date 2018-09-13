@@ -137,8 +137,6 @@ function getTile (layer, col, row) {
 }
 
 function getTileObject (col, row) {
-  console.log(`getting tile: (${col + ' | ' + row})`)
-
   // check first 2 layers
   let tile = getTile(1, col, row)
   if (tile === 0) {
