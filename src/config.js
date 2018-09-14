@@ -9,7 +9,7 @@ const config = {
     startY: 360
   },
   grid: true,
-  cellNumbers: true,
+  cellNumbers: false,
   debug: true,
   assets: {
     tileSize: 128,

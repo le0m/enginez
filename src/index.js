@@ -158,7 +158,7 @@ class GameEngine extends Engine {
       for (c = view.startCol; c <= view.endCol + this.mapMargin; c++) {
         x = (c - view.startCol) * tileSize + view.offsetX + tileSize / 8 // it's a long text
         y = (r - view.startRow) * tileSize + view.offsetY + tileSize / 2
-        num++
+        num = (r * config.map.cols) + (c + 1)
 
         this.ctx.fillText(
           `[ ${num} (${c + ' | ' + r}) ]`,
