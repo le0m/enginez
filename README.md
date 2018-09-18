@@ -1,6 +1,7 @@
 Components
 ==========
 
+- [Engine](docs/engine.md) (singleton)
 - [World](docs/world.md) (singleton)
 - [Layer](docs/layer.md) (instance)
 - [Tile](docs/tile.md) (instance per type)
@@ -14,7 +15,6 @@ Components
 - [State](docs/state.md) (instance per each tile in each layer)
 - [Loader](docs/loader.md) (singleton)
 - [EventQueue](docs/event-queue.md) (singleton)
-- [Engine](docs/engine.md) (singleton)
 
 Next
 ====

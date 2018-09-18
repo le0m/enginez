@@ -1,13 +1,13 @@
 import './css/main.css'
 
-import Camera from './engine/Camera'
-import Engine from './engine/Engine.js'
-import Keyboard from './engine/Keyboard.js'
-import Loader from './engine/Loader.js'
-import Queue from './engine/Queue.js'
-import State from './engine/State.js'
-import Touch from './engine/Touch.js'
-import UI from './engine/UI.js'
+import Camera from './engine_old/Camera'
+import Engine from './engine_old/Engine.js'
+import Keyboard from './engine_old/Keyboard.js'
+import Loader from './engine_old/Loader.js'
+import Queue from './engine_old/Queue.js'
+import State from './engine_old/State.js'
+import Touch from './engine_old/Touch.js'
+import UI from './engine_old/UI.js'
 import { config, getTile, getTileObject } from './config.js'
 
 /* eslint-disable no-multi-spaces, one-var */
