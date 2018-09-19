@@ -4,7 +4,7 @@ const config = {
   height: 720,
   mapMargin: 1,
   camera: {
-    speed: 512,
+    speed: 0.512,
     startX: 640,
     startY: 360
   },

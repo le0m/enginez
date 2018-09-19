@@ -34,7 +34,7 @@ export default class Camera {
     this.tileSize = options.tileSize || 16
     this.maxX     = options.cols * this.tileSize - this.width
     this.maxY     = options.rows * this.tileSize - this.height
-    this.speed    = options.speed || 256 // pixels per second
+    this.speed    = options.speed || 0.256 // pixels per ms
     this.view     = {
       startCol: 0,
       endCol: 0,

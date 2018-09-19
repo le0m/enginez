@@ -15,10 +15,11 @@ export default class Engine {
    *
    * @param {CanvasRenderingContext2D} context
    * @param {Object} options
+   * @param {boolean} debug additional messages to console
    */
-  constructor (context, options) {
+  constructor (context, options, debug) {
     /* eslint-disable no-multi-spaces */
-    this._previousElapsed         = 0
+    this._previousTimestamp         = 0
     this._tileAtlasCanvasContext  = null
     this._layerContext            = {}
 
@@ -31,9 +32,13 @@ export default class Engine {
     this.tileAtlas                = null
     this.tileAtlasCanvas          = null
     this.fps                      = 0
-    this.delta                    = 0
+    this._delta                   = 0
+    this._updateStep              = 10 // ms
+    this._updateAccumulator       = 0 // accumulated ms
+    this._updateClamp             = 50 // max update accumulation (avoid spiral of death)
     this.camera                   = null
     this.layerCanvas              = []
+    this.debug                    = debug || false
   }
 
   getLayerContext (layer) {
@@ -75,23 +80,38 @@ export default class Engine {
    * 3. update
    * 4. render
    *
-   * @param {number} elapsed
+   * @param {number} timestamp
    */
-  tick (elapsed) {
+  tick (timestamp) {
     window.requestAnimationFrame(this.tick.bind(this))
 
     // clear previous frame
     this.ctx.clearRect(0, 0, this.width, this.height)
 
-    // round to 3 decimals (fast)
-    elapsed = (elapsed * 1000 | 0) / 1000
-
     // compute delta
-    let delta = (elapsed - this._previousElapsed) / 1000
-    delta = Math.min(0.250, delta) // cap delta for a more consistent behavior
-    this._previousElapsed = elapsed
+    timestamp = timestamp | 0
+    this._delta = timestamp - this._previousTimestamp // delta is in fraction of seconds
+    this._previousTimestamp = timestamp
+    this._updateAccumulator += this._delta
 
-    this.update(delta)
+    // avoid spiral of death
+    if (this._updateAccumulator > this._updateClamp) {
+      if (this.debug) {
+        console.warn(`Update time accumulator above threshold: ${this._updateAccumulator} (clamping to ${this._updateClamp})`)
+      }
+
+      this._updateAccumulator = this._updateClamp
+    }
+
+    // stats
+    this.fps = 1000 / this._delta | 0
+
+    // update with fixed timestep
+    while (this._updateAccumulator >= this._updateStep) {
+      this.update(this._updateStep)
+      this._updateAccumulator -= this._updateStep
+    }
+
     this.render()
   }
 

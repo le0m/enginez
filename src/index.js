@@ -12,8 +12,8 @@ import { config, getTile, getTileObject } from './config.js'
 
 /* eslint-disable no-multi-spaces, one-var */
 class GameEngine extends Engine {
-  constructor (context, options) {
-    super(context, options)
+  constructor (context, options, debug) {
+    super(context, options, debug)
 
     this.loader = new Loader()
     this.state = new State(config.map.cols, config.map.rows)
@@ -57,10 +57,6 @@ class GameEngine extends Engine {
   }
 
   update (delta) {
-    // stats
-    this.delta = delta * 1000 | 0
-    this.fps = 1 / delta | 0
-
     // events
     this.queue.dispatch()
 
@@ -189,7 +185,7 @@ class GameEngine extends Engine {
 
     // delta
     this.ctx.fillText(
-      `Δ: ${this.delta}ms`,
+      `Δ: ${this._delta}ms`,
       15,  // x
       45   // y
     )
@@ -197,5 +193,5 @@ class GameEngine extends Engine {
 }
 
 let context = document.getElementById('canvas').getContext('2d')
-const game = new GameEngine(context, config)
+const game = new GameEngine(context, config, true) // debug: true
 game.run()
