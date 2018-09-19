@@ -1,3 +1,7 @@
+/**
+ * Engine core class, manages all components.
+ * You need to extend this class and override loop methods.
+ */
 export default class Engine {
   /**
    * @param {Object} config
