@@ -1,7 +1,7 @@
 {
   "name": "engine-z",
-  "version": "0.0.1",
-  "description": "JS game engine for tile-based RTS.",
+  "version": "0.0.2",
+  "description": "JS engine for tile-based strategy games",
   "main": "index.html",
   "author": "Leo Mainardi <mainardi.leo@gmail.com>",
   "license": "MIT",

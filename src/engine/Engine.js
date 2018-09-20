@@ -1,15 +1,37 @@
 /**
  * Engine core class, manages all components.
+ *
+ * To avoid movement and refresh rate problems, the `update()`
+ * function is called in fixed steps of time instead that once
+ * per frame, which also improves simulation consistency.
+ * Time for the `update()` function is accumulated each tick
+ * and used once it reaches a threshold. Accumulated time is
+ * clamped to a max value, to prevent the "spiral of death".
+ * See {@link Engine#constructor} to change these parameters.
+ *
  * You need to extend this class and override loop methods.
  */
 export default class Engine {
+  /* eslint-disable no-multi-spaces */
+
   /**
-   * @param {Object} config
+   * @param {Object} config - Engine component configuration
+   * @param {Number} [config.updateTimeStep=10] - Single step `update()` time (int, ms)
+   * @param {Number} [config.updateTimeMax=50] - Max accumulated `update()` time (int, ms)
+   *
+   * @param {Boolean} [config.debug=false] - Debug mode
+   * @constructor
    */
   constructor (config) {
-    this._previousElapsed = 0
+    // time related
+    this._delta             = 0 // time elapsed since last tick (ms)
+    this._previousTimestamp = 0 // timestamp of previous tick (ms)
+    this._updateTime        = 0 // total accumulated `update()` time (ms)
+    this._updateTimeStep    = config.updateTimeStep || 10 // single step `update()` time (ms)
+    this._updateTimeMax     = config.updateTimeMax || 50 // max accumulated `update()` time (ms)
 
-    this.options = config || {} // add here default options
+    // other
+    this.debug              = config.debug || false
   }
 
   /**
@@ -18,7 +40,7 @@ export default class Engine {
    * 2. init
    * 3. start loop
    *
-   * @returns {Promise<>}
+   * @returns {Promise}
    */
   run () {
     return Promise.all(this.load())
@@ -31,57 +53,63 @@ export default class Engine {
   /**
    * Executes a tick of the game:
    * 1. clear frame
-   * 2. calculate delta
-   * 3. update
+   * 2. compute delta
+   * 3. update by fixed steps
    * 4. render
    *
-   * @param {number} elapsed
+   * @param {Number} timestamp
    */
-  tick (elapsed) {
-    window.requestAnimationFrame(this.tick.bind(this))
-    // round to 3 decimals
-    elapsed = (elapsed * 1000 | 0) / 1000
-
+  tick (timestamp) {
     // compute delta
-    let delta = (elapsed - this._previousElapsed) / 1000
-    delta = Math.min(0.250, delta) // cap delta for a more consistent behavior
-    this._previousElapsed = elapsed
+    timestamp = timestamp | 0
+    this._delta = timestamp - this._previousTimestamp // delta is in fraction of seconds
+    this._previousTimestamp = timestamp
+    this._updateTime += this._delta
 
-    this.update(delta)
+    // avoid spiral of death
+    if (this._updateTime > this._updateTimeMax) {
+      if (this.debug) {
+        console.warn(`Update time above threshold: ${this._updateTime} (clamping to ${this._updateTimeMax})`)
+      }
+
+      this._updateTime = this._updateTimeMax
+    }
+
+    // stats
+    this.fps = 1000 / this._delta | 0
+
+    // update by fixed steps
+    while (this._updateTime >= this._updateTimeStep) {
+      this.update(this._updateTimeStep)
+      this._updateTime -= this._updateTimeStep
+    }
+
     this.render()
+    window.requestAnimationFrame(this.tick.bind(this))
   }
 
   /**
    * Override to pre-load resources.
-   * Must return one Promise or an array of them.
    *
-   * @return {Promise<any>}
+   * @return {Promise|Promise[]}
    */
-  load () {
-    return Promise.reject(new Error('Method not implemented: load()'))
-  }
+  load () {}
 
   /**
    * Override to initialize other components.
    */
-  init () {
-    throw Error('Method not implemented: init()')
-  }
+  init () {}
 
   /**
    * Override to handle state updates (ex. movement,
    * input, tile updates, ...).
    *
-   * @param {number} delta
+   * @param {Number} delta
    */
-  update (delta) {
-    throw Error('Method not implemented: update()')
-  }
+  update (delta) {}
 
   /**
    * Override to (re-)draw layers and canvas.
    */
-  render () {
-    throw Error('Method not implemented: render()')
-  }
+  render () {}
 }

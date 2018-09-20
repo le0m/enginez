@@ -4,7 +4,7 @@ Input
 This classes handle user input from various sources.
 
 - listen to user inputs and calculate movement
-- emit click events to World (with col/row)
+- emit click events to World (pixel coords)
 - expose movement distance/coords to World
 
 Keyboard <a name="keyboard"></a>
