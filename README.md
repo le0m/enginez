@@ -19,5 +19,4 @@ Components
 Next
 ====
 
-- deep copy `constructor()` config parameters, so they don't end up being changed from everywhere by reference
 - Actor component, for drawing citizens moving inside a dedicated layer (no logic, animation only)

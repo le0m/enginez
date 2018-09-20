@@ -9,7 +9,6 @@ export default class State {
    * @param {Number} config.layers - Map layers (int)
    * @param {Number} config.rows - Map rows (int)
    * @param {Number} config.cols - Map columns (int)
-   *
    * @param {Boolean} [config.debug=false] - Debug mode
    * @constructor
    */
@@ -28,6 +27,7 @@ export default class State {
 
   /**
    * Initializes the map with empty states.
+   *
    * @private
    */
   _initStates () {
@@ -52,7 +52,6 @@ export default class State {
    * @param {Number} layer - 0-indexed tile layer (int)
    * @param {Number} row - 0-indexed tile row (int)
    * @param {Number} col - 0-indexed tile column (int)
-   *
    * @returns {Object} - Tile state
    */
   getTileState (layer, row, col) {

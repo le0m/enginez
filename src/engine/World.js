@@ -12,7 +12,6 @@ export default class World {
    * @param {Number[][][]} config.map - World map represented as a 3-dimensional array of tile IDs (int)
    * @param {Object} config.viewport - Viewport component config (see {@link Viewport#constructor})
    * @param {Object} config.state - State component config (see {@link State#constructor})
-   *
    * @param {Boolean} [config.debug=false] - Debug mode
    * @constructor
    */
@@ -31,6 +30,7 @@ export default class World {
 
   /**
    * Initialize map Layers.
+   *
    * @private
    */
   _initLayers () {}

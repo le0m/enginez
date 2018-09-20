@@ -13,7 +13,6 @@ export default class Viewport {
    * @param {Number} config.worldHeight - World height as a boundary, origin at (0,0) is assumed (int, px)
    * @param {Number} [config.startX=0] - Starting X position (int, px)
    * @param {Number} [config.startY=0] - Starting Y position (int, px)
-   *
    * @param {Boolean} [config.debug=false] - Debug mode
    * @constructor
    */

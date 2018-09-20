@@ -18,7 +18,6 @@ export default class Engine {
    * @param {Object} config - Engine component configuration
    * @param {Number} [config.updateTimeStep=10] - Single step `update()` time (int, ms)
    * @param {Number} [config.updateTimeMax=50] - Max accumulated `update()` time (int, ms)
-   *
    * @param {Boolean} [config.debug=false] - Debug mode
    * @constructor
    */
@@ -69,7 +68,7 @@ export default class Engine {
     // avoid spiral of death
     if (this._updateTime > this._updateTimeMax) {
       if (this.debug) {
-        console.warn(`Update time above threshold: ${this._updateTime} (clamping to ${this._updateTimeMax})`)
+        console.warn(`[ENGINE] update time above threshold ${this._updateTime}, clamping to ${this._updateTimeMax}`)
       }
 
       this._updateTime = this._updateTimeMax
@@ -91,7 +90,7 @@ export default class Engine {
   /**
    * Override to pre-load resources.
    *
-   * @return {Promise|Promise[]}
+   * @returns {Promise|Promise[]}
    */
   load () {}
 
