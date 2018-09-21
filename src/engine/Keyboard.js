@@ -1,18 +1,29 @@
 import BaseInput from './BaseInput.js'
 
+/**
+ * This component implements {@link BaseInput} for
+ * keyboard devices.
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
+ */
 export default class Keyboard extends BaseInput {
   /* eslint-disable no-multi-spaces, one-var */
 
+  /** @static */
   static get LEFT ()  { return 37 }
+  /** @static */
   static get UP ()    { return 38 }
+  /** @static */
   static get RIGHT () { return 39 }
+  /** @static */
   static get DOWN ()  { return 40 }
 
   /**
    * @param {Object} config - Keyboard component config
    * @param {Number} config.speed - Movement speed (float, px per time step)
    * @param {Boolean} [config.debug=false] - Debug mode
-   * @constructor
    */
   constructor (config) {
     super(config)
@@ -89,7 +100,7 @@ export default class Keyboard extends BaseInput {
   }
 
   /**
-   * @inheritDoc
+   * @inheritdoc
    */
   getDirection () {
     let x = 0, y = 0

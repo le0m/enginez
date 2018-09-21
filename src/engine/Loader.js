@@ -1,15 +1,15 @@
 /**
  * Pre-loads images asynchronously.
  *
- * @class
+ * @version 0.0.2
  * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class Loader {
   /**
    *
    * @param {Object} config - Loader component config
    * @param {Boolean} [config.debug=false] - Debug mode
-   * @constructor
    */
   constructor (config) {
     this._images = {}

@@ -1,5 +1,9 @@
 /**
  * This component handles viewport movement and drawing.
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class Viewport {
   /* eslint-disable no-multi-spaces */
@@ -14,7 +18,6 @@ export default class Viewport {
    * @param {Number} [config.startX=0] - Starting X position (int, px)
    * @param {Number} [config.startY=0] - Starting Y position (int, px)
    * @param {Boolean} [config.debug=false] - Debug mode
-   * @constructor
    */
   constructor (config) {
     // viewport related

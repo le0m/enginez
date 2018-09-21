@@ -1,5 +1,9 @@
 /**
  * This component stores the current game state.
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class State {
   /* eslint-disable no-multi-spaces, one-var */
@@ -10,7 +14,6 @@ export default class State {
    * @param {Number} config.rows - Map rows (int)
    * @param {Number} config.cols - Map columns (int)
    * @param {Boolean} [config.debug=false] - Debug mode
-   * @constructor
    */
   constructor (config) {
     // dimensions related

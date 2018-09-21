@@ -3,6 +3,10 @@ import Viewport from './Viewport.js'
 
 /**
  * This component manages everything concerning the game world.
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class World {
   /* eslint-disable no-multi-spaces, one-var, key-spacing */
@@ -13,7 +17,6 @@ export default class World {
    * @param {Object} config.viewport - Viewport component config (see {@link Viewport#constructor})
    * @param {Object} config.state - State component config (see {@link State#constructor})
    * @param {Boolean} [config.debug=false] - Debug mode
-   * @constructor
    */
   constructor (config) {
     // components related

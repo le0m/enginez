@@ -10,6 +10,10 @@
  * See {@link Engine#constructor} to change these parameters.
  *
  * You need to extend this class and override loop methods.
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class Engine {
   /* eslint-disable no-multi-spaces */
@@ -19,7 +23,6 @@ export default class Engine {
    * @param {Number} [config.updateTimeStep=10] - Single step `update()` time (int, ms)
    * @param {Number} [config.updateTimeMax=50] - Max accumulated `update()` time (int, ms)
    * @param {Boolean} [config.debug=false] - Debug mode
-   * @constructor
    */
   constructor (config) {
     // time related

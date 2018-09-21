@@ -1,12 +1,17 @@
 /**
  * This is a base class for input devices.
+ *
+ * @interface
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class BaseInput {
   /**
    * @param {Object} config - BaseInput component config
    * @param {Number} config.speed - Movement speed (float, px per time step)
    * @param {Boolean} [config.debug=false] - Debug mode
-   * @constructor
    */
   constructor (config) {
     this.speed = config.speed
