@@ -6,15 +6,17 @@
  * @license MIT
  */
 export default class EventQueue {
+  /* eslint-disable no-multi-spaces */
+
   /**
    * @param {Object} config - BaseInput component config
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
-    this._events = []
+    this._events  = []
 
     // other
-    this.debug = config.debug || false
+    this.debug    = config.debug || false
   }
 
   /**
@@ -29,7 +31,7 @@ export default class EventQueue {
       name
     })
   }
-0
+
   /**
    * Remove and return the first event in queue.
    *
