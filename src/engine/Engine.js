@@ -1,3 +1,6 @@
+import World from './World.js'
+import Loader from './Loader.js'
+
 /**
  * Engine core class, manages all components.
  *
@@ -22,15 +25,21 @@ export default class Engine {
    * @param {Object} config - Engine component configuration
    * @param {Number} [config.updateTimeStep=10] - Single step `update()` time (int, ms)
    * @param {Number} [config.updateTimeMax=50] - Max accumulated `update()` time (int, ms)
+   * @param {Object} config.world - World component config (see {@link World#constructor})
+   * @param {Object} config.loader - Loader component config (see {@link Loader#constructor})
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     // time related
-    this._delta             = 0 // time elapsed since last tick (ms)
-    this._previousTimestamp = 0 // timestamp of previous tick (ms)
-    this._updateTime        = 0 // total accumulated `update()` time (ms)
-    this._updateTimeStep    = config.updateTimeStep || 10 // single step `update()` time (ms)
-    this._updateTimeMax     = config.updateTimeMax || 50 // max accumulated `update()` time (ms)
+    this._delta             = 0
+    this._previousTimestamp = 0
+    this._updateTime        = 0
+    this._updateTimeStep    = config.updateTimeStep || 10
+    this._updateTimeMax     = config.updateTimeMax || 50
+
+    // components related
+    this.loader             = new Loader(config.loader)
+    this.world              = new World(config.world)
 
     // other
     this.debug              = config.debug || false
@@ -46,8 +55,8 @@ export default class Engine {
    */
   run () {
     return Promise.all(this.load())
-      .then(() => {
-        this.init()
+      .then((result) => {
+        this.init(result)
         window.requestAnimationFrame(this.tick.bind(this))
       })
   }
@@ -93,14 +102,18 @@ export default class Engine {
   /**
    * Override to pre-load resources.
    *
-   * @returns {Promise|Promise[]}
+   * Results will be passed down to {@link Engine#init}.
+   *
+   * @returns {Promise<any>|Promise<any>[]}
    */
   load () {}
 
   /**
    * Override to initialize other components.
+   *
+   * @param {Object} params - Results returned from {@link Engine#load}
    */
-  init () {}
+  init (params) {}
 
   /**
    * Override to handle state updates (ex. movement,

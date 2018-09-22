@@ -42,6 +42,17 @@ export default class BaseInput {
   getDirection () {}
 
   /**
+   * Check if the user is moving.
+   *
+   * @returns {boolean}
+   */
+  isMoving () {
+    let [x, y] = this.getDirection()
+
+    return x !== 0 || y !== 0
+  }
+
+  /**
    * Get distance traveled.
    *
    * @param {Number} delta - Time elapsed (int, ms)

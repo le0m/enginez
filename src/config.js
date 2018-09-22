@@ -16,7 +16,7 @@ const config = {
     tileCols: 18,
     tileRows: 7,
     key: 'tiles',
-    src: 'static/tilesheet.png'
+    src: 'static/tileset.png'
   },
   tiles: { // TODO: all the others
     1: {
