@@ -1,5 +1,5 @@
 import Loader from './Loader.js'
-import World from './World'
+import World from './World.js'
 
 /**
  * Engine core class, manages all components.
@@ -140,5 +140,36 @@ export default class BaseEngine {
    */
   render () {
     this.world.draw()
+
+    if (this.debug) {
+      this._drawDebug()
+    }
+  }
+
+  _drawDebug () {
+    let context = this.world.viewport.context
+
+    context.fillStyle = 'black'
+    context.fillRect(
+      10, // x
+      10, // y
+      80, // width
+      40  // height
+    )
+    context.fillStyle = 'white'
+
+    // FPS
+    context.fillText(
+      `FPS: ${this.fps}`,
+      15, // x
+      25  // y
+    )
+
+    // delta
+    context.fillText(
+      `Δ: ${this._delta}ms`,
+      15,  // x
+      45   // y
+    )
   }
 }

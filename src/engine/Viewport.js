@@ -50,7 +50,7 @@ export default class Viewport {
     this.offsetY += offsetY
 
     // clamp values
-    this.offsetX = Math.max(0, Math.min(this.worldWidth - this.width, this.offsetX)) | 0
+    this.offsetX = Math.max(0, Math.min(this.worldWidth - this.width, this.offsetX))
     this.offsetY = Math.max(0, Math.min(this.worldHeight - this.height, this.offsetY))
   }
 

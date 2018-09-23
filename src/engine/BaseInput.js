@@ -62,8 +62,8 @@ export default class BaseInput {
     let [x, y] = this.getDirection()
 
     return [
-      x * delta * this.speed,
-      y * delta * this.speed
+      x * delta * this.speed | 0,
+      y * delta * this.speed | 0
     ]
   }
 }

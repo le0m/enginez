@@ -70,7 +70,7 @@ export default class Tileset {
     this.context.drawImage(image, 0, 0)
 
     if (this.debug) {
-      console.log(`[TILESET] [${this.key}] drawn`)
+      console.log(`[TILESET] [${this.key}] drawn (${this.getSize(true).join(' x ')} px, ${this.getSize().join(' x ')} cells)`)
     }
   }
 
