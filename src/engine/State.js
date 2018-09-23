@@ -26,6 +26,10 @@ export default class State {
     this.debug  = config.debug || false
 
     this._initStates()
+
+    if (this.debug) {
+      console.log(`[STATE] created map (${this.layers} x ${this.cols} x ${this.rows} cells)`)
+    }
   }
 
   /**

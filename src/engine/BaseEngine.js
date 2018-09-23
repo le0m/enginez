@@ -1,4 +1,5 @@
 import Loader from './Loader.js'
+import World from './World'
 
 /**
  * Engine core class, manages all components.
@@ -38,9 +39,13 @@ export default class BaseEngine {
 
     // components related
     this.loader             = new Loader(config.loader)
-    this.world              = null // instantiate on `load()`
+    this.world              = new World({
+      ...config.world,
+      loader: this.loader
+    })
 
     // other
+    this.fps                = 0
     this.debug              = config.debug || false
   }
 
@@ -54,8 +59,8 @@ export default class BaseEngine {
    */
   run () {
     return Promise.all(this.load())
-      .then((keys) => {
-        this.init(keys)
+      .then((results) => {
+        this.init(results)
         window.requestAnimationFrame(this.tick.bind(this))
       })
   }
@@ -99,31 +104,49 @@ export default class BaseEngine {
   }
 
   /**
-   * Override to pre-load resources.
+   * Pre-load resources.
+   * Override to pre-load resources outside
+   * of configuration.
    *
-   * Results will be passed down to {@link BaseEngine#init}.
-   *
-   * @returns {Promise<String>|Promise<String>[]} - Promises resolving to the cache key
+   * @returns {Promise<String>[]} - Cache keys of the loaded images, passed down to {@link BaseEngine#init}
    */
-  load () {}
+  load () {
+    if (this.debug) {
+      console.log(`[ENGINE] loading resources...`)
+    }
+
+    return this.world.load()
+  }
 
   /**
-   * Override to initialize other components.
+   * Initialize Engine and components.
+   * Override to initialize custom components.
    *
    * @param {Object} params - Results returned from {@link BaseEngine#load}
    */
-  init (params) {}
+  init (params) {
+    if (this.debug) {
+      console.log(`[ENGINE] initializing components...`)
+    }
+
+    this.world.init()
+  }
 
   /**
-   * Override to handle state updates (ex. movement,
-   * input, tile updates, ...).
+   * Update game status.
+   * Override to apply custom update logic.
    *
    * @param {Number} delta
    */
-  update (delta) {}
+  update (delta) {
+    this.world.update(delta)
+  }
 
   /**
-   * Override to (re-)draw layers and canvas.
+   * Render current world position.
+   * Override to draw custom entities.
    */
-  render () {}
+  render () {
+    this.world.draw()
+  }
 }

@@ -23,7 +23,7 @@ export default class Loader {
    *
    * @param {String} key - Image key for caching
    * @param {String} src - Image source path/URL
-   * @return {Promise<String>} - Key of the loaded image
+   * @return {Promise<String>} - Cache key of the loaded image
    */
   loadImage (key, src) {
     let that = this

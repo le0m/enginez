@@ -28,13 +28,18 @@ export default class Keyboard extends BaseInput {
   constructor (config) {
     super(config)
 
-    this._keys = {}
-    this._initListeners([
+    let listeners = [
       Keyboard.LEFT,
       Keyboard.RIGHT,
       Keyboard.UP,
       Keyboard.DOWN
-    ])
+    ]
+    this._keys = {}
+    this._initListeners(listeners)
+
+    if (this.debug) {
+      console.log(`[KEYBOARD] listeners attached (${listeners.join(' ')}, keydown and keyup)`)
+    }
   }
 
   /**

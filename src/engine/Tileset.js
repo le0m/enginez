@@ -11,15 +11,16 @@ export default class Tileset {
   /**
    * @param {Object} config - Engine component configuration
    * @param {String} config.key - Key of the tileset, used for cache
-   * @param {Image} config.image - HTML source image
+   * @param {String} config.path - Relative path of the tileset, used for loading
+   * @param {Loader} config.loader - {@link Loader} component instance, to pre-load and cache images
    * @param {Number[]} config.size - Size of the tileset, in columns and rows (int)
    * @param {Number} config.tileSize - Size of a single tile of the Tileset (int, px)
-   * @param {Loader} config.loader - {@link Loader} component instance, to pre-load and cache images
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     this.key      = config.key
-    this.image    = config.image
+    this.source   = config.path
+    this.loader   = config.loader
     this.size     = config.size
     this.tileSize = config.tileSize
 
@@ -27,8 +28,30 @@ export default class Tileset {
     this.canvas   = null
     this.context  = null
     this.debug    = config.debug || false
+  }
 
-    this._initCanvas()
+  /**
+   * Load the tileset image in an off-canvas.
+   *
+   * @returns {Promise<String>} - Cache key of the loaded image
+   */
+  load () {
+    return this._initImage()
+      .then((key) => {
+        this._initCanvas()
+
+        return key
+      })
+  }
+
+  /**
+   * Load the image in DOM.
+   *
+   * @returns {Promise<String>}
+   * @private
+   */
+  _initImage () {
+    return this.loader.loadImage(this.key, this.source)
   }
 
   /**
@@ -38,12 +61,17 @@ export default class Tileset {
    */
   _initCanvas () {
     let [width, height] = this.getSize(true)
+    let image = this.loader.getImage(this.key)
 
     this.canvas = document.createElement('canvas')
     this.canvas.width = width
     this.canvas.height = height
     this.context = this.canvas.getContext('2d')
-    this.context.drawImage(this.image, 0, 0)
+    this.context.drawImage(image, 0, 0)
+
+    if (this.debug) {
+      console.log(`[TILESET] [${this.key}] drawn`)
+    }
   }
 
   /**

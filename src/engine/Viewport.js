@@ -32,6 +32,10 @@ export default class Viewport {
 
     // other
     this.debug = config.debug || false
+
+    if (this.debug) {
+      console.log(`[VIEWPORT] ready (${this.width} x ${this.height} px)`)
+    }
   }
 
   /**
@@ -51,7 +55,9 @@ export default class Viewport {
   }
 
   /**
-   * Draw something on the Viewport canvas.
+   * Draw visible part of a canvas on the Viewport canvas.
+   *
+   * @param {HTMLCanvasElement} source - Source canvas for drawing
    */
   draw (source) {
     this.context.clearRect(0, 0, this.width, this.height)

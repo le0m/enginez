@@ -34,6 +34,10 @@ export default class Layer {
 
     this._initCanvas()
     this.draw() // initial render
+
+    if (this.debug) {
+      console.log(`[LAYER] [${this.level}] initial draw (${this.getSize(true).join(' x ')} px, ${this.getSize().join(' x ')} cells)`)
+    }
   }
 
   /**
@@ -41,7 +45,7 @@ export default class Layer {
    * @private
    */
   _initCanvas () {
-    let [width, height] = this.getMapSize(true)
+    let [width, height] = this.getSize(true)
 
     this.canvas = document.createElement('canvas')
     this.canvas.width = width
@@ -56,7 +60,7 @@ export default class Layer {
   draw () {
     // re-draw if changed
     if (this._dirty) {
-      let [cols, rows] = this.getMapSize()
+      let [cols, rows] = this.getSize()
       let [tileSetCols] = this.tileset.getSize()
       let tileSize = this.tileset.tileSize
       let c = 0, tileID = 0, x = 0, y = 0, srcX = 0, srcY = 0
@@ -73,7 +77,7 @@ export default class Layer {
             srcY = ((tileID - 1) / tileSetCols | 0) * tileSize
 
             this.context.drawImage(
-              this.tileset.context, // source context
+              this.tileset.canvas,  // source
               srcX,                 // source X
               srcY,                 // source Y
               tileSize,             // source width
@@ -92,12 +96,12 @@ export default class Layer {
   }
 
   /**
-   * Get the map size.
+   * Get the layer size.
    *
    * @param {Boolean} pixel - Whether you want size in tiles or pixels
-   * @returns {Number[]} - Width and height of the map
+   * @returns {Number[]} - Width and height of the layer
    */
-  getMapSize (pixel = false) {
+  getSize (pixel = false) {
     return [
       this.map[0].length * (pixel ? this.tileset.tileSize : 1),
       this.map.length * (pixel ? this.tileset.tileSize : 1)
