@@ -55,8 +55,8 @@ export default class Engine {
    */
   run () {
     return Promise.all(this.load())
-      .then((result) => {
-        this.init(result)
+      .then((keys) => {
+        this.init(keys)
         window.requestAnimationFrame(this.tick.bind(this))
       })
   }
@@ -104,7 +104,7 @@ export default class Engine {
    *
    * Results will be passed down to {@link Engine#init}.
    *
-   * @returns {Promise<any>|Promise<any>[]}
+   * @returns {Promise<String>|Promise<String>[]} - Promises resolving to the cache key
    */
   load () {}
 

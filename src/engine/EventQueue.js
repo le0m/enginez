@@ -9,7 +9,7 @@ export default class EventQueue {
   /* eslint-disable no-multi-spaces */
 
   /**
-   * @param {Object} config - BaseInput component config
+   * @param {Object} [config] - BaseInput component config
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {

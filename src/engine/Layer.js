@@ -16,25 +16,21 @@ export default class Layer {
    * @param {Number} config.level - Level of this layer in the map, 0-indexed (int)
    * @param {State} config.state - {@link State} component instance, to update states when updating tiles
    * @param {Number[][]} config.map - Layer map represented as a 2-dimensional array of tile IDs (int)
-   * @param {Number} config.tileSize - Size of a single tile of the tileset, to calculate map measures (int, px)
-   * @param {CanvasRenderingContext2D|Image} config.tileSet - Reference to a pre-loaded tileset to use as source image
-   * @param {Number[]} config.tileSetSize - Size of the tileset, in columns and rows (int)
+   * @param {Tileset} config.tileset - {@link Tileset} component instance, source for draws
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
-    this.level        = config.level
-    this.map          = config.map
-    this.tileSize     = config.tileSize
-    this.tileSet      = config.tileSet
-    this.tileSetSize  = config.tileSetSize
-    this.state        = config.state
+    this.level    = config.level
+    this.map      = config.map
+    this.tileset  = config.tileset
+    this.state    = config.state
 
     // other
-    this.canvas       = null
-    this.context      = null
-    this.queue        = new EventQueue({})
-    this._dirty       = false
-    this.debug        = config.debug || false // debug mode
+    this.canvas   = null
+    this.context  = null
+    this.queue    = new EventQueue()
+    this._dirty   = true
+    this.debug    = config.debug || false // debug mode
 
     this._initCanvas()
     this.draw() // initial render
@@ -45,8 +41,7 @@ export default class Layer {
    * @private
    */
   _initCanvas () {
-    let width = this.map[0].length * this.tileSize
-    let height = this.map.length * this.tileSize
+    let [width, height] = this.getMapSize(true)
 
     this.canvas = document.createElement('canvas')
     this.canvas.width = width
@@ -62,7 +57,8 @@ export default class Layer {
     // re-draw if changed
     if (this._dirty) {
       let [cols, rows] = this.getMapSize()
-      let tileSetCols = this.tileSetSize[0]
+      let [tileSetCols] = this.tileset.getSize()
+      let tileSize = this.tileset.tileSize
       let c = 0, tileID = 0, x = 0, y = 0, srcX = 0, srcY = 0
 
       for (let r = 0; r < rows; r++) {
@@ -70,21 +66,21 @@ export default class Layer {
           tileID = this.map[r][c]
 
           if (tileID > 0) {
-            x = c * this.tileSize
-            y = r * this.tileSize
-            srcX = ((tileID - 1) % tileSetCols) * this.tileSize
-            srcY = ((tileID - 1) / tileSetCols | 0) * this.tileSize
+            x = c * tileSize
+            y = r * tileSize
+            srcX = ((tileID - 1) % tileSetCols) * tileSize
+            srcY = ((tileID - 1) / tileSetCols | 0) * tileSize
 
             this.context.drawImage(
-              this.tileSet,   // source
-              srcX,           // source X
-              srcY,           // source Y
-              this.tileSize,  // source width
-              this.tileSize,  // source height
-              x,              // target X
-              y,              // target Y
-              this.tileSize,  // target width
-              this.tileSize   // target height
+              this.tileset.context, // source
+              srcX,                 // source X
+              srcY,                 // source Y
+              tileSize,             // source width
+              tileSize,             // source height
+              x,                    // target X
+              y,                    // target Y
+              tileSize,             // target width
+              tileSize              // target height
             )
           }
         }
@@ -102,8 +98,8 @@ export default class Layer {
    */
   getMapSize (pixel = false) {
     return [
-      this.map[0].length * (pixel ? this.tileSize : 1),
-      this.map.length * (pixel ? this.tileSize : 1)
+      this.map[0].length * (pixel ? this.tileset.tileSize : 1),
+      this.map.length * (pixel ? this.tileset.tileSize : 1)
     ]
   }
 }

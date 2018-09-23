@@ -20,7 +20,4 @@ Components
 Next
 ====
 
-- Tileset component, with reference to Loader cache key and draws the tileset in an off-canvas
-  - change Loader to accept Tileset
-  - initialize instances of Tile here?
 - Actor component, for drawing citizens moving inside a dedicated layer (no logic, animation only)
