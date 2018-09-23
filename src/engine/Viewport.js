@@ -53,5 +53,18 @@ export default class Viewport {
   /**
    * Draw something on the Viewport canvas.
    */
-  draw () {}
+  draw (source) {
+    this.context.clearRect(0, 0, this.width, this.height)
+    this.context.drawImage(
+      source,       // source context
+      this.offsetX, // source X
+      this.offsetY, // source Y
+      this.width,   // source width
+      this.height,  // source height
+      0,            // target X
+      0,            // target Y
+      this.width,   // target width
+      this.height   // target height
+    )
+  }
 }

@@ -60,6 +60,7 @@ export default class Layer {
       let [tileSetCols] = this.tileset.getSize()
       let tileSize = this.tileset.tileSize
       let c = 0, tileID = 0, x = 0, y = 0, srcX = 0, srcY = 0
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
       for (let r = 0; r < rows; r++) {
         for (c = 0; c < cols; c++) {
@@ -72,7 +73,7 @@ export default class Layer {
             srcY = ((tileID - 1) / tileSetCols | 0) * tileSize
 
             this.context.drawImage(
-              this.tileset.context, // source
+              this.tileset.context, // source context
               srcX,                 // source X
               srcY,                 // source Y
               tileSize,             // source width

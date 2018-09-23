@@ -64,7 +64,8 @@ export default class World {
    */
   draw () {
     for (let l = 0; l < this.layers.length; l++) {
-      this.layers[l].draw()
+      this.layers[l].draw() // draws only if changed
+      this.viewport.draw(this.layers[l].context)
     }
   }
 }
