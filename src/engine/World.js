@@ -1,6 +1,7 @@
 import State from './State.js'
 import Viewport from './Viewport.js'
 import Layer from './Layer'
+import Keyboard from './Keyboard'
 
 /**
  * This component manages everything concerning the game world.
@@ -17,6 +18,7 @@ export default class World {
    * @param {Number[][][]} config.map - World map represented as a 3-dimensional array of tile IDs (int)
    * @param {Tileset[]} config.tilesets - {@link Tileset} component instances, up to one per layer
    * @param {Object} config.viewport - Viewport component config (see {@link Viewport#constructor})
+   * @param {Object} config.keyboard - Keyboard component config (see {@link Keyboard#constructor})
    * @param {Object} config.state - State component config (see {@link State#constructor})
    * @param {Loader} config.loader - {@link Loader} component instance, to pre-render tileset images
    * @param {Boolean} [config.debug=false] - Debug mode
@@ -26,12 +28,13 @@ export default class World {
     this.map      = config.map
     this.tilesets = config.tilesets
     this.viewport = new Viewport(config.viewport)
+    this.input    = new Keyboard(config.keyboard)
     this.state    = new State(config.state)
     this.loader   = config.loader
 
     // other
     this.layers   = []
-    this.debug    = config.debug || false // debug mode
+    this.debug    = config.debug || false
 
     this._initLayers()
   }
@@ -56,8 +59,14 @@ export default class World {
   /**
    * Call tile updates.
    * Move viewport using input.
+   *
+   * @param {Number} delta - Time elapsed (int, ms)
    */
-  update () {}
+  update (delta) {
+    if (this.input.isMoving()) {
+      this.viewport.move(this.input.getDistance(delta))
+    }
+  }
 
   /**
    * Draw visible parts from layers to viewport.

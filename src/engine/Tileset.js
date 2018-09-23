@@ -19,13 +19,13 @@ export default class Tileset {
    */
   constructor (config) {
     this.key      = config.key
-    this.image   = config.image
+    this.image    = config.image
     this.size     = config.size
     this.tileSize = config.tileSize
 
     // other
-    this.canvas = null
-    this.context = null
+    this.canvas   = null
+    this.context  = null
     this.debug    = config.debug || false
 
     this._initCanvas()

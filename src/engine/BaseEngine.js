@@ -1,4 +1,3 @@
-import World from './World.js'
 import Loader from './Loader.js'
 
 /**
@@ -10,7 +9,7 @@ import Loader from './Loader.js'
  * Time for the `update()` function is accumulated each tick
  * and used once it reaches a threshold. Accumulated time is
  * clamped to a max value, to prevent the "spiral of death".
- * See {@link Engine#constructor} to change these parameters.
+ * See {@link BaseEngine#constructor} to change these parameters.
  *
  * You need to extend this class and override loop methods.
  *
@@ -18,7 +17,7 @@ import Loader from './Loader.js'
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class Engine {
+export default class BaseEngine {
   /* eslint-disable no-multi-spaces */
 
   /**
@@ -39,7 +38,7 @@ export default class Engine {
 
     // components related
     this.loader             = new Loader(config.loader)
-    this.world              = new World(config.world)
+    this.world              = null // instantiate on `load()`
 
     // other
     this.debug              = config.debug || false
@@ -102,7 +101,7 @@ export default class Engine {
   /**
    * Override to pre-load resources.
    *
-   * Results will be passed down to {@link Engine#init}.
+   * Results will be passed down to {@link BaseEngine#init}.
    *
    * @returns {Promise<String>|Promise<String>[]} - Promises resolving to the cache key
    */
@@ -111,7 +110,7 @@ export default class Engine {
   /**
    * Override to initialize other components.
    *
-   * @param {Object} params - Results returned from {@link Engine#load}
+   * @param {Object} params - Results returned from {@link BaseEngine#load}
    */
   init (params) {}
 
