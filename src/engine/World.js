@@ -99,6 +99,9 @@ export default class World {
    * Draw visible parts from layers to viewport.
    */
   draw () {
+    // clear frame
+    this.viewport.clear()
+
     for (let l = 0; l < this.layers.length; l++) {
       this.layers[l].draw() // draws only if changed
       this.viewport.draw(this.layers[l].canvas)

@@ -34,10 +34,6 @@ export default class Layer {
 
     this._initCanvas()
     this.draw() // initial render
-
-    if (this.debug) {
-      console.log(`[LAYER] [${this.level}] initial draw (${this.getSize(true).join(' x ')} px, ${this.getSize().join(' x ')} cells)`)
-    }
   }
 
   /**
@@ -60,6 +56,10 @@ export default class Layer {
   draw () {
     // re-draw if changed
     if (this._dirty) {
+      if (this.debug) {
+        console.log(`[LAYER] [${this.level}] drawing (${this.getSize(true).join(' x ')} px, ${this.getSize().join(' x ')} cells)`)
+      }
+
       let [cols, rows] = this.getSize()
       let [tileSetCols] = this.tileset.getSize()
       let tileSize = this.tileset.tileSize
