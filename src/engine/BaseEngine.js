@@ -111,10 +111,6 @@ export default class BaseEngine {
    * @returns {Promise<String>[]} - Cache keys of the loaded images, passed down to {@link BaseEngine#init}
    */
   load () {
-    if (this.debug) {
-      console.log(`[ENGINE] loading resources...`)
-    }
-
     return this.world.load()
   }
 
@@ -125,10 +121,6 @@ export default class BaseEngine {
    * @param {Object} params - Results returned from {@link BaseEngine#load}
    */
   init (params) {
-    if (this.debug) {
-      console.log(`[ENGINE] initializing components...`)
-    }
-
     this.world.init()
   }
 

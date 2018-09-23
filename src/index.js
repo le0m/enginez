@@ -1,5 +1,5 @@
-import 'css/main.css'
-import Engine from 'engine/BaseEngine.js'
+import './css/main.css'
+import BaseEngine from './engine/BaseEngine.js'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
@@ -118,7 +118,7 @@ const config = {
     }
   }
 }
-const game = new Engine(config)
+const game = new BaseEngine(config)
 
 game.run()
   .then(() => {

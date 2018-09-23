@@ -1,8 +1,8 @@
 import State from './State.js'
 import Viewport from './Viewport.js'
-import Layer from './Layer'
-import Keyboard from './Keyboard'
-import Tileset from './Tileset'
+import Layer from './Layer.js'
+import Keyboard from './Keyboard.js'
+import Tileset from './Tileset.js'
 
 /**
  * This component manages everything concerning the game world.

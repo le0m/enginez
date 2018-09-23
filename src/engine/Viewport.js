@@ -60,7 +60,6 @@ export default class Viewport {
    * @param {HTMLCanvasElement} source - Source canvas for drawing
    */
   draw (source) {
-    this.context.clearRect(0, 0, this.width, this.height)
     this.context.drawImage(
       source,       // source context
       this.offsetX, // source X

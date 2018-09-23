@@ -34,7 +34,7 @@ export default class Loader {
           console.log(`[LOADER] loaded image ${src}`)
         }
 
-        that.images[key] = img
+        that._images[key] = img
         resolve(key)
       })
 
@@ -55,6 +55,6 @@ export default class Loader {
    * @return {Image|null}
    */
   getImage (key) {
-    return (key in this._images) ? this.images[key] : null
+    return (key in this._images) ? this._images[key] : null
   }
 }
