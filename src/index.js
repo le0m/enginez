@@ -4,7 +4,7 @@ import BaseEngine from './engine/BaseEngine.js'
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
 const config = {
-  debug: true,
+  debug: 2,
   updateTimeStep: 10,
   updateTimeMax: 50,
 
@@ -14,7 +14,6 @@ const config = {
 
   world: {
     debug: true,
-
     map: [
       [
         [  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58],
@@ -89,7 +88,6 @@ const config = {
         [   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0]
       ]
     ],
-
     tilesets: [
       {
         key: 'tiles',
@@ -98,7 +96,6 @@ const config = {
         tileSize: 128
       }
     ],
-
     viewport: {
       debug: true,
       canvas: document.getElementById('canvas'),
@@ -107,12 +104,10 @@ const config = {
       startX: 640,
       startY: 360
     },
-
     keyboard: {
       debug: true,
       speed: 0.512
     },
-
     state: {
       debug: true
     }

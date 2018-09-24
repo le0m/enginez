@@ -1,5 +1,8 @@
 import Loader from './Loader.js'
 import World from './World.js'
+import { ConsoleExtra } from '../utils.js'
+
+const console = ConsoleExtra(window.console)
 
 /**
  * Engine core class, manages all components.
@@ -19,7 +22,7 @@ import World from './World.js'
  * @license MIT
  */
 export default class BaseEngine {
-  /* eslint-disable no-multi-spaces */
+  /* eslint-disable no-multi-spaces, one-var */
 
   /**
    * @param {Object} config - Engine component configuration
@@ -77,7 +80,7 @@ export default class BaseEngine {
   tick (timestamp) {
     // compute delta
     timestamp = timestamp | 0
-    this._delta = timestamp - this._previousTimestamp // delta is in fraction of seconds
+    this._delta = timestamp - this._previousTimestamp
     this._previousTimestamp = timestamp
     this._updateTime += this._delta
 
@@ -141,8 +144,65 @@ export default class BaseEngine {
   render () {
     this.world.draw()
 
+    if (this.debug > 2) {
+      this._drawCellNumbers()
+    }
+    if (this.debug > 1) {
+      this._drawGrid()
+    }
     if (this.debug) {
       this._drawDebug()
+    }
+  }
+
+  _drawGrid () {
+    let context = this.world.viewport.context
+    let tileSize = this.world.tilesets[0].tileSize
+    let x = 0, y = 0, r = 0
+    let [startCol, endCol, startRow, endRow] = this.world.viewport.getRect(tileSize)
+    context.strokeStyle = 'black'
+    let tileOffsetX = startCol * tileSize - this.world.viewport.offsetX
+    let tileOffsetY = startRow * tileSize - this.world.viewport.offsetY
+
+    for (let c = startCol; c <= endCol; c++) {
+      for (r = startRow; r <= endRow; r++) {
+        x = (c - startCol) * tileSize + tileOffsetX
+        y = (r - startRow) * tileSize + tileOffsetY
+
+        context.strokeRect(
+          x | 0,    // target X
+          y | 0,    // target Y
+          tileSize, // target width
+          tileSize  // target height
+        )
+      }
+    }
+  }
+
+  _drawCellNumbers () {
+    let context = this.world.viewport.context
+    let tileSize = this.world.tilesets[0].tileSize
+    let mapCols = this.world.layers[0].getSize()[0]
+    let [startCol, endCol, startRow, endRow] = this.world.viewport.getRect(tileSize)
+    let tileOffsetX = startCol * tileSize - this.world.viewport.offsetX
+    let tileOffsetY = startRow * tileSize - this.world.viewport.offsetY
+    let x = 0, y = 0, c = 0, num = 0
+    context.fillStyle = 'black'
+    context.font = '16px sans-serif'
+
+    for (let r = startRow; r <= endRow; r++) {
+      for (c = startCol; c <= endCol; c++) {
+        x = (c - startCol) * tileSize + tileOffsetX + tileSize / 8 // it's a long text
+        y = (r - startRow) * tileSize + tileOffsetY + tileSize / 2
+        num = (r * mapCols) + (c + 1)
+
+        context.fillText(
+          `[ ${num} (${c + ' | ' + r}) ]`,
+          x | 0,
+          y | 0,
+          tileSize * 3 / 4 // max width, font auto-scale
+        )
+      }
     }
   }
 

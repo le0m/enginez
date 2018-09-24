@@ -74,9 +74,39 @@ export default class Viewport {
   }
 
   /**
-   * Clear current viewport frame.
+   * Clear viewport canvas.
    */
   clear () {
     this.context.clearRect(0, 0, this.width, this.height)
+  }
+
+  /**
+   * Get current viewport rectangle.
+   *
+   * @param {Number|Boolean} tileSize - `false` for pixels, or the size of a single tile for cols/rows
+   * @returns {Number[]} - Top-left and bottom-right corners coordinates [x1, y1, x2, y2], or visible cols/rows [staCol, endCol, staRow, endRow]
+   */
+  getRect (tileSize = false) {
+    if (!tileSize) {
+      return [
+        this.offsetX,
+        this.offsetY,
+        this.offsetX + this.width,
+        this.offsetY + this.height
+      ]
+    }
+
+    // first and last visible columns and rows
+    let startCol  = this.offsetX / tileSize | 0
+    let endCol    = (this.width + this.offsetX - 1) / tileSize | 0 // -1 is because pixels are 1-indexed, but coords are 0-indexed
+    let startRow  = this.offsetY / tileSize | 0
+    let endRow    = (this.height + this.offsetY - 1) / tileSize | 0 // -1 is because pixels are 1-indexed, but coords are 0-indexed
+
+    return [
+      startCol,
+      endCol,
+      startRow,
+      endRow
+    ]
   }
 }

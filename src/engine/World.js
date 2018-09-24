@@ -59,10 +59,6 @@ export default class World {
    * Initialize components.
    */
   init () {
-    if (this.debug) {
-      console.log(`[WORLD] initializing...`)
-    }
-
     for (let l = 0; l < this.map.length; l++) {
       this.layers.push(new Layer({
         debug: this.debug,
