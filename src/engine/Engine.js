@@ -13,7 +13,7 @@ const console = ConsoleExtra(window.console)
  * Time for the `update()` function is accumulated each tick
  * and used once it reaches a threshold. Accumulated time is
  * clamped to a max value, to prevent the "spiral of death".
- * See {@link BaseEngine#constructor} to change these parameters.
+ * See {@link Engine#constructor} to change these parameters.
  *
  * You need to extend this class and override loop methods.
  *
@@ -21,7 +21,7 @@ const console = ConsoleExtra(window.console)
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class BaseEngine {
+export default class Engine {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
@@ -111,7 +111,7 @@ export default class BaseEngine {
    * Override to pre-load resources outside
    * of configuration.
    *
-   * @returns {Promise<String>[]} - Cache keys of the loaded images, passed down to {@link BaseEngine#init}
+   * @returns {Promise<String>[]} - Cache keys of the loaded images, passed down to {@link Engine#init}
    */
   load () {
     return this.world.load()
@@ -121,7 +121,7 @@ export default class BaseEngine {
    * Initialize Engine and components.
    * Override to initialize custom components.
    *
-   * @param {Object} params - Results returned from {@link BaseEngine#load}
+   * @param {Object} params - Results returned from {@link Engine#load}
    */
   init (params) {
     this.world.init()

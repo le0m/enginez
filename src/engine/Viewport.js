@@ -10,7 +10,7 @@ export default class Viewport {
 
   /**
    * @param {Object} config - Viewport component config
-   * @param {HTMLElement} config.canvas - HTML canvas element to be used as viewport
+   * @param {HTMLCanvasElement} config.canvas - HTML canvas element to be used as viewport
    * @param {Number} config.width - Canvas width (int, px)
    * @param {Number} config.height - Canvas height (int, px)
    * @param {Number} config.worldWidth - World width as a boundary, origin at (0,0) is assumed (int, px)
@@ -32,6 +32,11 @@ export default class Viewport {
 
     // other
     this.debug = config.debug || false
+
+    // ensure canvas style
+    this.canvas.width = this.width
+    this.canvas.height = this.height
+    this.canvas.style.zIndex = '0'
 
     if (this.debug) {
       console.log(`[VIEWPORT] ready (${this.width} x ${this.height} px)`)
@@ -107,6 +112,34 @@ export default class Viewport {
       endCol,
       startRow,
       endRow
+    ]
+  }
+
+  /**
+   * Convert viewport-relative coordinates to world-relative.
+   *
+   * @param {Number} x - Position on the X axis (int, px)
+   * @param {Number} y - Position on the Y axis (int, px)
+   * @returns {Number[]} - Coordinates relative to world
+   */
+  canvasToWorldPosition (x, y) {
+    return [
+      x + this.offsetX,
+      y + this.offsetY
+    ]
+  }
+
+  /**
+   * Convert world-relative coordinates to viewport-relative.
+   *
+   * @param {Number} x - Position on the X axis (int, px)
+   * @param {Number} y - Position on the Y axis (int, px)
+   * @returns {Number[]} - Coordinates relative to viewport
+   */
+  worldToCanvasPosition (x, y) {
+    return [
+      x - this.offsetX,
+      y - this.offsetY
     ]
   }
 }

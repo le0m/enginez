@@ -3,6 +3,7 @@ import Viewport from './Viewport.js'
 import Layer from './Layer.js'
 import Keyboard from './Keyboard.js'
 import Tileset from './Tileset.js'
+import UI from './UI'
 
 /**
  * This component manages everything concerning the game world.
@@ -19,6 +20,7 @@ export default class World {
    * @param {Number[][][]} config.map - World map represented as a 3-dimensional array of tile IDs (int)
    * @param {Object[]} config.tilesets - Tileset component config, up to one per layer (see {@link Tileset#constructor})
    * @param {Object} config.viewport - Viewport component config (see {@link Viewport#constructor})
+   * @param {Object} config.ui - UI component config (see {@link UI#constructor})
    * @param {Object} config.keyboard - Keyboard component config (see {@link Keyboard#constructor})
    * @param {Object} config.state - State component config (see {@link State#constructor})
    * @param {Loader} config.loader - {@link Loader} component instance, to pre-render tileset images
@@ -40,6 +42,7 @@ export default class World {
       cols: this.map[0][0].length
     })
     this.viewport = config.viewport // save config temporary...
+    this.ui       = config.ui // save config temporary...
     this.layers   = []
 
     // other
@@ -76,6 +79,11 @@ export default class World {
       ...this.viewport, // ...and replace config with instance
       worldWidth: width,
       worldHeight: height
+    })
+
+    this.ui = new UI({
+      ...this.ui, // ...and replace config with instance
+      viewport: this.viewport
     })
   }
 

@@ -1,10 +1,10 @@
 import './css/main.css'
-import BaseEngine from './engine/BaseEngine.js'
+import Engine from './engine/Engine.js'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
 const config = {
-  debug: 2,
+  debug: 3,
   updateTimeStep: 10,
   updateTimeMax: 50,
 
@@ -104,6 +104,9 @@ const config = {
       startX: 640,
       startY: 360
     },
+    ui: {
+      div: document.getElementById('ui')
+    },
     keyboard: {
       debug: true,
       speed: 0.512
@@ -113,7 +116,7 @@ const config = {
     }
   }
 }
-const game = new BaseEngine(config)
+const game = new Engine(config)
 
 game.run()
   .then(() => {
