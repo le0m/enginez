@@ -41,9 +41,24 @@ export default class World {
       rows: this.map[0].length,
       cols: this.map[0][0].length
     })
-    this.viewport = config.viewport // save config temporary...
-    this.ui       = config.ui // save config temporary...
-    this.layers   = []
+    this.layers   = this.map.map((layerMap, index) => new Layer({
+      debug: this.debug,
+      level: index,
+      state: this.state,
+      map: layerMap,
+      tileset: this.tilesets[index] || this.tilesets[0]
+    }))
+
+    let [width, height] = this.layers[0].getSize(true) // use first layer size as world size
+    this.viewport = new Viewport({
+      ...config.viewport,
+      worldWidth: width,
+      worldHeight: height
+    })
+    this.ui       = new UI({
+      ...config.ui,
+      viewport: this.viewport
+    })
 
     // other
     this.debug    = config.debug || false
@@ -62,34 +77,12 @@ export default class World {
    * Initialize components.
    */
   init () {
-    for (let l = 0; l < this.map.length; l++) {
-      this.layers.push(new Layer({
-        debug: this.debug,
-        level: l,
-        state: this.state,
-        map: this.map[l],
-        tileset: this.tilesets[l] || this.tilesets[0]
-      }))
-    }
-
-    // use first layer size as world size
-    let [width, height] = this.layers[0].getSize(true)
-
-    this.viewport = new Viewport({
-      ...this.viewport, // ...and replace config with instance
-      worldWidth: width,
-      worldHeight: height
-    })
-
-    this.ui = new UI({
-      ...this.ui, // ...and replace config with instance
-      viewport: this.viewport
-    })
+    this.layers.forEach((layer) => layer.init())
   }
 
   /**
-   * Call tile updates.
-   * Move viewport using input.
+   * TODO: call tile updates
+   * Update the world state.
    *
    * @param {Number} delta - Time elapsed (int, ms)
    */
@@ -100,7 +93,7 @@ export default class World {
   }
 
   /**
-   * Draw visible parts from layers to viewport.
+   * Draw visible parts to viewport.
    */
   draw () {
     // clear frame

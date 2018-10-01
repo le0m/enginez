@@ -31,22 +31,21 @@ export default class Layer {
     this.queue    = new EventQueue()
     this._dirty   = true
     this.debug    = config.debug || false // debug mode
-
-    this._initCanvas()
-    this.draw() // initial render
   }
 
   /**
+   * Initialize Layer.
    * Create an off-canvas to draw the layer on.
-   * @private
    */
-  _initCanvas () {
+  init () {
     let [width, height] = this.getSize(true)
 
     this.canvas = document.createElement('canvas')
     this.canvas.width = width
     this.canvas.height = height
     this.context = this.canvas.getContext('2d')
+
+    this.draw() // initial render
   }
 
   /**
