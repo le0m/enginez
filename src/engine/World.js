@@ -108,7 +108,7 @@ export default class World {
   }
 
   _handleUIClick ([x, y]) {
-    let [worldX, worldY] = this.viewport.canvasToWorldPosition(x, y)
+    let [worldX, worldY] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // user first tileset for tile size
     console.log(`[WORLD] UI click: ${worldX} | ${worldY}`)
   }
 }
