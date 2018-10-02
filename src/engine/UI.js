@@ -1,20 +1,24 @@
+import Observable from './Observable.js'
+
 /**
  * This component handles DOM-based game UI.
  */
-export default class UI {
+export default class UI extends Observable {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
    * @param {Object} config - UI component configuration
    * @param {HTMLDivElement} config.div - HTML div main element
-   * @param {Viewport} config.viewport - {@link Viewport} component instance, to convert to world coordinates
+   * @param {Number} config.width - UI div width (int, px)
+   * @param {Number} config.height - UI div height (int, px)
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
+    super()
+
     this.div      = config.div
-    this.viewport = config.viewport
-    this.width    = config.viewport.width
-    this.height   = config.viewport.height
+    this.width    = config.width
+    this.height   = config.height
 
     // other
     this.debug    = config.debug || false
@@ -32,10 +36,6 @@ export default class UI {
   }
 
   _onClick (event) {
-    let x = event.layerX
-    let y = event.layerY
-
-    let [worldX, worldY] = this.viewport.canvasToWorldPosition(x, y)
-    console.log(`${worldX} | ${worldY}`)
+    this.emit('click', [event.layerX, event.layerY])
   }
 }

@@ -88,7 +88,7 @@ export default class Viewport {
   /**
    * Get current viewport rectangle.
    *
-   * @param {Number|Boolean} tileSize - `false` for pixels, or the size of a single tile for cols/rows
+   * @param {Number|Boolean} [tileSize=false] - `false` for pixels, or the size of a single tile for cols/rows
    * @returns {Number[]} - Top-left and bottom-right corners coordinates [x1, y1, x2, y2], or visible cols/rows [staCol, endCol, staRow, endRow]
    */
   getRect (tileSize = false) {
@@ -120,9 +120,10 @@ export default class Viewport {
    *
    * @param {Number} x - Position on the X axis (int, px)
    * @param {Number} y - Position on the Y axis (int, px)
-   * @returns {Number[]} - Coordinates relative to world
+   * @param {Number|Boolean} [tileSize=false] - `false` for pixels, or the size of a single tile for cols/rows
+   * @returns {Number[]} - Coordinates relative to world; column/row if `tileSize` is given
    */
-  canvasToWorldPosition (x, y) {
+  canvasToWorldPosition (x, y, tileSize = false) {
     return [
       x + this.offsetX,
       y + this.offsetY
@@ -136,7 +137,7 @@ export default class Viewport {
    * @param {Number} y - Position on the Y axis (int, px)
    * @returns {Number[]} - Coordinates relative to viewport
    */
-  worldToCanvasPosition (x, y) {
+  worldToCanvasPosition (x, y, tileSize = false) {
     return [
       x - this.offsetX,
       y - this.offsetY

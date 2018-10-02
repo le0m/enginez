@@ -26,9 +26,9 @@ export default class Observable {
       return false
     }
 
-    let removed = filterInPlace(handlers, (listener) => listener.func === func && listener.this === thisArg)
-
-    return removed > 0
+    return filterInPlace(handlers, (listener) => {
+      return listener.func !== func || listener.this !== thisArg
+    })
   }
 
   emit (event, ...args) {
@@ -37,5 +37,10 @@ export default class Observable {
     if (handlers === undefined) {
       return false
     }
+
+    return handlers.reduce((emitted, listener) => {
+      listener.func.apply(listener.this, args)
+      return ++emitted
+    }, 0)
   }
 }

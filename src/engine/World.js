@@ -57,7 +57,8 @@ export default class World {
     })
     this.ui       = new UI({
       ...config.ui,
-      viewport: this.viewport
+      width: this.viewport.width,
+      height: this.viewport.height
     })
 
     // other
@@ -78,6 +79,7 @@ export default class World {
    */
   init () {
     this.layers.forEach((layer) => layer.init())
+    this.ui.on('click', this._handleUIClick, this)
   }
 
   /**
@@ -103,5 +105,10 @@ export default class World {
       this.layers[l].draw() // draws only if changed
       this.viewport.draw(this.layers[l].canvas)
     }
+  }
+
+  _handleUIClick ([x, y]) {
+    let [worldX, worldY] = this.viewport.canvasToWorldPosition(x, y)
+    console.log(`[WORLD] UI click: ${worldX} | ${worldY}`)
   }
 }

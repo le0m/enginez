@@ -98,7 +98,7 @@ function ConsoleExtra (console) {
  * elements to keep and changing the `length` property.
  *
  * @param {Array} array
- * @param {Function} predicate
+ * @param {Function} predicate - Return `true` to keep, `false` to remove, the current element
  * @returns {Number} - Number of removed elements
  */
 const filterInPlace = (array, predicate) => {
