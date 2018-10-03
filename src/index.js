@@ -3,8 +3,11 @@ import Engine from './engine/Engine.js'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
+let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
 const config = {
-  debug: 3,
+  debug: 2,
   updateTimeStep: 10,
   updateTimeMax: 50,
 
@@ -99,10 +102,10 @@ const config = {
     viewport: {
       debug: true,
       canvas: document.getElementById('canvas'),
-      width: 1280,
-      height: 720,
-      startX: 640,
-      startY: 360
+      width: width,
+      height: height,
+      startX: width / 2 | 0,
+      startY: height / 2 | 0
     },
     ui: {
       div: document.getElementById('ui')
@@ -116,6 +119,7 @@ const config = {
     }
   }
 }
+
 const game = new Engine(config)
 
 game.run()
