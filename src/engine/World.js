@@ -3,7 +3,8 @@ import Viewport from './Viewport.js'
 import Layer from './Layer.js'
 import Keyboard from './Keyboard.js'
 import Tileset from './Tileset.js'
-import UI from './UI'
+import UI from './UI.js'
+import EventQueue from './EventQueue.js'
 
 /**
  * This component manages everything concerning the game world.
@@ -62,6 +63,7 @@ export default class World {
     })
 
     // other
+    this.queue    = new EventQueue()
     this.debug    = config.debug || false
   }
 
@@ -83,7 +85,6 @@ export default class World {
   }
 
   /**
-   * TODO: call tile updates
    * Update the world state.
    *
    * @param {Number} delta - Time elapsed (int, ms)
@@ -92,6 +93,8 @@ export default class World {
     if (this.input.isMoving()) {
       this.viewport.move(this.input.getDistance(delta))
     }
+
+    this.layers.forEach((layer) => layer.update(delta))
   }
 
   /**
@@ -108,7 +111,19 @@ export default class World {
   }
 
   _handleUIClick ([x, y]) {
-    let [worldX, worldY] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // user first tileset for tile size
-    console.log(`[WORLD] UI click: ${worldX} | ${worldY}`)
+    let [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // user first tileset for tile size
+    console.log(`[WORLD] UI click: ${col} | ${row}`)
+
+    /* CLICK LOGIC
+    for (let l = 0, max = this.layers.length; l < max; l++) {
+      let layer = this.layers[l]
+      let tileID = layer.getTileID(col, row)
+      let tileState = this.state.getTileState(l, col, row)
+      let tileInstance = this.gameObjects.get('tile', tileID)
+
+      let newState = tileInstance.emit('click', tileState)
+      this.state.setTileState(newState, l, col, row)
+    }
+    */
   }
 }

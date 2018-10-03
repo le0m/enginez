@@ -17,13 +17,13 @@ export default class State {
    */
   constructor (config) {
     // dimensions related
-    this.layers = config.layers
-    this.rows   = config.rows
-    this.cols   = config.cols
+    this.layers   = config.layers
+    this.rows     = config.rows
+    this.cols     = config.cols
 
     // other
-    this.tileStates = []
-    this.debug  = config.debug || false
+    this.stateMap = []
+    this.debug    = config.debug || false
 
     this._initStates()
 
@@ -41,13 +41,13 @@ export default class State {
     let r = 0, c = 0
 
     for (let l = 0; l < this.layers; l++) {
-      this.tileStates[l] = []
+      this.stateMap[l] = []
 
       for (r = 0; r < this.rows; r++) {
-        this.tileStates[l][r] = []
+        this.stateMap[l][r] = []
 
         for (c = 0; c < this.cols; c++) {
-          this.tileStates[l][r].push({})
+          this.stateMap[l][r].push({})
         }
       }
     }
@@ -57,12 +57,12 @@ export default class State {
    * Get the current state of a tile.
    *
    * @param {Number} layer - 0-indexed tile layer (int)
-   * @param {Number} row - 0-indexed tile row (int)
    * @param {Number} col - 0-indexed tile column (int)
+   * @param {Number} row - 0-indexed tile row (int)
    * @returns {Object} - Tile state
    */
-  getTileState (layer, row, col) {
-    return this.tileStates[layer][row][col]
+  getTileState (layer, col, row) {
+    return this.stateMap[layer][row][col]
   }
 
   /**
@@ -70,11 +70,11 @@ export default class State {
    *
    * @param {Object} state - New tile state
    * @param {Number} layer - 0-indexed tile layer (int)
-   * @param {Number} row - 0-indexed tile row (int)
    * @param {Number} col - 0-indexed tile column (int)
+   * @param {Number} row - 0-indexed tile row (int)
    */
-  setTileState (state, layer, row, col) {
-    this.tileStates[layer][row][col] = state
+  setTileState (state, layer, col, row) {
+    this.stateMap[layer][row][col] = state
   }
 
   /**

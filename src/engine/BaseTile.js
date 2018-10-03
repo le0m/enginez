@@ -1,7 +1,7 @@
+import Observable from './Observable'
+
 /**
  * This is a base class for tiles.
- *
- * TODO: extend from Observable for event handling?
  *
  * @interface
  *
@@ -9,7 +9,7 @@
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class BaseTile {
+export default class BaseTile extends Observable {
   /* eslint-disable no-multi-spaces */
 
   /**
@@ -18,6 +18,8 @@ export default class BaseTile {
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
+    super()
+
     this.id     = config.id
 
     // other
@@ -35,12 +37,4 @@ export default class BaseTile {
    * @returns {Object} - New tile state
    */
   update (delta, prevState) {}
-
-  /**
-   * Handle external events.
-   *
-   * @param {String} name - Event name
-   * @param {Object} data - Event related data
-   */
-  on (name, data) {}
 }

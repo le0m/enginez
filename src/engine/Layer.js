@@ -21,7 +21,7 @@ export default class Layer {
    */
   constructor (config) {
     this.level    = config.level
-    this.map      = config.map
+    this.tileMap  = config.map
     this.tileset  = config.tileset
     this.state    = config.state
 
@@ -67,7 +67,7 @@ export default class Layer {
 
       for (let r = 0; r < rows; r++) {
         for (c = 0; c < cols; c++) {
-          tileID = this.map[r][c]
+          tileID = this.getTileID(c, r)
 
           if (tileID > 0) {
             x = c * tileSize
@@ -95,6 +95,13 @@ export default class Layer {
   }
 
   /**
+   * Update the layer state.
+   *
+   * @param {Number} delta - Time elapsed (int, ms)
+   */
+  update (delta) {}
+
+  /**
    * Get the layer size.
    *
    * @param {Boolean} pixel - Whether you want size in tiles or pixels
@@ -102,8 +109,31 @@ export default class Layer {
    */
   getSize (pixel = false) {
     return [
-      this.map[0].length * (pixel ? this.tileset.tileSize : 1),
-      this.map.length * (pixel ? this.tileset.tileSize : 1)
+      this.tileMap[0].length * (pixel ? this.tileset.tileSize : 1),
+      this.tileMap.length * (pixel ? this.tileset.tileSize : 1)
     ]
+  }
+
+  /**
+   * Get the current ID of a tile.
+   *
+   * @param {Number} col - 0-indexed tile column (int)
+   * @param {Number} row - 0-indexed tile row (int)
+   * @returns {Number} - ID of the tile in the required position
+   */
+  getTileID (col, row) {
+    return this.tileMap[row][col]
+  }
+
+  /**
+   * Set the current ID of a tile.
+   *
+   * @param {Number} tileID - New tile ID
+   * @param {Number} col - 0-indexed tile col (int)
+   * @param {Number} row - 0-indexed tile row (int)
+   */
+  setTileID (tileID, col, row) {
+    this.tileMap[row][col] = tileID
+    this._dirty = true
   }
 }
