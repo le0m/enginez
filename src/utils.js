@@ -91,4 +91,34 @@ function ConsoleExtra (console) {
   return console
 }
 
-export { ConsoleExtra }
+/**
+ * Filter an array in-place.
+ *
+ * Works by overwriting elements in the array with the
+ * elements to keep and changing the `length` property.
+ *
+ * @param {Array} array
+ * @param {Function} predicate - Return `true` to keep, `false` to remove, the current element
+ * @returns {Number} - Number of removed elements
+ */
+const filterInPlace = (array, predicate) => {
+  /* eslint-disable one-var */
+
+  let end = 0, value = null, removed = 0
+
+  for (let i = 0, max = array.length; i < max; i++) {
+    value = array[i]
+
+    if (predicate(value)) {
+      array[end] = value
+      end++
+    }
+  }
+
+  removed = array.length - end
+  array.length = end
+
+  return removed
+}
+
+export { ConsoleExtra, filterInPlace }

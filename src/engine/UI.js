@@ -1,62 +1,41 @@
+import Observable from './Observable.js'
+
 /**
- * Handles UI display and interaction.
+ * This component handles DOM-based game UI.
  */
-export default class UI {
-  /**
-   * - `view`, property from Camera object
-   * - `queue`, Queue object
-   *
-   * @param {number} tileSize
-   * @param {Object} view
-   * @param {Queue} queue
-   */
-  constructor (tileSize, view, queue) {
-    /* eslint-disable no-multi-spaces */
-    this._view    = view
-    this._queue   = queue
-    this.tileSize = tileSize
-    this.canvas   = null
-    this.div      = null
-  }
-
-  init () {
-    this.canvas = document.getElementById('canvas')
-    this.div = document.getElementById('ui')
-
-    this.div.addEventListener('click', this._handleClick.bind(this))
-  }
-
-  _handleClick (event) {
-    let pos = this._getPosition(event)
-    let col = this._view.startCol + ((pos.x - this._view.offsetX) / this.tileSize | 0)
-    let row = this._view.startRow + ((pos.y - this._view.offsetY) / this.tileSize | 0)
-
-    console.log(`clicked:`, col, row)
-    this._queue.add('click', {
-      col: col,
-      row: row
-    })
-  }
+export default class UI extends Observable {
+  /* eslint-disable no-multi-spaces, one-var */
 
   /**
-   * Normalized position, for mouse and touch.
-   *
-   * @param {MouseEvent|TouchEvent} event
-   * @return {{ x: number, y: number}}
-   * @private
+   * @param {Object} config - UI component configuration
+   * @param {HTMLDivElement} config.div - HTML div main element
+   * @param {Number} config.width - UI div width (int, px)
+   * @param {Number} config.height - UI div height (int, px)
+   * @param {Boolean} [config.debug=false] - Debug mode
    */
-  _getPosition (event) {
-    let rect = this.canvas.getBoundingClientRect()
-    let pos = { x: 0, y: 0 }
+  constructor (config) {
+    super()
 
-    if (event.touches && event.touches.length > 0) {
-      pos.x = event.touches[0].pageX - rect.left
-      pos.y = event.touches[0].pageY - rect.top
-    } else {
-      pos.x = event.pageX - rect.left
-      pos.y = event.pageY - rect.top
-    }
+    this.div      = config.div
+    this.width    = config.width
+    this.height   = config.height
 
-    return pos
+    // other
+    this.debug    = config.debug || false
+
+    // ensure div style
+    this.div.style.width = `${this.width}px`
+    this.div.style.height = `${this.height}px`
+    this.div.style.zIndex = '1'
+
+    this._initListeners()
+  }
+
+  _initListeners () {
+    this.div.addEventListener('click', this._onClick.bind(this))
+  }
+
+  _onClick (event) {
+    this.emit('click', [event.layerX, event.layerY])
   }
 }

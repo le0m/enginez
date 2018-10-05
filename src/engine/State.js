@@ -1,36 +1,89 @@
 /**
- * Stores current game state.
- * Can also save and load a game (TODO).
+ * This component stores the current game state.
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class State {
-  /**
-   * Set grid dimensions.
-   *
-   * @param {number} cols
-   * @param {number} rows
-   */
-  constructor (cols, rows) {
-    this.cols = cols
-    this.rows = rows
-    this.tileStates = []
-  }
+  /* eslint-disable no-multi-spaces, one-var */
 
-  init () {
-    // init states
-    for (let s = 0; s < this.cols * this.rows; s++) {
-      this.tileStates.push({})
+  /**
+   * @param {Object} config - State component config
+   * @param {Number} config.layers - Map layers (int)
+   * @param {Number} config.rows - Map rows (int)
+   * @param {Number} config.cols - Map columns (int)
+   * @param {Boolean} [config.debug=false] - Debug mode
+   */
+  constructor (config) {
+    // dimensions related
+    this.layers   = config.layers
+    this.rows     = config.rows
+    this.cols     = config.cols
+
+    // other
+    this.stateMap = []
+    this.debug    = config.debug || false
+
+    this._initStates()
+
+    if (this.debug) {
+      console.log(`[STATE] created map (${this.layers} x ${this.cols} x ${this.rows} cells)`)
     }
   }
 
-  getTileState (col, row) {
-    console.log(`getting state:`, col, row)
-    return this.tileStates[row * this.cols + col]
+  /**
+   * Initializes the map with empty states.
+   *
+   * @private
+   */
+  _initStates () {
+    let r = 0, c = 0
+
+    for (let l = 0; l < this.layers; l++) {
+      this.stateMap[l] = []
+
+      for (r = 0; r < this.rows; r++) {
+        this.stateMap[l][r] = []
+
+        for (c = 0; c < this.cols; c++) {
+          this.stateMap[l][r].push({})
+        }
+      }
+    }
   }
 
-  setTileState (col, row, state) {
-    this.tileStates[row * this.cols + col] = state
+  /**
+   * Get the current state of a tile.
+   *
+   * @param {Number} layer - 0-indexed tile layer (int)
+   * @param {Number} col - 0-indexed tile column (int)
+   * @param {Number} row - 0-indexed tile row (int)
+   * @returns {Object} - Tile state
+   */
+  getTileState (layer, col, row) {
+    return this.stateMap[layer][row][col]
   }
 
+  /**
+   * Set the current (updated) state of a tile.
+   *
+   * @param {Object} state - New tile state
+   * @param {Number} layer - 0-indexed tile layer (int)
+   * @param {Number} col - 0-indexed tile column (int)
+   * @param {Number} row - 0-indexed tile row (int)
+   */
+  setTileState (state, layer, col, row) {
+    this.stateMap[layer][row][col] = state
+  }
+
+  /**
+   * Save current state to `localStorage`.
+   */
   save () {}
+
+  /**
+   * Load current state from `localStorage`.
+   */
   load () {}
 }

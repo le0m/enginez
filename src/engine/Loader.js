@@ -1,46 +1,60 @@
 /**
- * Pre-loads images, asynchronously (as-if this supports more than one...).
+ * Pre-loads images asynchronously.
+ *
+ * @version 0.0.2
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class Loader {
-  constructor () {
-    this.images = {}
+  /**
+   *
+   * @param {Object} config - Loader component config
+   * @param {Boolean} [config.debug=false] - Debug mode
+   */
+  constructor (config) {
+    this._images = {}
+
+    // other
+    this.debug = config.debug || false
   }
 
   /**
-   * Pre-load image in DOM.
-   * Returns a promise that will resolve to an `Image` object.
+   * Load an image in DOM.
    *
-   * @param {string} key
-   * @param {string} src
-   * @returns {Promise<Image>}
+   * @param {String} key - Image key for caching
+   * @param {String} src - Image source path/URL
+   * @return {Promise<String>} - Cache key of the loaded image
    */
   loadImage (key, src) {
+    let that = this
     let img = new window.Image()
+    let p = new Promise((resolve, reject) => {
+      img.addEventListener('load', () => {
+        if (that.debug) {
+          console.log(`[LOADER] loaded image ${src}`)
+        }
 
-    let d = new Promise(function (resolve, reject) {
-      img.onload = function () {
-        this.images[key] = img
-        console.log('Loaded image: ' + img.src)
-        resolve(img)
-      }.bind(this)
+        that._images[key] = img
+        resolve(key)
+      })
 
-      img.onerror = function () {
-        reject('Could not load image: ' + src)
-      }
-    }.bind(this))
+      img.addEventListener('error', () => {
+        reject(new Error(`[LOADER] could not load image ${src}`))
+      })
+    })
 
     img.src = src
 
-    return d
+    return p
   }
 
   /**
-   * Get a pre-loaded `Image` object.
+   * Get a loaded image.
    *
-   * @param {string} key
-   * @returns {(Image|null)}
+   * @param {String} key - Image key in cache
+   * @return {Image|null}
    */
   getImage (key) {
-    return (key in this.images) ? this.images[key] : null
+    return (key in this._images) ? this._images[key] : null
   }
 }

@@ -1,20 +1,21 @@
 Components
 ==========
 
-- [World](docs/world.md) (singleton)
-- [Layer](docs/layer.md) (instance)
-- [Tile](docs/tile.md) (instance per type)
-- [Sprite](docs/sprite.md) (instance per animated tile)
-- [Camera](docs/camera.md) (singleton)
-- [UI](docs/ui.md) (singleton)
-- [Input](docs/input.md) (interface)
-  - [Keyboard](docs/input.md#keyboard) (singleton)
-  - [Touch](docs/input.md#touch) (singleton)
-  - [Mouse](docs/input.md#mouse) (singleton)
-- [State](docs/state.md) (instance per each tile in each layer)
-- [Loader](docs/loader.md) (singleton)
-- [EventQueue](docs/event-queue.md) (singleton)
-- [Engine](docs/engine.md) (singleton)
+- [BaseEngine](docs/engine.md)
+- [World](docs/world.md)
+- [Layer](docs/layer.md)
+- [Tileset](docs/tileset.md)
+- [BaseTile](docs/tile.md) (interface)
+- [Sprite](docs/sprite.md)
+- [Viewport](docs/viewport.md)
+- [UI](docs/ui.md)
+- [BaseInput](docs/input.md) (interface)
+  - [Keyboard](docs/input.md#keyboard)
+  - [Touch](docs/input.md#touch)
+  - [Mouse](docs/input.md#mouse)
+- [State](docs/state.md)
+- [Loader](docs/loader.md)
+- [EventQueue](docs/event-queue.md)
 
 Next
 ====
