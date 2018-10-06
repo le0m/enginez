@@ -1,8 +1,16 @@
+
+/*        GENERAL        */
+
+
 html, body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     font-size: 16px;
+}
+
+ul {
+    padding: 0;
 }
 
 .container {
@@ -27,7 +35,42 @@ canvas {
     height: 100%;
 }
 
-/*        MENU UI        */
+/* ALL divs inside 'resources' are resources templates */
+.resources div {
+    display: inline-block;
+}
+
+
+/*        CLICK        */
+
+.click, .navigation div {
+    border: solid 1px transparent;
+}
+
+.click:hover, .navigation div:hover {
+    cursor: pointer;
+}
+
+.click:active, .navigation div:active {
+    cursor: pointer;
+    border-color: red;
+}
+
+
+/*        HEADER        */
+
+.header {
+    padding: 20px;
+}
+
+.header .resources {
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 0.8rem;
+}
+
+
+/*        MENU BOTTOM        */
 
 .menu {
     position: absolute;
@@ -36,14 +79,14 @@ canvas {
     bottom: 0;
     width:100%;
     background-color: white;
-    padding: 8px;
+    padding: 8px 20px;
 }
 
 .navigation {
     text-align: center;
 }
 
-.navigation > * {
+.navigation div {
     display: inline-block;
 }
 
@@ -63,18 +106,21 @@ canvas {
     margin: 2px;
 }
 
-.list {}
+/*        CARDS        */
 
 .list-item {
     width: 15%;
     list-style-type: none;
     display: inline-block;
-    margin: 4px;
-    border: solid 1px #444;
+}
+
+.card {
+    border-color: #444;
 }
 
 .card-header {
-    padding: 8px;
+    word-break: break-all;
+    padding: 0.2rem;
     font-size: 1rem;
 }
 
@@ -86,19 +132,11 @@ canvas {
     max-width: 100%;
 }
 
-
-.item-name {}
-
-.item-cost {}
-
-
-.resources {
-    padding: 0 2px 4px;
+.card-footer.resources {
+    padding: 0 8px 4px;
 }
 
-.resource {
-    width: 30%;
+.card-footer .resources div {
     background-color: #eeeeee;
-    display: inline-block;
     font-size: 0.8rem;
 }
