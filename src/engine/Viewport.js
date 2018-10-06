@@ -33,22 +33,19 @@ export default class Viewport {
     this.offsetX      = config.startX || 0
     this.offsetY      = config.startY || 0
 
-    // clamp start
-    if (this.offsetX > (this.worldWidth - this.width)) {
-      console.log(`clamping start X: ${this.offsetX} --> ${this.worldWidth - this.width}`)
-    }
-    if (this.offsetY > (this.worldHeight - this.height)) {
-      console.log(`clamping start Y: ${this.offsetY} --> ${this.worldHeight - this.height}`)
-    }
-
-    this.offsetX = Math.min(this.offsetX, this.worldWidth - this.width)
-    this.offsetY = Math.min(this.offsetY, this.worldHeight - this.height)
-
     // other
     this.debug        = config.debug || false
 
-    // ensure canvas style (`World` will trigger resize `Viewport`)
+    // ensure canvas style (`World` will trigger a resize)
     this.canvas.style.zIndex = '0'
+
+    // clamp start
+    this.offsetX = Math.min(this.offsetX, this.worldWidth - this.width)
+    this.offsetY = Math.min(this.offsetY, this.worldHeight - this.height)
+
+    if (this.debug && (config.startX !== this.offsetX || config.startY !== this.offsetY)) {
+      console.log(`[VIEWPORT] clamping starting position: ${this.offsetX} | ${this.offsetY}`)
+    }
   }
 
   /**
@@ -177,5 +174,9 @@ export default class Viewport {
     this.height = height
     this.canvas.width = width
     this.canvas.height = height
+
+    // clamp position
+    this.offsetX = Math.min(this.offsetX, this.worldWidth - this.width)
+    this.offsetY = Math.min(this.offsetY, this.worldHeight - this.height)
   }
 }
