@@ -7,6 +7,8 @@ export default class UI extends Observable {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
+   * REMOVE: width/height, they are set in CSS to 100%
+   *
    * @param {Object} config - UI component configuration
    * @param {HTMLDivElement} config.div - HTML div main element
    * @param {Number} config.width - UI div width (int, px)
@@ -17,15 +19,15 @@ export default class UI extends Observable {
     super()
 
     this.div      = config.div
-    this.width    = config.width
-    this.height   = config.height
+    // this.width    = config.width REMOVE
+    // this.height   = config.height REMOVE
 
     // other
     this.debug    = config.debug || false
 
     // ensure div style
-    this.div.style.width = `${this.width}px`
-    this.div.style.height = `${this.height}px`
+    // this.div.style.width = `${this.width}px` REMOVE
+    // this.div.style.height = `${this.height}px` REMOVE
     this.div.style.zIndex = '1'
 
     this._initListeners()

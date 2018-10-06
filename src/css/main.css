@@ -20,61 +20,27 @@ canvas {
     -webkit-transform: scale3d(1, 1, 1);
 }
 
-/*        MENU UI        */
-
 #ui {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 2fr 1fr;
-    grid-template-areas:
-        "."
-        "menu";
+    width: 100%;
+    height: 100%;
 }
 
-.menu {
-    grid-area: menu;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 7fr;
-    grid-template-areas:
-        "buttons"
-        "content";
+/*        MENU UI        */
 
+.menu {
+    left: 0;
+    bottom: 0;
     background-color: white;
     padding: 8px;
 }
 
-.list {
-    grid-area: content;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: 1fr;
-    grid-template-areas:
-        "item item item item item";
-}
+.list {}
 
-.list-item {
-    grid-area: item;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 2fr 1fr;
-    grid-template-areas:
-        "item-name"
-        "item-cost";
-}
+.list-item {}
 
-.item-name {
-    grid-area: item-name;
-}
 
-.item-cost {
-    grid-area: item-cost;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas:
-        "resource resource";
-}
+.item-name {}
 
-.resource {
-    grid-area: resource;
-}
+.item-cost {}
+
+.resource {}
