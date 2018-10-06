@@ -43,8 +43,8 @@ export default class BaseTile extends Observable {
    * Override this method to show UI menu and
    * handle click.
    *
-   * @param {Object} params - Event parameters
+   * @param {Object} [params={}] - Event parameters
    * @returns {*|false} - `false` to stop the click event from propagating to other layers
    */
-  click (params) {}
+  click (params = {}) {}
 }

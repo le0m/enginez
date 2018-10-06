@@ -109,8 +109,8 @@ const config = {
       canvas: document.getElementById('canvas'),
       width: width,
       height: height,
-      startX: 1000, // width / 2 | 0,
-      startY: 2000 // height / 2 | 0
+      startX: width / 2 | 0,
+      startY: height / 2 | 0
     },
     container: document.getElementsByClassName('container')[0],
     ui: {

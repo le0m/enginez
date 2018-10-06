@@ -139,28 +139,21 @@ export default class World {
   }
 
   _handleUIClick ([x, y]) {
-    let [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // user first tileset for tile size
-    let layer = null, tileID = 0, tileState = {}, tileInstance = null, newState = {}
-    console.log(`[WORLD] UI click: ${col} | ${row}`)
+    let [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // use first tileset for tile size
+    let tileID = 0, tileInstance = null
 
     for (let l = this.layers.length - 1; l >= 0; l--) {
-      layer = this.layers[l]
-      tileID = layer.getTileID(col, row)
+      tileID = this.layers[l].getTileID(col, row)
 
       // skip empty tiles
       if (tileID > 0) {
         tileInstance = this.objects.get('tiles').find((tile) => tile.id === tileID)
 
         if (tileInstance) {
-          tileState = this.state.getTileState(l, col, row)
-          newState = tileInstance.click({ state: tileState }) || tileState
-
-          if (newState === false) {
+          if (tileInstance.click() === false) {
             console.log(`[WORLD] tile ${tileInstance.id} interrupted click event on layer ${l}`)
             break
           }
-
-          this.state.setTileState(newState, l, col, row)
         }
       }
     }

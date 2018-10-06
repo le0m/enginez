@@ -22,10 +22,7 @@ export default class GrassTile extends BaseTile {
   /**
    * @inheritdoc
    */
-  click ({ state }) {
-    let clicks = state.clicks || 0
-    console.log(`[GRASS TILE] clicked ${clicks} times`)
-
-    return { clicks: ++clicks }
+  click (params = {}) {
+    console.log(`[GRASS TILE] clicked`)
   }
 }
