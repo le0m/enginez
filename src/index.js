@@ -9,13 +9,7 @@ let height = Math.max(document.documentElement.clientHeight, window.innerHeight 
 
 const objects = new Map()
 const tiles = [Grass]
-
 objects.set('tiles', tiles)
-
-// fix UI elements position
-const container = document.getElementsByClassName('container')[0]
-container.style.width = `${width}px`
-container.style.height = `${height}px`
 
 const config = {
   debug: 2,
@@ -118,8 +112,9 @@ const config = {
       startX: width / 2 | 0,
       startY: height / 2 | 0
     },
+    container: document.getElementsByClassName('container')[0],
     ui: {
-      div: document.getElementById('ui')
+      element: document.getElementById('ui')
     },
     keyboard: {
       debug: true,

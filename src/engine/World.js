@@ -22,6 +22,7 @@ export default class World {
    * @param {Object[]} config.tilesets - Tileset component config, up to one per layer (see {@link Tileset#constructor})
    * @param {Map<BaseTile>} config.objects - A `Map` containing game objects divided by category
    * @param {Object} config.viewport - Viewport component config (see {@link Viewport#constructor})
+   * @param {HTMLElement} config.container - Top hierarchy container element
    * @param {Object} config.ui - UI component config (see {@link UI#constructor})
    * @param {Object} config.keyboard - Keyboard component config (see {@link Keyboard#constructor})
    * @param {Object} config.state - State component config (see {@link State#constructor})
@@ -30,20 +31,20 @@ export default class World {
    */
   constructor (config) {
     // components related
-    this.loader   = config.loader
-    this.map      = config.map
-    this.tilesets = config.tilesets.map((tileset) => new Tileset({
+    this.loader     = config.loader
+    this.map        = config.map
+    this.tilesets   = config.tilesets.map((tileset) => new Tileset({
       ...tileset,
       loader: this.loader
     }))
-    this.input    = new Keyboard(config.keyboard)
-    this.state    = new State({
+    this.input      = new Keyboard(config.keyboard)
+    this.state      = new State({
       ...config.state,
       layers: this.map.length,
       rows: this.map[0].length,
       cols: this.map[0][0].length
     })
-    this.layers   = this.map.map((layerMap, index) => new Layer({
+    this.layers     = this.map.map((layerMap, index) => new Layer({
       debug: this.debug,
       level: index,
       state: this.state,
@@ -52,21 +53,25 @@ export default class World {
     }))
 
     let [width, height] = this.layers[0].getSize(true) // use first layer size as world size
-    this.viewport = new Viewport({
+    this.viewport   = new Viewport({
       ...config.viewport,
       worldWidth: width,
       worldHeight: height
     })
-    this.ui       = new UI({
-      ...config.ui,
-      width: this.viewport.width,
-      height: this.viewport.height
+    this.ui         = new UI({
+      ...config.ui
+      // width: this.viewport.width, REMOVE
+      // height: this.viewport.height REMOVE
     })
 
     // other
-    this.queue    = new EventQueue()
-    this.objects  = config.objects
-    this.debug    = config.debug || false
+    this.queue      = new EventQueue()
+    this.objects    = config.objects
+    this.container  = config.container
+    this.debug      = config.debug || false
+
+    // ensure container style
+    this.resize(this.viewport.width, this.viewport.height)
   }
 
   /**
@@ -82,6 +87,8 @@ export default class World {
    * Initialize components.
    */
   init () {
+    window.addEventListener('resize', this._handleResize.bind(this))
+
     this.layers.forEach((layer) => layer.init())
     this.ui.on('click', this._handleUIClick, this)
   }
@@ -112,6 +119,23 @@ export default class World {
     }
   }
 
+  /**
+   * Resize the HTML container.
+   * Trigger resizing of `Viewport`.
+   *
+   * @param {Number} width - New width (int, px)
+   * @param {Number} height - New height (int, px)
+   */
+  resize (width, height) {
+    if (this.debug) {
+      console.log(`[WORLD] setting size: ${width} x ${height} px`)
+    }
+
+    this.container.style.width = `${width}px`
+    this.container.style.height = `${height}px`
+    this.viewport.resize(width, height)
+  }
+
   _handleUIClick ([x, y]) {
     let [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // user first tileset for tile size
     let layer = null, tileID = 0, tileState = {}, tileInstance = null, newState = {}
@@ -138,5 +162,12 @@ export default class World {
         }
       }
     }
+  }
+
+  _handleResize (event) {
+    let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+    let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+    this.resize(width, height)
   }
 }

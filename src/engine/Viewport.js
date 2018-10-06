@@ -31,16 +31,10 @@ export default class Viewport {
     this.offsetY      = config.startY || 0
 
     // other
-    this.debug = config.debug || false
+    this.debug        = config.debug || false
 
-    // ensure canvas style
-    this.canvas.width = this.width
-    this.canvas.height = this.height
+    // ensure canvas style (`World` will trigger resize `Viewport`)
     this.canvas.style.zIndex = '0'
-
-    if (this.debug) {
-      console.log(`[VIEWPORT] ready (${this.width} x ${this.height} px)`)
-    }
   }
 
   /**
@@ -152,5 +146,22 @@ export default class Viewport {
     let row = offsetY / tileSize | 0
 
     return [col, row]
+  }
+
+  /**
+   * Resize the canvas.
+   *
+   * @param {Number} width - New width (int, px)
+   * @param {Number} height - New height (int, px)
+   */
+  resize (width, height) {
+    if (this.debug) {
+      console.log(`[VIEWPORT] setting size: ${width} x ${height} px`)
+    }
+
+    this.width = width
+    this.height = height
+    this.canvas.width = width
+    this.canvas.height = height
   }
 }

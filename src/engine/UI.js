@@ -10,7 +10,7 @@ export default class UI extends Observable {
    * REMOVE: width/height, they are set in CSS to 100%
    *
    * @param {Object} config - UI component configuration
-   * @param {HTMLDivElement} config.div - HTML div main element
+   * @param {HTMLElement} config.element - HTML UI element
    * @param {Number} config.width - UI div width (int, px)
    * @param {Number} config.height - UI div height (int, px)
    * @param {Boolean} [config.debug=false] - Debug mode
@@ -18,23 +18,23 @@ export default class UI extends Observable {
   constructor (config) {
     super()
 
-    this.div      = config.div
+    this.element    = config.element
     // this.width    = config.width REMOVE
     // this.height   = config.height REMOVE
 
     // other
-    this.debug    = config.debug || false
+    this.debug      = config.debug || false
 
-    // ensure div style
-    // this.div.style.width = `${this.width}px` REMOVE
-    // this.div.style.height = `${this.height}px` REMOVE
-    this.div.style.zIndex = '1'
+    // ensure element style
+    // this.element.style.width = `${this.width}px` REMOVE
+    // this.element.style.height = `${this.height}px` REMOVE
+    this.element.style.zIndex = '1'
 
     this._initListeners()
   }
 
   _initListeners () {
-    this.div.addEventListener('click', this._onClick.bind(this))
+    this.element.addEventListener('click', this._onClick.bind(this))
   }
 
   _onClick (event) {
