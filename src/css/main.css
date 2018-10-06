@@ -22,19 +22,59 @@ canvas {
 
 /*        MENU UI        */
 
+#ui {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 1fr;
+    grid-template-areas:
+        "."
+        "menu";
+}
+
 .menu {
-    width: 100%;
-    height: 25%;
-    left: 0;
-    bottom: 0;
+    grid-area: menu;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 7fr;
+    grid-template-areas:
+        "buttons"
+        "content";
+
     background-color: white;
     padding: 8px;
 }
 
-.list {}
+.list {
+    grid-area: content;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    grid-template-areas:
+        "item item item item item";
+}
 
 .list-item {
-    width: 10%;
-    min-width: 100px;
-    margin: 4px;
+    grid-area: item;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 1fr;
+    grid-template-areas:
+        "item-name"
+        "item-cost";
+}
+
+.item-name {
+    grid-area: item-name;
+}
+
+.item-cost {
+    grid-area: item-cost;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+        "resource resource";
+}
+
+.resource {
+    grid-area: resource;
 }
