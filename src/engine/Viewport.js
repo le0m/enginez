@@ -33,6 +33,17 @@ export default class Viewport {
     this.offsetX      = config.startX || 0
     this.offsetY      = config.startY || 0
 
+    // clamp start
+    if (this.offsetX > (this.worldWidth - this.width)) {
+      console.log(`clamping start X: ${this.offsetX} --> ${this.worldWidth - this.width}`)
+    }
+    if (this.offsetY > (this.worldHeight - this.height)) {
+      console.log(`clamping start Y: ${this.offsetY} --> ${this.worldHeight - this.height}`)
+    }
+
+    this.offsetX = Math.min(this.offsetX, this.worldWidth - this.width)
+    this.offsetY = Math.min(this.offsetY, this.worldHeight - this.height)
+
     // other
     this.debug        = config.debug || false
 
