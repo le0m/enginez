@@ -1,6 +1,8 @@
 html, body {
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
 }
 
 .container {
@@ -33,18 +35,70 @@ canvas {
     left: 0;
     bottom: 0;
     width:100%;
-    height: 25%;
     background-color: white;
     padding: 8px;
 }
 
+.navigation {
+    text-align: center;
+}
+
+.navigation > * {
+    display: inline-block;
+}
+
+.navigation .arrow {
+    padding: 0 16px;
+    margin: 0 2px;
+    border: solid 1px #444444;
+}
+
+.close {
+    background-color: #eeeeee;
+    padding: 4px 8px;
+    border-radius: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 2px;
+}
+
 .list {}
 
-.list-item {}
+.list-item {
+    width: 15%;
+    list-style-type: none;
+    display: inline-block;
+    margin: 4px;
+    border: solid 1px #444;
+}
+
+.card-header {
+    padding: 8px;
+    font-size: 1rem;
+}
+
+.card-header, .card-body,.card-footer {
+    text-align: center;
+}
+
+.card-body img {
+    max-width: 100%;
+}
 
 
 .item-name {}
 
 .item-cost {}
 
-.resource {}
+
+.resources {
+    padding: 0 2px 4px;
+}
+
+.resource {
+    width: 30%;
+    background-color: #eeeeee;
+    display: inline-block;
+    font-size: 0.8rem;
+}
