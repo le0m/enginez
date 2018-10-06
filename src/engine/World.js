@@ -20,6 +20,7 @@ export default class World {
    * @param {Object} config - World component config
    * @param {Number[][][]} config.map - World map represented as a 3-dimensional array of tile IDs (int)
    * @param {Object[]} config.tilesets - Tileset component config, up to one per layer (see {@link Tileset#constructor})
+   * @param {Map<BaseTile>} config.objects - A `Map` containing game objects divided by category
    * @param {Object} config.viewport - Viewport component config (see {@link Viewport#constructor})
    * @param {Object} config.ui - UI component config (see {@link UI#constructor})
    * @param {Object} config.keyboard - Keyboard component config (see {@link Keyboard#constructor})
@@ -64,6 +65,7 @@ export default class World {
 
     // other
     this.queue    = new EventQueue()
+    this.objects  = config.objects
     this.debug    = config.debug || false
   }
 
@@ -112,18 +114,29 @@ export default class World {
 
   _handleUIClick ([x, y]) {
     let [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // user first tileset for tile size
+    let layer = null, tileID = 0, tileState = {}, tileInstance = null, newState = {}
     console.log(`[WORLD] UI click: ${col} | ${row}`)
 
-    /* CLICK LOGIC
-    for (let l = 0, max = this.layers.length; l < max; l++) {
-      let layer = this.layers[l]
-      let tileID = layer.getTileID(col, row)
-      let tileState = this.state.getTileState(l, col, row)
-      let tileInstance = this.gameObjects.get('tile', tileID)
+    for (let l = this.layers.length - 1; l >= 0; l--) {
+      layer = this.layers[l]
+      tileID = layer.getTileID(col, row)
 
-      let newState = tileInstance.emit('click', tileState)
-      this.state.setTileState(newState, l, col, row)
+      // skip empty tiles
+      if (tileID > 0) {
+        tileInstance = this.objects.get('tiles').find((tile) => tile.id === tileID)
+
+        if (tileInstance) {
+          tileState = this.state.getTileState(l, col, row)
+          newState = tileInstance.click({ state: tileState }) || tileState
+
+          if (newState === false) {
+            console.log(`[WORLD] tile ${tileInstance.id} interrupted click event on layer ${l}`)
+            break
+          }
+
+          this.state.setTileState(newState, l, col, row)
+        }
+      }
     }
-    */
   }
 }

@@ -1,10 +1,21 @@
 import './css/main.css'
 import Engine from './engine/Engine.js'
+import { Grass } from './game/tiles'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
 let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
 let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+const objects = new Map()
+const tiles = [Grass]
+
+objects.set('tiles', tiles)
+
+// fix UI elements position
+const container = document.getElementsByClassName('container')[0]
+container.style.width = `${width}px`
+container.style.height = `${height}px`
 
 const config = {
   debug: 2,
@@ -116,7 +127,8 @@ const config = {
     },
     state: {
       debug: true
-    }
+    },
+    objects
   }
 }
 

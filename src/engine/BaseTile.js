@@ -13,14 +13,14 @@ export default class BaseTile extends Observable {
   /* eslint-disable no-multi-spaces */
 
   /**
-   * @param {Object} config - BaseInput component config
+   * @param {Object} config - BaseTile component config
    * @param {Number} config.id - Tile ID (int)
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     super()
 
-    this.id     = config.id
+    this.id = config.id
 
     // other
     this.debug  = config.debug || false
@@ -37,4 +37,15 @@ export default class BaseTile extends Observable {
    * @returns {Object} - New tile state
    */
   update (delta, prevState) {}
+
+  /**
+   * Click the tile, triggering its behavior.
+   *
+   * Override this method to show UI menu and
+   * handle click.
+   *
+   * @param {Object} params - Event parameters
+   * @returns {*|false} - `false` to stop the click event from propagating to other layers
+   */
+  click (params) {}
 }

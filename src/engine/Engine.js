@@ -1,8 +1,5 @@
 import Loader from './Loader.js'
 import World from './World.js'
-import { ConsoleExtra } from '../utils.js'
-
-const console = ConsoleExtra(window.console)
 
 /**
  * Engine core class, manages all components.
