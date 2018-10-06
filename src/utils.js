@@ -7,6 +7,8 @@
  * Each returns a console object whose methods are rate limited.
  *
  * credits: Steven Wittens, https://github.com/unconed/console-extras.js
+ *
+ * @param {Object} console - Usually `window.console`
  */
 function ConsoleExtra (console) {
   let counts = {}
@@ -97,6 +99,8 @@ function ConsoleExtra (console) {
  * Works by overwriting elements in the array with the
  * elements to keep and changing the `length` property.
  *
+ * credits: https://stackoverflow.com/a/16491790/2270403
+ *
  * @param {Array} array
  * @param {Function} predicate - Return `true` to keep, `false` to remove, the current element
  * @returns {Number} - Number of removed elements
@@ -104,7 +108,7 @@ function ConsoleExtra (console) {
 const filterInPlace = (array, predicate) => {
   /* eslint-disable one-var */
 
-  let end = 0, value = null, removed = 0
+  let end = 0, value = null
 
   for (let i = 0, max = array.length; i < max; i++) {
     value = array[i]
@@ -115,7 +119,7 @@ const filterInPlace = (array, predicate) => {
     }
   }
 
-  removed = array.length - end
+  let removed = array.length - end
   array.length = end
 
   return removed

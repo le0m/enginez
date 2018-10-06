@@ -2,6 +2,9 @@ import BaseTile from '../../engine/BaseTile.js'
 
 /**
  * Logic for grass tile.
+ *
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class GrassTile extends BaseTile {
   /* eslint-disable no-multi-spaces, one-var */

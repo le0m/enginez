@@ -12,7 +12,6 @@ const console = ConsoleExtra(window.console)
 /**
  * This component manages everything concerning the game world.
  *
- * @version 0.0.2
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */

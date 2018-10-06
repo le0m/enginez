@@ -2,6 +2,9 @@ import Observable from './Observable.js'
 
 /**
  * This component handles DOM-based game UI.
+ *
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
  */
 export default class UI extends Observable {
   /* eslint-disable no-multi-spaces, one-var */

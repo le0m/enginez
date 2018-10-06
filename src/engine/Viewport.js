@@ -5,7 +5,6 @@ const console = ConsoleExtra(window.console)
 /**
  * This component handles viewport movement and drawing.
  *
- * @version 0.0.2
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */

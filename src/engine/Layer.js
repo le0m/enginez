@@ -4,7 +4,6 @@ import EventQueue from './EventQueue.js'
  * This component handles a single layer of
  * the game map, from rendering to events.
  *
- * @version 0.0.2
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */

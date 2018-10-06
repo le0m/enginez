@@ -1,7 +1,6 @@
 /**
  * This component stores the current game state.
  *
- * @version 0.0.2
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */

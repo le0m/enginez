@@ -17,7 +17,6 @@ const console = ConsoleExtra(window.console)
  *
  * You need to extend this class and override loop methods.
  *
- * @version 0.0.2
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
