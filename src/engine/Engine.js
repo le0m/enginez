@@ -1,5 +1,8 @@
 import Loader from './Loader.js'
 import World from './World.js'
+import { ConsoleExtra } from '../utils.js'
+
+const console = ConsoleExtra(window.console)
 
 /**
  * Engine core class, manages all components.
@@ -84,7 +87,7 @@ export default class Engine {
     // avoid spiral of death
     if (this._updateTime > this._updateTimeMax) {
       if (this.debug) {
-        console.warn(`[ENGINE] update time above threshold ${this._updateTime}, clamping to ${this._updateTimeMax}`)
+        console.throttle(1000).warn(`[ENGINE] update time above threshold ${this._updateTime}, clamping to ${this._updateTimeMax}`)
       }
 
       this._updateTime = this._updateTimeMax

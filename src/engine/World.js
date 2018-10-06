@@ -5,6 +5,9 @@ import Keyboard from './Keyboard.js'
 import Tileset from './Tileset.js'
 import UI from './UI.js'
 import EventQueue from './EventQueue.js'
+import { ConsoleExtra } from '../utils.js'
+
+const console = ConsoleExtra(window.console)
 
 /**
  * This component manages everything concerning the game world.
@@ -128,7 +131,7 @@ export default class World {
    */
   resize (width, height) {
     if (this.debug) {
-      console.log(`[WORLD] setting size: ${width} x ${height} px`)
+      console.throttle(1000).log(`[WORLD] setting size: ${width} x ${height} px`)
     }
 
     this.container.style.width = `${width}px`

@@ -1,3 +1,7 @@
+import { ConsoleExtra } from '../utils.js'
+
+const console = ConsoleExtra(window.console)
+
 /**
  * This component handles viewport movement and drawing.
  *
@@ -156,7 +160,7 @@ export default class Viewport {
    */
   resize (width, height) {
     if (this.debug) {
-      console.log(`[VIEWPORT] setting size: ${width} x ${height} px`)
+      console.throttle(1000).log(`[VIEWPORT] setting size: ${width} x ${height} px`)
     }
 
     this.width = width
