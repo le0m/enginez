@@ -17,27 +17,91 @@
 
       <div id="ui">
 
+        <div id="resources" class="header">
+          <div class="resources">
+          <div class="food">
+            <span class="icon">F</span>
+            <span class="value">25</span>
+          </div>
+          <div class="wood">
+            <span class="icon">W</span>
+            <span class="value">25</span>
+          </div>
+          <div class="rock">
+            <span class="icon">R</span>
+            <span class="value">25</span>
+          </div>
+          <div class="population">
+            <span class="icon">P</span>
+            <span class="value">3/8</span>
+          </div>
+          </div>
+
+        </div>
+
         <div id="buildings" class="menu">
-          <div class="close">X</div>
+          <div class="row navigation">
+            <div class="arrow prev"><</div>
+            <div class="arrow next">></div>
+            <div class="close">X</div>
+          </div>
 
-          <div class="list">
-            <div class="list-item">
-              <span class="item-name">Building #1</span>
+          <div class="row">
+            <ul class="list">
+              <li class="list-item">
+                <div class="click card">
+                  <div class="card-header">Building #1</div>
+                  <div class="card-body">
+                    <img src="/static/favicon.png">
+                  </div>
+                  <div class="card-footer">
+                    <div class="resources">
+                      <!-- ALL divs inside here must be resource templates -->
 
-              <div class="item-cost">
-                <span class="resource wood">100</span>
-                <span class="resource rock">50</span>
+                      <div class="food">
+                        <span class="icon">F</span>
+                        <span class="value">25</span>
+                      </div>
+                      <div class="wood">
+                        <span class="icon">W</span>
+                        <span class="value">25</span>
+                      </div>
+                      <div class="rock">
+                        <span class="icon">R</span>
+                        <span class="value">25</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+
+            <li class="list-item">
+              <div class="click card">
+                <div class="card-header">Building #2</div>
+                <div class="card-body">
+                  <img src="/static/favicon.png">
+                </div>
+                <div class="card-footer">
+                  <div class="resources">
+                    <!-- ALL divs inside here must be resource templates -->
+
+                    <div class="food">
+                      <span class="icon">F</span>
+                      <span class="value">25</span>
+                    </div>
+                    <div class="wood">
+                      <span class="icon">W</span>
+                      <span class="value">25</span>
+                    </div>
+                    <div class="rock">
+                      <span class="icon">R</span>
+                      <span class="value">25</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div class="list-item">
-              <span class="building-name">Building #2</span>
-
-              <div class="building-cost">
-                <span class="resource wood">25</span>
-                <span class="resource rock">75</span>
-              </div>
-            </div>
+            </li>
+            </ul>
           </div>
         </div>
       </div>
