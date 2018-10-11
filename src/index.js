@@ -8,7 +8,10 @@ let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 
 let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 
 const objects = new Map()
-const tiles = [Grass]
+// map tiles by ID
+const tiles = new Map([
+  [1, Grass]
+])
 objects.set('tiles', tiles)
 
 const config = {
@@ -114,6 +117,7 @@ const config = {
     },
     container: document.getElementsByClassName('container')[0],
     ui: {
+      debug: true,
       element: document.getElementById('ui')
     },
     keyboard: {

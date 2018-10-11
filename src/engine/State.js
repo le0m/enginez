@@ -32,7 +32,8 @@ export default class State {
   }
 
   /**
-   * Initializes the map with empty states.
+   * Initializes the map with default states.
+   * Each state knows his layer, column and row.
    *
    * @private
    */
@@ -46,7 +47,11 @@ export default class State {
         this.stateMap[l][r] = []
 
         for (c = 0; c < this.cols; c++) {
-          this.stateMap[l][r].push({})
+          this.stateMap[l][r].push({
+            layer: l,
+            col: c,
+            row: r
+          })
         }
       }
     }

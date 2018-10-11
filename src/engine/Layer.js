@@ -37,6 +37,7 @@ export default class Layer {
    * Create an off-canvas to draw the layer on.
    */
   init () {
+    // initialize layer canvas
     let [width, height] = this.getSize(true)
 
     this.canvas = document.createElement('canvas')
@@ -45,6 +46,14 @@ export default class Layer {
     this.context = this.canvas.getContext('2d')
 
     this.draw() // initial render
+
+    // save tile IDs in tile states (do this better)
+    let c = 0
+    for (let r = 0; r < this.tileMap.length; r++) {
+      for (c = 0; c < this.tileMap[r].length; c++) {
+        this.state.stateMap[this.level][r][c].tileID = this.tileMap[r][c]
+      }
+    }
   }
 
   /**

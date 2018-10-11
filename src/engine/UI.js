@@ -10,37 +10,40 @@ export default class UI extends Observable {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
-   * REMOVE: width/height, they are set in CSS to 100%
-   *
    * @param {Object} config - UI component configuration
    * @param {HTMLElement} config.element - HTML UI element
-   * @param {Number} config.width - UI div width (int, px)
-   * @param {Number} config.height - UI div height (int, px)
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     super()
 
     this.element    = config.element
-    // this.width    = config.width REMOVE
-    // this.height   = config.height REMOVE
 
     // other
+    this._component = null // current UI component
     this.debug      = config.debug || false
 
-    // ensure element style
-    // this.element.style.width = `${this.width}px` REMOVE
-    // this.element.style.height = `${this.height}px` REMOVE
+    // ensure z-index
     this.element.style.zIndex = '1'
-
-    this._initListeners()
-  }
-
-  _initListeners () {
     this.element.addEventListener('click', this._onClick.bind(this))
   }
 
   _onClick (event) {
+    event.preventDefault()
+    event.stopPropagation()
     this.emit('click', [event.layerX, event.layerY])
+  }
+
+  handleComponent (component, state) {
+    let result = null
+
+    if (this._component !== null && !this._component.closed) {
+      console.log(`[UI] closing previous component`)
+      result = this._component.close()
+    }
+
+    this._component = component.open(state)
+
+    return result
   }
 }

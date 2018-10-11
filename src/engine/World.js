@@ -60,11 +60,7 @@ export default class World {
       worldWidth: width,
       worldHeight: height
     })
-    this.ui         = new UI({
-      ...config.ui
-      // width: this.viewport.width, REMOVE
-      // height: this.viewport.height REMOVE
-    })
+    this.ui         = new UI(config.ui)
 
     // other
     this.queue      = new EventQueue()
@@ -140,19 +136,26 @@ export default class World {
 
   _handleUIClick ([x, y]) {
     let [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // use first tileset for tile size
-    let tileID = 0, tileInstance = null
+    let tileID = 0, tileInstance = null, tileState = {}, newState = {}
 
     for (let l = this.layers.length - 1; l >= 0; l--) {
       tileID = this.layers[l].getTileID(col, row)
 
       // skip empty tiles
       if (tileID > 0) {
-        tileInstance = this.objects.get('tiles').find((tile) => tile.id === tileID)
+        tileInstance = this.objects.get('tiles').get(tileID)
 
         if (tileInstance) {
-          if (tileInstance.click() === false) {
-            console.log(`[WORLD] tile ${tileInstance.id} interrupted click event on layer ${l}`)
-            break
+          if (this.debug) {
+            console.log(`[WORLD] handling component for tile ${tileID}, clicked at ${col} | ${row}`)
+          }
+
+          // pass tile component to UI for handling menu
+          tileState = this.state.getTileState(l, col, row)
+          newState = this.ui.handleComponent(tileInstance.component, tileState)
+
+          if (newState !== null) {
+            this.state.setTileState(newState, l, col, row)
           }
         }
       }
