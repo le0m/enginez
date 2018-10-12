@@ -1,3 +1,11 @@
+/**
+ * Menu element for UI.
+ *
+ * Helper
+ *
+ * @author Leo Mainardi <mainardi.leo@gmail.com>
+ * @license MIT
+ */
 export default class UIComponent {
   constructor (config) {
     this.element = config.element
@@ -15,7 +23,6 @@ export default class UIComponent {
   }
 
   open (state) {
-    console.log(`[COMPONENT] opening; currently ${this.handlers.size} handlers`)
     this.state = state
     this.closed = false
     this.element.classList.remove('hide')
@@ -25,7 +32,6 @@ export default class UIComponent {
   }
 
   close () {
-    console.log(`[COMPONENT] closing; currently ${this.handlers.size} handlers`)
     this.detachHandlers()
     this.closed = true
     this.element.classList.add('hide')

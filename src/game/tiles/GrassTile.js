@@ -1,5 +1,4 @@
 import BaseTile from '../../engine/BaseTile.js'
-import UIComponent from '../../engine/UIComponent.js'
 
 /**
  * Logic for grass tile.
@@ -17,24 +16,38 @@ export default class GrassTile extends BaseTile {
   constructor (config) {
     super(config)
 
-    this.element  = config.element
-    this.component = new UIComponent({ element: this.element })
+    this.element    = config.element
+    this._handlers  = new Map()
+    this._state     = {}
+    this._closed    = false
 
-    // UI handlers
+    // UI elements for menu clicks
     let closeBtn = this.element.querySelector('.navigation .close')
     let buildingBtns = this.element.querySelectorAll('.list-item .click.card')
 
-    // TODO: 'component' is an Observable
-    this.component.add(closeBtn, (event) => {
-      event.preventDefault()
+    // block click on component from reaching game canvas
+    this._handlers.set(this.element, (event) => {
       event.stopPropagation()
-      console.log(`----TEST----`, this) // TEST if this is UIComponent, call this.close
     })
+
+    // menu close button
+    this._handlers.set(closeBtn, (event) => {
+      if (this.debug) {
+        console.log(`[GRASS TILE] closing menu`)
+      }
+
+      event.stopPropagation()
+      this.close()
+    })
+
+    // buildings buttons
     buildingBtns.forEach((buildingBtn) => {
-      this.component.add(buildingBtn, (event) => {
-        event.preventDefault()
+      this._handlers.set(buildingBtn, (event) => {
+        if (this.debug) {
+          console.log(`[GRASS TILE] clicked menu item:`, event.target)
+        }
+
         event.stopPropagation()
-        console.log(`clicked building:`, event)
       })
     })
   }
@@ -44,5 +57,38 @@ export default class GrassTile extends BaseTile {
    */
   click (params = {}) {
     console.log(`[GRASS TILE] clicked`)
+  }
+
+  open (state) {
+    this._state = state
+    this._closed = false
+    this.element.classList.remove('hide')
+    this._attachHandlers()
+
+    return this
+  }
+
+  close () {
+    this._detachHandlers()
+    this._closed = true
+    this.element.classList.add('hide')
+
+    return this._state
+  }
+
+  isOpen () {
+    return !this._closed
+  }
+
+  _attachHandlers () {
+    for (let [element, handler] of this._handlers) {
+      element.addEventListener('click', handler)
+    }
+  }
+
+  _detachHandlers () {
+    for (let [element, handler] of this._handlers) {
+      element.removeEventListener('click', handler)
+    }
   }
 }

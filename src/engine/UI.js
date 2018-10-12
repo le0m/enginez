@@ -20,12 +20,12 @@ export default class UI extends Observable {
     this.element    = config.element
 
     // other
-    this._component = null // current UI component
+    this.component  = null // current tile UI component
     this.debug      = config.debug || false
 
     // ensure z-index
     this.element.style.zIndex = '1'
-    this.element.addEventListener('click', this._onClick.bind(this))
+    this.element.addEventListener('click', this._onClick.bind(this), false)
   }
 
   _onClick (event) {
@@ -37,12 +37,12 @@ export default class UI extends Observable {
   handleComponent (component, state) {
     let result = null
 
-    if (this._component !== null && !this._component.closed) {
-      console.log(`[UI] closing previous component`)
-      result = this._component.close()
+    if (this.component !== null && this.component.isOpen()) {
+      result = this.component.close()
+      console.log(`[UI] closing previous component:`, result || {})
     }
 
-    this._component = component.open(state)
+    this.component = component.open(state)
 
     return result
   }

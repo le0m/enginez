@@ -152,7 +152,7 @@ export default class World {
 
           // pass tile component to UI for handling menu
           tileState = this.state.getTileState(l, col, row)
-          newState = this.ui.handleComponent(tileInstance.component, tileState)
+          newState = this.ui.handleComponent(tileInstance, tileState)
 
           if (newState !== null) {
             this.state.setTileState(newState, l, col, row)

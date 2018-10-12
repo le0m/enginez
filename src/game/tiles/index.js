@@ -8,6 +8,6 @@ import GrassTile from './GrassTile.js'
  * @license MIT
  */
 
-const Grass = new GrassTile({ id: 1, element: document.getElementById('buildings') })
+const Grass = new GrassTile({ debug: true, id: 1, element: document.getElementById('buildings') })
 
 export { Grass }
