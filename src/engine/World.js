@@ -94,14 +94,15 @@ export default class World {
   /**
    * Update the world state.
    *
-   * @param {Number} delta - Time elapsed (int, ms)
+   * @param {Number} delta - Time since last update (int, ms)
+   * @param {Number} timestamp - Time since start (int, ms)
    */
-  update (delta) {
+  update (delta, timestamp) {
     if (this.input.isMoving()) {
       this.viewport.move(this.input.getDistance(delta))
     }
 
-    this.layers.forEach((layer) => layer.update(delta))
+    this.layers.forEach((layer) => layer.update(delta, timestamp))
   }
 
   /**

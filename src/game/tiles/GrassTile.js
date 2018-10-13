@@ -12,6 +12,7 @@ export default class GrassTile extends BaseTile {
   /**
    * @param {Object} config - GrassTile component config
    * @param {HTMLElement} config.element - UI element
+   * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     super(config)

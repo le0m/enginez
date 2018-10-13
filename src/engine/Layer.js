@@ -105,9 +105,10 @@ export default class Layer {
   /**
    * Update the layer state.
    *
-   * @param {Number} delta - Time elapsed (int, ms)
+   * @param {Number} delta - Time since last update (int, ms)
+   * @param {Number} timestamp - Time since start (int, ms)
    */
-  update (delta) {}
+  update (delta, timestamp) {}
 
   /**
    * Get the layer size.

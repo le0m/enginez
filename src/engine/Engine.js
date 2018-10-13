@@ -97,8 +97,9 @@ export default class Engine {
 
     // update by fixed steps
     while (this._updateTime >= this._updateTimeStep) {
-      this.update(this._updateTimeStep)
+      this.update(this._updateTimeStep, timestamp)
       this._updateTime -= this._updateTimeStep
+      timestamp += this._updateTimeStep
     }
 
     this.render()
@@ -107,8 +108,6 @@ export default class Engine {
 
   /**
    * Pre-load resources.
-   * Override to pre-load resources outside
-   * of configuration.
    *
    * @returns {Promise<String>[]} - Cache keys of the loaded images, passed down to {@link Engine#init}
    */
@@ -118,7 +117,6 @@ export default class Engine {
 
   /**
    * Initialize Engine and components.
-   * Override to initialize custom components.
    *
    * @param {Object} params - Results returned from {@link Engine#load}
    */
@@ -128,17 +126,16 @@ export default class Engine {
 
   /**
    * Update game status.
-   * Override to apply custom update logic.
    *
-   * @param {Number} delta
+   * @param {Number} delta - Time since last update (int, ms)
+   * @param {Number} timestamp - Time since start (int, ms)
    */
-  update (delta) {
-    this.world.update(delta)
+  update (delta, timestamp) {
+    this.world.update(delta, timestamp)
   }
 
   /**
    * Render current world position.
-   * Override to draw custom entities.
    */
   render () {
     this.world.draw()
