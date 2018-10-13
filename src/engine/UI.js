@@ -34,12 +34,25 @@ export default class UI extends Observable {
     this.emit('click', [event.layerX, event.layerY])
   }
 
+  /**
+   * Handles an UI component.
+   *
+   * Only one component can be open at a time.
+   * The previous one will be closed and its result returned.
+   *
+   * @param {BaseTile} component - Tile implementing UI logic
+   * @param {Object} state - Current state of the tile
+   * @returns {*}
+   */
   handleComponent (component, state) {
     let result = null
 
     if (this.component !== null && this.component.isOpen()) {
       result = this.component.close()
-      console.log(`[UI] closing previous component:`, result || {})
+
+      if (this.debug) {
+        console.log(`[UI] closing previous component:`, result || {})
+      }
     }
 
     this.component = component.open(state)

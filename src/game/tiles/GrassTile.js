@@ -60,6 +60,9 @@ export default class GrassTile extends BaseTile {
     console.log(`[GRASS TILE] clicked`)
   }
 
+  /**
+   * @inheritdoc
+   */
   open (state) {
     this._state = state
     this._closed = false
@@ -69,6 +72,9 @@ export default class GrassTile extends BaseTile {
     return this
   }
 
+  /**
+   * @inheritdoc
+   */
   close () {
     this._detachHandlers()
     this._closed = true
@@ -77,6 +83,9 @@ export default class GrassTile extends BaseTile {
     return this._state
   }
 
+  /**
+   * @inheritdoc
+   */
   isOpen () {
     return !this._closed
   }

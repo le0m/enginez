@@ -38,13 +38,32 @@ export default class BaseTile extends Observable {
   update (delta, prevState) {}
 
   /**
-   * Click the tile, triggering its behavior.
-   *
-   * Override this method to show UI menu and
-   * handle click.
+   * Click the tile.
    *
    * @param {Object} [params={}] - Optional parameters
    * @returns {*|false} - `false` to stop the click event from propagating to other layers
    */
   click (params = {}) {}
+
+  /**
+   * Open the tile UI menu.
+   *
+   * @param {Object} state - Current tile state
+   * @returns {this} - For chaining (?)
+   */
+  open (state) {}
+
+  /**
+   * Close the tile UI menu.
+   *
+   * @returns {Object} - Updated tile state
+   */
+  close () {}
+
+  /**
+   * Check if tile UI menu is currently open.
+   *
+   * @returns {Boolean}
+   */
+  isOpen () {}
 }

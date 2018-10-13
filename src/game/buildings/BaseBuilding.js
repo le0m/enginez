@@ -27,17 +27,26 @@ export default class BaseBuilding {
     this.debug = config.debug || false
   }
 
+  /**
+   * Reset current production progress.
+   */
   reset () {
     this.begin = Date.now() / 1000 | 0
     this.end = this.begin + this.time
   }
 
+  /**
+   * Pause current production progress.
+   */
   pause () {
     if (!this.paused) {
       this.paused = Date.now() / 1000 | 0
     }
   }
 
+  /**
+   * Resume production progress.
+   */
   resume () {
     if (this.paused) {
       this.end += (Date.now() / 1000 | 0) - this.paused
@@ -45,6 +54,12 @@ export default class BaseBuilding {
     }
   }
 
+  /**
+   * Check if production is ready and produce.
+   *
+   * @param {Number} timestamp - Time since start (int, ms)
+   * @returns {{food: Number, wood: Number, rock: Number}|false} - Resource production, or `false` if not ready
+   */
   produce (timestamp) {
     if (!this.paused && timestamp >= this.end) {
       this.reset()
@@ -54,5 +69,8 @@ export default class BaseBuilding {
     return false
   }
 
+  /**
+   * Get this building's cost to build.
+   */
   getCost () {}
 }

@@ -23,6 +23,14 @@ export default class City {
     this.debug      = config.debug || false
   }
 
+  /**
+   * Add a building to the City.
+   *
+   * Validates the building cost.
+   *
+   * @param {BaseBuilding} building - The Building component to check and add
+   * @returns {boolean} - Whether the building was added or not
+   */
   build (building) {
     let cost = building.getCost()
 
@@ -35,6 +43,13 @@ export default class City {
     return false
   }
 
+  /**
+   * Trigger production of all City buildings.
+   * Produced resources are added to the City stash.
+   *
+   * @param {Number} timestamp - Time since start (int, ms)
+   * @returns {{food: Number, wood: Number, rock: Number}} - Total production, already added to City stash
+   */
   production (timestamp) {
     let total = this.buildings.reduce((production, building) => {
       let produced = building.produce(timestamp)
@@ -53,6 +68,13 @@ export default class City {
     return total
   }
 
+  /**
+   * Check if the City can afford spending an amount
+   * of resources.
+   *
+   * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
+   * @returns {Boolean}
+   */
   canAfford (amount) {
     let affordable = true
 
@@ -68,6 +90,12 @@ export default class City {
     return affordable
   }
 
+  /**
+   * Spend an amount of City resources.
+   *
+   * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
+   * @returns {Boolean} - `false` if the City can't afford the amount of resources
+   */
   spend (amount) {
     if (!this.canAfford(amount)) {
       return false
@@ -82,6 +110,12 @@ export default class City {
     return true
   }
 
+  /**
+   * Add an amount of resources to the
+   * City stash.
+   *
+   * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
+   */
   gain (amount) {
     for (let resource in amount) {
       if (amount.hasOwnProperty(resource)) {
