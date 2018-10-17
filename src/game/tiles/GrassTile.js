@@ -49,6 +49,7 @@ export default class GrassTile extends BaseTile {
         }
 
         event.stopPropagation()
+        this.emit('city.build.NAME_BUILDING')
       })
     })
   }

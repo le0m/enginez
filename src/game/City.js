@@ -1,19 +1,25 @@
+import Observable from '../engine/Observable'
+
 /**
  * Logic for the City, production and management.
  *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class City {
+export default class City extends Observable {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
    * @param {Object} config - City component configuration
+   * @param {HTMLElement} config.element - UI component for showing current City information
    * @param {Object} config.resources - Initial resources ({food: Number, wood: Number, rock: Number})
    * @param {Number} config.population - Initial population (int)
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
+    super(config)
+
+    this.element    = config.element
     this.resources  = config.resources || { food: 100, wood: 100, rock: 100 }
     this.population = config.population
     this.workers    = 0

@@ -1,3 +1,5 @@
+import Observable from '../../engine/Observable'
+
 /**
  * Base Building logic.
  *
@@ -6,22 +8,31 @@
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class BaseBuilding {
+export default class BaseBuilding extends Observable {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
    * @param {Object} config - BaseBuilding component configuration
-   * @param {Object} config.production - Building production  ({[food: Number], [wood: Number], [rock: Number]})
+   * @param {String} config.name - Building name
+   * @param {Number} config.tileID - ID of the tile representing this build
+   * @param {Object} config.cost - Resources cost to build ({food: Number, wood: Number, rock: Number})
+   * @param {Object} config.production - Building production ({food: Number, wood: Number, rock: Number})
    * @param {Number} config.time - Production time (int, s)
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
+    super(config)
+
+    this.name       = config.name
+    this.tileID     = config.tileID
+    this.cost       = config.cost
     this.production = config.production
     this.time       = config.time
     this.begin      = Date.now() / 1000 | 0
     this.end        = this.begin + this.time
     this.paused     = this.begin
     this.workers    = 0
+    this.position   = null // building position on the map (col, row)
 
     // other
     this.debug = config.debug || false
@@ -29,10 +40,13 @@ export default class BaseBuilding {
 
   /**
    * Reset current production progress.
+   *
+   * @param {Boolean} [pause=false] - Whether to pause or not the production after reset
    */
-  reset () {
+  reset (pause = false) {
     this.begin = Date.now() / 1000 | 0
     this.end = this.begin + this.time
+    this.pause = pause ? this.begin : false
   }
 
   /**
@@ -58,7 +72,7 @@ export default class BaseBuilding {
    * Check if production is ready and produce.
    *
    * @param {Number} timestamp - Time since start (int, ms)
-   * @returns {{food: Number, wood: Number, rock: Number}|false} - Resource production, or `false` if not ready
+   * @returns {{food: Number, wood: Number, rock: Number}|Boolean} - Resource production, or `false` if not ready
    */
   produce (timestamp) {
     if (!this.paused && timestamp >= this.end) {
@@ -71,6 +85,18 @@ export default class BaseBuilding {
 
   /**
    * Get this building's cost to build.
+   *
+   * @returns {{food: Number, wood: Number, rock: Number}}
    */
-  getCost () {}
+  getCost () {
+    return this.cost
+  }
+
+  assignWorker () {
+    this.emit('worker.request', this)
+  }
+
+  removeWorker () {
+    this.emit('worker.free', this)
+  }
 }
