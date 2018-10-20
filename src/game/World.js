@@ -1,21 +1,22 @@
-import State from './State.js'
-import Viewport from './Viewport.js'
-import Layer from './Layer.js'
-import Keyboard from './Keyboard.js'
-import Tileset from './Tileset.js'
-import UI from './UI.js'
-import EventQueue from './EventQueue.js'
+import State from '../engine/State.js'
+import Viewport from '../engine/Viewport.js'
+import Layer from '../engine/Layer.js'
+import Keyboard from '../engine/Keyboard.js'
+import Tileset from '../engine/Tileset.js'
+import UI from '../engine/UI.js'
+import EventQueue from '../engine/EventQueue.js'
 import { ConsoleExtra } from '../utils.js'
+import BaseWorld from '../engine/BaseWorld'
 
 const console = ConsoleExtra(window.console)
 
 /**
- * This component manages everything concerning the game world.
+ * World implementation.
  *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class World {
+export default class World extends BaseWorld {
   /* eslint-disable no-multi-spaces, one-var, key-spacing */
 
   /**
@@ -28,12 +29,11 @@ export default class World {
    * @param {Object} config.ui - UI component config (see {@link UI#constructor})
    * @param {Object} config.keyboard - Keyboard component config (see {@link Keyboard#constructor})
    * @param {Object} config.state - State component config (see {@link State#constructor})
-   * @param {Loader} config.loader - {@link Loader} component instance, to pre-render tileset images
-   * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
+    super(config)
+
     // components related
-    this.loader     = config.loader
     this.map        = config.map
     this.tilesets   = config.tilesets.map((tileset) => new Tileset({
       ...tileset,
@@ -66,23 +66,20 @@ export default class World {
     this.queue      = new EventQueue()
     this.objects    = config.objects
     this.container  = config.container
-    this.debug      = config.debug || false
 
     // ensure container style
     this.resize(this.viewport.width, this.viewport.height)
   }
 
   /**
-   * Pre-load all tilesets.
-   *
-   * @returns {Promise<String>[]}
+   * @inheritdoc
    */
   load () {
     return this.tilesets.map((tileset) => tileset.load())
   }
 
   /**
-   * Initialize components.
+   * @inheritdoc
    */
   init () {
     window.addEventListener('resize', this._handleResize.bind(this))
@@ -92,10 +89,7 @@ export default class World {
   }
 
   /**
-   * Update the world state.
-   *
-   * @param {Number} delta - Time since last update (int, ms)
-   * @param {Number} timestamp - Time since start (int, ms)
+   * @inheritdoc
    */
   update (delta, timestamp) {
     if (this.input.isMoving()) {
@@ -106,7 +100,7 @@ export default class World {
   }
 
   /**
-   * Draw visible parts to viewport.
+   * @inheritdoc
    */
   draw () {
     // clear frame
@@ -119,11 +113,7 @@ export default class World {
   }
 
   /**
-   * Resize the HTML container.
-   * Trigger resizing of `Viewport`.
-   *
-   * @param {Number} width - New width (int, px)
-   * @param {Number} height - New height (int, px)
+   * @inheritdoc
    */
   resize (width, height) {
     if (this.debug) {

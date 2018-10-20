@@ -1,6 +1,7 @@
 import './css/main.css'
 import Engine from './engine/Engine.js'
 import { Grass } from './game/tiles'
+import World from './game/World'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
@@ -25,6 +26,7 @@ const config = {
 
   world: {
     debug: true,
+    obj: World,
     map: [
       [
         [  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58],
