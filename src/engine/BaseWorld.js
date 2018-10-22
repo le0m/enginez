@@ -10,14 +10,14 @@ export default class BaseWorld {
 
   /**
    * @param {Object} config - BaseWorld component config
-   * @param {Loader} config.loader - {@link Loader} component instance, to pre-render tileset images
+   * @param {HTMLElement} config.container - Top hierarchy container element
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
-    this.loader = config.loader
+    this.container  = config.container
 
     // other
-    this.debug  = config.debug || false
+    this.debug      = config.debug || false
   }
 
   /**

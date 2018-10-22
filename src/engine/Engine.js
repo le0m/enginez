@@ -1,4 +1,3 @@
-import Loader from './Loader.js'
 import { ConsoleExtra } from '../utils.js'
 
 const console = ConsoleExtra(window.console)
@@ -26,8 +25,7 @@ export default class Engine {
    * @param {Object} config - Engine component configuration
    * @param {Number} [config.updateTimeStep=10] - Single step `update()` time (int, ms)
    * @param {Number} [config.updateTimeMax=50] - Max accumulated `update()` time (int, ms)
-   * @param {BaseWorld} config.world - World component config (see {@link World#constructor})
-   * @param {Object} config.loader - Loader component config (see {@link Loader#constructor})
+   * @param {BaseWorld} config.world - {@link BaseWorld} implementation instance
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
@@ -39,12 +37,7 @@ export default class Engine {
     this._updateTimeMax     = config.updateTimeMax || 50
 
     // components related
-    this.loader             = new Loader(config.loader)
-    let World = config.world.obj
-    this.world              = new World({
-      ...config.world,
-      loader: this.loader
-    })
+    this.world              = config.world
 
     // other
     this.fps                = 0

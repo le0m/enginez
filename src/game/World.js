@@ -4,9 +4,10 @@ import Layer from '../engine/Layer.js'
 import Keyboard from '../engine/Keyboard.js'
 import Tileset from '../engine/Tileset.js'
 import UI from '../engine/UI.js'
-import EventQueue from '../engine/EventQueue.js'
 import { ConsoleExtra } from '../utils.js'
 import BaseWorld from '../engine/BaseWorld'
+import { map, tilesets, keyboard, state, ui, viewport, objects } from './config.js'
+import Loader from '../engine/Loader'
 
 const console = ConsoleExtra(window.console)
 
@@ -21,27 +22,23 @@ export default class World extends BaseWorld {
 
   /**
    * @param {Object} config - World component config
-   * @param {Number[][][]} config.map - World map represented as a 3-dimensional array of tile IDs (int)
-   * @param {Object[]} config.tilesets - Tileset component config, up to one per layer (see {@link Tileset#constructor})
-   * @param {Map<BaseTile>} config.objects - A `Map` containing game objects divided by category
-   * @param {Object} config.viewport - Viewport component config (see {@link Viewport#constructor})
    * @param {HTMLElement} config.container - Top hierarchy container element
-   * @param {Object} config.ui - UI component config (see {@link UI#constructor})
-   * @param {Object} config.keyboard - Keyboard component config (see {@link Keyboard#constructor})
-   * @param {Object} config.state - State component config (see {@link State#constructor})
+   * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     super(config)
 
+    this.loader = new Loader({ debug: this.debug })
+
     // components related
-    this.map        = config.map
-    this.tilesets   = config.tilesets.map((tileset) => new Tileset({
+    this.map        = map
+    this.tilesets   = tilesets.map((tileset) => new Tileset({
       ...tileset,
       loader: this.loader
     }))
-    this.input      = new Keyboard(config.keyboard)
+    this.input      = new Keyboard(keyboard)
     this.state      = new State({
-      ...config.state,
+      ...state,
       layers: this.map.length,
       rows: this.map[0].length,
       cols: this.map[0][0].length
@@ -56,16 +53,14 @@ export default class World extends BaseWorld {
 
     let [width, height] = this.layers[0].getSize(true) // use first layer size as world size
     this.viewport   = new Viewport({
-      ...config.viewport,
+      ...viewport,
       worldWidth: width,
       worldHeight: height
     })
-    this.ui         = new UI(config.ui)
+    this.ui         = new UI(ui)
 
     // other
-    this.queue      = new EventQueue()
-    this.objects    = config.objects
-    this.container  = config.container
+    this.objects    = objects
 
     // ensure container style
     this.resize(this.viewport.width, this.viewport.height)
@@ -153,7 +148,7 @@ export default class World extends BaseWorld {
     }
   }
 
-  _handleResize (event) {
+  _handleResize () {
     let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
     let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 
