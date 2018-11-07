@@ -1,3 +1,4 @@
+import Loader from './Loader'
 
 /**
  * This component manages everything concerning the game world.
@@ -18,6 +19,7 @@ export default class BaseWorld {
 
     // other
     this.debug      = config.debug || false
+    this.loader = new Loader({ debug: this.debug })
   }
 
   /**

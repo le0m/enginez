@@ -7,7 +7,6 @@ import UI from '../engine/UI.js'
 import { ConsoleExtra } from '../utils.js'
 import BaseWorld from '../engine/BaseWorld'
 import { map, tilesets, keyboard, state, ui, viewport, objects } from './config.js'
-import Loader from '../engine/Loader'
 
 const console = ConsoleExtra(window.console)
 
@@ -27,8 +26,6 @@ export default class World extends BaseWorld {
    */
   constructor (config) {
     super(config)
-
-    this.loader = new Loader({ debug: this.debug })
 
     // components related
     this.map        = map
