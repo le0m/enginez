@@ -13,7 +13,9 @@ export default class Field extends BaseBuilding {
    * @param {Object} config - Field component configuration
    * @param {Boolean} [config.debug=false] - Debug mode
    */
+  /*
   constructor (config) {
     super(config)
   }
+  */
 }

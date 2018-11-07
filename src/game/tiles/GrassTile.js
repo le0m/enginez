@@ -1,4 +1,5 @@
 import BaseTile from '../../engine/BaseTile.js'
+import Field from '../buildings/Field.js'
 
 /**
  * Logic for grass tile.
@@ -22,9 +23,25 @@ export default class GrassTile extends BaseTile {
     this._state     = {}
     this._closed    = false
 
+    // possible menu buildings
+    this.menuItems = [
+      { // FIELD (id: 0)
+        tile: 112,
+        building: () => new Field({
+          name: 'field',
+          tileID: 112,
+          cost: { food: 10, wood: 20 },
+          production: { food: 50 },
+          time: 10,
+          debug: true
+        })
+      }
+    ]
+
     // UI elements for menu clicks
     let closeBtn = this.element.querySelector('.navigation .close')
     let buildingBtns = this.element.querySelectorAll('.list-item .click.card')
+    console.log(buildingBtns)
 
     // block click on component from reaching game canvas
     this._handlers.set(this.element, (event) => {
@@ -42,14 +59,14 @@ export default class GrassTile extends BaseTile {
     })
 
     // buildings buttons
-    buildingBtns.forEach((buildingBtn) => {
+    buildingBtns.forEach((buildingBtn, index) => {
       this._handlers.set(buildingBtn, (event) => {
         if (this.debug) {
           console.log(`[GRASS TILE] clicked menu item:`, event.target)
         }
 
         event.stopPropagation()
-        this.emit('city.build.NAME_BUILDING')
+        this.emit('city.build', this.menuItems[index])
       })
     })
   }

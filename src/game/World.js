@@ -139,6 +139,13 @@ export default class World extends BaseWorld {
 
           if (newState !== null) {
             this.state.setTileState(newState, l, col, row)
+
+            // attach events to newly mounted UI component TODO detach this?
+            this.ui.component.on('city.build', ({ tile, building }) => {
+              console.log(`[WORLD] city build event detected`)
+              // this.city.build(building())
+              this.layers[l].setTileID(tile, col, row)
+            }, this)
           }
         }
       }
