@@ -1,7 +1,4 @@
 import Observable from '../engine/Observable'
-import { ConsoleExtra } from '../utils.js'
-
-const console = ConsoleExtra(window.console)
 
 /**
  * Logic for the City, production and management.
