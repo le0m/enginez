@@ -6,6 +6,7 @@ import Tileset from '../engine/Tileset.js'
 import UI from '../engine/UI.js'
 import { ConsoleExtra } from '../utils.js'
 import BaseWorld from '../engine/BaseWorld'
+import City from './City'
 import { map, tilesets, keyboard, state, ui, viewport, objects } from './config.js'
 
 const console = ConsoleExtra(window.console)
@@ -58,6 +59,12 @@ export default class World extends BaseWorld {
 
     // other
     this.objects    = objects
+    this.city = new City({
+      element: document.getElementById('resources'),
+      population: 5,
+      resources: { food: 100, wood: 100, rock: 100 },
+      debug: true
+    })
 
     // ensure container style
     this.resize(this.viewport.width, this.viewport.height)
@@ -89,6 +96,7 @@ export default class World extends BaseWorld {
     }
 
     this.layers.forEach((layer) => layer.update(delta, timestamp))
+    this.city.production(timestamp)
   }
 
   /**
@@ -135,21 +143,25 @@ export default class World extends BaseWorld {
 
           // pass tile component to UI for handling menu
           tileState = this.state.getTileState(l, col, row)
+
+          if (this.ui.component !== null) {
+            this.ui.component.off('city.build', this._handleCityEvent, this)
+          }
+
           newState = this.ui.handleComponent(tileInstance, tileState)
+          this.ui.component.on('city.build', this._handleCityEvent, this)
 
           if (newState !== null) {
-            this.state.setTileState(newState, l, col, row)
-
-            // attach events to newly mounted UI component TODO detach this?
-            this.ui.component.on('city.build', ({ tile, building }) => {
-              console.log(`[WORLD] city build event detected`)
-              // this.city.build(building())
-              this.layers[l].setTileID(tile, col, row)
-            }, this)
+            this.state.setTileState(newState, newState.layer, newState.col, newState.row)
           }
         }
       }
     }
+  }
+
+  _handleCityEvent ({ tile, building, state }) {
+    this.city.build(building())
+    this.layers[state.layer].setTileID(tile, state.col, state.row)
   }
 
   _handleResize () {

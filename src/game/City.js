@@ -41,6 +41,10 @@ export default class City extends Observable {
     let cost = building.getCost()
 
     if (this.spend(cost)) {
+      if (this.debug) {
+        console.log(`[CITY] building '${building.name}'`)
+      }
+
       this.buildings.push(building)
 
       return true
@@ -67,7 +71,14 @@ export default class City extends Observable {
           }
         }
       }
+
+      return production
     }, { food: 0, wood: 0, rock: 0 })
+
+    // debug & any resource produced at least 1
+    if (this.debug && Object.keys(total).filter((key) => total[key] > 0).length > 0) {
+      console.log(`[CITY] production:`, total)
+    }
 
     this.gain(total)
 
@@ -117,8 +128,7 @@ export default class City extends Observable {
   }
 
   /**
-   * Add an amount of resources to the
-   * City stash.
+   * Add an amount of resources to the City stash.
    *
    * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
    */

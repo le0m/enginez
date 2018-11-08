@@ -41,7 +41,6 @@ export default class GrassTile extends BaseTile {
     // UI elements for menu clicks
     let closeBtn = this.element.querySelector('.navigation .close')
     let buildingBtns = this.element.querySelectorAll('.list-item .click.card')
-    console.log(buildingBtns)
 
     // block click on component from reaching game canvas
     this._handlers.set(this.element, (event) => {
@@ -62,11 +61,14 @@ export default class GrassTile extends BaseTile {
     buildingBtns.forEach((buildingBtn, index) => {
       this._handlers.set(buildingBtn, (event) => {
         if (this.debug) {
-          console.log(`[GRASS TILE] clicked menu item:`, event.target)
+          console.log(`[GRASS TILE] clicked menu item`)
         }
 
         event.stopPropagation()
-        this.emit('city.build', this.menuItems[index])
+        this.emit('city.build', {
+          ...this.menuItems[index],
+          state: this._state
+        })
       })
     })
   }
@@ -86,6 +88,7 @@ export default class GrassTile extends BaseTile {
     this._closed = false
     this.element.classList.remove('hide')
     this._attachHandlers()
+    this.emit('open', this)
 
     return this
   }
@@ -97,6 +100,7 @@ export default class GrassTile extends BaseTile {
     this._detachHandlers()
     this._closed = true
     this.element.classList.add('hide')
+    this.emit('close', this._state)
 
     return this._state
   }

@@ -23,16 +23,17 @@ export default class BaseBuilding extends Observable {
   constructor (config) {
     super(config)
 
-    this.name       = config.name
-    this.tileID     = config.tileID
-    this.cost       = config.cost
-    this.production = config.production
-    this.time       = config.time
-    this.begin      = Date.now() / 1000 | 0
-    this.end        = this.begin + this.time
-    this.paused     = this.begin
-    this.workers    = 0
-    this.position   = null // building position on the map (col, row)
+    this.name               = config.name
+    this.tileID             = config.tileID
+    this.cost               = config.cost
+    this.production         = config.production
+    this.time               = config.time * 1000
+    this.begin              = Date.now()
+    this.end                = this.begin + this.time
+    this._previousTimestamp = 0
+    this.paused             = false // this.begin
+    this.workers            = 0
+    this.position           = null // building position on the map (col, row)
 
     // other
     this.debug = config.debug || false
@@ -44,9 +45,9 @@ export default class BaseBuilding extends Observable {
    * @param {Boolean} [pause=false] - Whether to pause or not the production after reset
    */
   reset (pause = false) {
-    this.begin = Date.now() / 1000 | 0
+    this.begin = Date.now()
     this.end = this.begin + this.time
-    this.pause = pause ? this.begin : false
+    this.paused = pause ? this.begin : false
   }
 
   /**
@@ -54,7 +55,7 @@ export default class BaseBuilding extends Observable {
    */
   pause () {
     if (!this.paused) {
-      this.paused = Date.now() / 1000 | 0
+      this.paused = Date.now()
     }
   }
 
@@ -63,7 +64,7 @@ export default class BaseBuilding extends Observable {
    */
   resume () {
     if (this.paused) {
-      this.end += (Date.now() / 1000 | 0) - this.paused
+      this.end += Date.now() - this.paused
       this.paused = false
     }
   }
@@ -75,8 +76,14 @@ export default class BaseBuilding extends Observable {
    * @returns {{food: Number, wood: Number, rock: Number}|Boolean} - Resource production, or `false` if not ready
    */
   produce (timestamp) {
-    if (!this.paused && timestamp >= this.end) {
+    if (this._previousTimestamp === 0) {
+      this._previousTimestamp = timestamp
+    }
+
+    if (!this.paused && (this.begin + (timestamp - this._previousTimestamp)) > this.end) {
       this.reset()
+      this._previousTimestamp = timestamp
+
       return this.production
     }
 
