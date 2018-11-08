@@ -62,7 +62,7 @@ export default class World extends BaseWorld {
     this.city = new City({
       element: document.getElementById('resources'),
       population: 5,
-      resources: { food: 100, wood: 100, rock: 100 },
+      resources: { food: 100, wood: 20, rock: 100 },
       debug: true
     })
 
@@ -160,8 +160,9 @@ export default class World extends BaseWorld {
   }
 
   _handleCityEvent ({ tile, building, state }) {
-    this.city.build(building())
-    this.layers[state.layer].setTileID(tile, state.col, state.row)
+    if (this.city.build(building())) {
+      this.layers[state.layer].setTileID(tile, state.col, state.row)
+    }
   }
 
   _handleResize () {

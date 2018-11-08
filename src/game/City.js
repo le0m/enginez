@@ -1,4 +1,7 @@
 import Observable from '../engine/Observable'
+import { ConsoleExtra } from '../utils.js'
+
+const console = ConsoleExtra(window.console)
 
 /**
  * Logic for the City, production and management.
@@ -134,9 +137,21 @@ export default class City extends Observable {
    */
   gain (amount) {
     for (let resource in amount) {
-      if (amount.hasOwnProperty(resource)) {
+      if (amount.hasOwnProperty(resource) && amount[resource] > 0) {
         this.resources[resource] += amount[resource]
       }
     }
+
+    this.updateElement()
+  }
+
+  updateElement () {
+    let food = this.element.querySelector('.food span.value')
+    let wood = this.element.querySelector('.wood span.value')
+    let rock = this.element.querySelector('.rock span.value')
+
+    food.innerText = this.resources.food
+    wood.innerText = this.resources.wood
+    rock.innerText = this.resources.rock
   }
 }
