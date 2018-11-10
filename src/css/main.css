@@ -1,13 +1,52 @@
 
 /*        DO NOT CHANGE        */
 
+@font-face {
+    font-family: 'Hind';
+    src: url('/static/font/Hind-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Hind Light';
+    src: url('/static/font/Hind-Light.ttf');
+}
 
 html, body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Hind', sans-serif;
     font-size: 16px;
+    color: #444444;
 }
+
+.size-1 {
+    font-size: 1.2rem;
+}
+
+.size-2 {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02rem;
+}
+
+.size-3 {
+    font-size: 0.8rem;
+    font-family: 'Hind Light', sans-serif;
+}
+
+.size-4 {
+    font-size: 0.6rem;
+}
+
+.size-5 {
+    font-size: 0.4rem;
+}
+
+.invert {
+    color: #ffffff;
+    background-color: #555555;
+}
+
 
 ul {
     padding: 0;
@@ -86,7 +125,6 @@ canvas {
 
 .header .resources {
     box-sizing: border-box;
-    background-color: #ffffff;
     padding: 0.8rem;
 }
 
@@ -114,7 +152,7 @@ canvas {
 .navigation .arrow {
     padding: 0 16px;
     margin: 0 2px;
-    border: solid 1px #444444;
+    border: solid 1px #777777;
 }
 
 .close {
@@ -137,7 +175,6 @@ canvas {
 .card-header {
     word-break: break-all;
     padding: 0.2rem;
-    font-size: 1rem;
 }
 
 .card-header, .card-body,.card-footer {
@@ -148,11 +185,5 @@ canvas {
     max-width: 100%;
 }
 
-.card-footer.resources {
-    padding: 0 8px 4px;
-}
-
 .card-footer .resources div {
-    background-color: #eeeeee;
-    font-size: 0.8rem;
-}
+ }
