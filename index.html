@@ -16,7 +16,40 @@
       <canvas id="canvas"></canvas>
 
       <div id="ui">
-        <div id="resources" class="header">
+        <template id="resources-template">
+          <style>
+            :host {
+              display: block;
+            }
+
+            .header {
+              padding: 20px;
+            }
+
+            .header .resources {
+              box-sizing: border-box;
+              background-color: #ffffff;
+              padding: 0.8rem;
+            }
+
+            .resources div {
+              display: inline-block;
+            }
+          </style>
+
+          <div id="resources-dev" class="header">
+            <div class="resources">
+              <!--
+              <div class="food">
+                <span class="icon">Food</span>
+                <span class="value">100</span>
+              </div>
+              -->
+            </div>
+          </div>
+        </template>
+
+        <div id="resources" class="header hide">
           <div class="resources">
             <div class="food">
               <span class="icon">F</span>

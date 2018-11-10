@@ -5,43 +5,13 @@ class ResourcesHeader extends HTMLElement {
     super()
 
     this.attachShadow({ mode: 'open' })
-    this.addStyle()
     this.addTemplate()
   }
 
   addTemplate () {
-    let wrapper = document.createElement('div')
-    wrapper.setAttribute('id', 'resources')
-    wrapper.classList.add('header')
-    this.shadowRoot.appendChild(wrapper)
-
-    let resources = document.createElement('div')
-    resources.classList.add('resources')
-    wrapper.appendChild(resources)
-  }
-
-  addStyle () {
-    let style = document.createElement('style')
-    style.textContent = `
-      :host {
-        display: block;
-      }
-      
-      .header {
-          padding: 20px;
-      }
-      
-      .header .resources {
-          box-sizing: border-box;
-          background-color: #ffffff;
-          padding: 0.8rem;
-      }
-      
-      .resources div {
-          display: inline-block;
-      }
-    `
-    this.shadowRoot.appendChild(style)
+    let template = document.getElementById('resources-template')
+    let templateClone = template.content.cloneNode(true)
+    this.shadowRoot.appendChild(templateClone)
   }
 
   createResources (names) {

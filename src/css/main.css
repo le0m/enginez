@@ -52,11 +52,6 @@ canvas {
     display: inline-block;
 }
 
-/* ALL divs inside 'resources' are resources templates */
-.resources div {
-    display: inline-block;
-}
-
 .hide {
     display: none;
 }
@@ -76,20 +71,6 @@ canvas {
     cursor: pointer;
     border-color: red;
 }
-
-
-/*        HEADER        */
-
-.header {
-    padding: 20px;
-}
-
-.header .resources {
-    box-sizing: border-box;
-    background-color: #ffffff;
-    padding: 0.8rem;
-}
-
 
 /*        MENU        */
 
