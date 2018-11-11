@@ -141,13 +141,13 @@ export default class World extends BaseWorld {
             console.log(`[WORLD] handling component for tile ${tileID}, clicked at ${col} | ${row}`)
           }
 
-          // pass tile component to UI for handling menu
           tileState = this.state.getTileState(l, col, row)
 
           if (this.ui.component !== null) {
             this.ui.component.off('city.build', this._handleCityEvent, this)
           }
 
+          // pass tile component to UI for handling menu
           newState = this.ui.handleComponent(tileInstance, tileState)
           this.ui.component.on('city.build', this._handleCityEvent, this)
 
@@ -155,6 +155,8 @@ export default class World extends BaseWorld {
             this.state.setTileState(newState, newState.layer, newState.col, newState.row)
           }
         }
+
+        break
       }
     }
   }
