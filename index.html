@@ -16,26 +16,38 @@
       <canvas id="canvas"></canvas>
 
       <div id="ui">
-        <div id="resources" class="header">
-          <div class="resources invert">
-            <div class="food">
-              <span class="icon">F</span>
-              <span class="value size-3">25</span>
-            </div>
-            <div class="wood">
-              <span class="icon">W</span>
-              <span class="value size-3">25</span>
-            </div>
-            <div class="rock">
-              <span class="icon">R</span>
-              <span class="value size-3">25</span>
-            </div>
-            <div class="population">
-              <span class="icon">P</span>
-              <span class="value size-3">3/8</span>
+        <template id="resources-template">
+          <style>
+            :host {
+              display: block;
+            }
+
+            .header {
+              padding: 20px;
+            }
+
+            .header .resources {
+              box-sizing: border-box;
+              background-color: #ffffff;
+              padding: 0.8rem;
+            }
+
+            .resources div {
+              display: inline-block;
+            }
+          </style>
+
+          <div class="header">
+            <div class="resources invert">
+              <!--
+              <div class="food">
+                <span class="icon">Food</span>
+                <span class="value">100</span>
+              </div>
+              -->
             </div>
           </div>
-        </div>
+        </template>
 
         <div id="buildings" class="menu hide">
           <div class="row navigation">
