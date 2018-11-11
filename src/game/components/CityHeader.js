@@ -1,11 +1,11 @@
 /* global HTMLElement */
 
-class ResourcesHeader extends HTMLElement {
+class CityHeader extends HTMLElement {
   constructor () {
     super()
 
     this.attachShadow({ mode: 'open' })
-    let template = document.getElementById('resources-template')
+    let template = document.getElementById('city-header-template')
     let templateClone = template.content.cloneNode(true)
     this.shadowRoot.appendChild(templateClone)
   }
@@ -52,7 +52,7 @@ class ResourcesHeader extends HTMLElement {
 }
 
 try {
-  window.customElements.define('resources-header', ResourcesHeader)
+  window.customElements.define('city-header', CityHeader)
 } catch (e) {
   console.error(`Custom elements not supported by the browser!`)
 }

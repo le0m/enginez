@@ -1,5 +1,5 @@
 import Observable from '../engine/Observable'
-import './components/ResourcesHeader.js'
+import './components/CityHeader.js'
 
 /**
  * Logic for the City, production and management.
@@ -38,7 +38,7 @@ export default class City extends Observable {
    * @private
    */
   _initHeader () {
-    let elem = document.createElement('resources-header')
+    let elem = document.createElement('city-header')
     elem.resourcesTemplate(Object.keys(this.resources))
     this.rootNode.appendChild(elem)
 
