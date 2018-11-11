@@ -1,5 +1,5 @@
 import Observable from '../engine/Observable'
-import '../ResourcesHeader.js'
+import './components/ResourcesHeader.js'
 
 /**
  * Logic for the City, production and management.
