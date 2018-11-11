@@ -111,6 +111,51 @@ canvas {
     border-color: red;
 }
 
+/*        HEADER        */
+
+.header {
+    padding: 20px;
+}
+
+.header .resources {
+    box-sizing: border-box;
+    padding: 0.8rem;
+}
+
+/*        BUILDING        */
+
+#building {
+    width: 30%;
+    background-color: #ffffff;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#building .img {
+    width: 100%;
+    height: 15%;
+    background-color: #eee;
+}
+
+#building .title, #building .content, #building ul {
+    padding: 0 20px;
+}
+
+.item {display: table-row;
+}
+
+.item img {
+    max-width: 40px;
+}
+
+.item span {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 0.6rem;
+}
+
 /*        MENU        */
 
 .menu {
