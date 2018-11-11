@@ -1,41 +1,75 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <!-- disable pinch-zoom on mobile to remove events delays -->
-  <meta name="viewport" content="width=device-width,user-scalable=no">
+  <head>
+    <meta charset="utf-8">
+    <!-- disable pinch-zoom on mobile to remove events delays -->
+    <meta name="viewport" content="width=device-width,user-scalable=no">
 
-  <link rel="icon" href="static/favicon.png">
+    <link rel="icon" href="static/favicon.png">
 
-  <title>EngineZ -- Game Engine</title>
-</head>
+    <title>EngineZ -- Game Engine</title>
+  </head>
 
-<body>
-<div class="container">
-  <canvas id="canvas"></canvas>
+  <body>
+    <div class="container">
+      <canvas id="canvas"></canvas>
 
-  <div id="ui">
-    <div id="resources" class="header">
-      <div class="resources invert">
-        <div class="food">
-          <span class="icon">F</span>
-          <span class="value size-3">25</span>
+      <div id="ui">
+        <template id="resources-template">
+          <style>
+            :host {
+              display: block;
+            }
+
+            .header {
+              padding: 20px;
+            }
+
+            .header .resources {
+              box-sizing: border-box;
+              padding: 0.8rem;
+              color: #ffffff;
+              background-color: #555555;
+            }
+
+            .resources div {
+              display: inline-block;
+            }
+          </style>
+
+          <div class="header">
+            <div class="resources">
+              <!--
+              <div class="food">
+                <span class="icon">Food</span>
+                <span class="value">100</span>
+              </div>
+              -->
+            </div>
+          </div>
+        </template>
+      <div id="ui">
+        <div id="resources" class="header">
+          <div class="resources invert">
+            <div class="food">
+              <span class="icon">F</span>
+              <span class="value size-3">25</span>
+            </div>
+            <div class="wood">
+              <span class="icon">W</span>
+              <span class="value size-3">25</span>
+            </div>
+            <div class="rock">
+              <span class="icon">R</span>
+              <span class="value size-3">25</span>
+            </div>
+            <div class="population">
+              <span class="icon">P</span>
+              <span class="value size-3">3/8</span>
+            </div>
+          </div>
         </div>
-        <div class="wood">
-          <span class="icon">W</span>
-          <span class="value size-3">25</span>
-        </div>
-        <div class="rock">
-          <span class="icon">R</span>
-          <span class="value size-3">25</span>
-        </div>
-        <div class="population">
-          <span class="icon">P</span>
-          <span class="value size-3">3/8</span>
-        </div>
-      </div>
-    </div>
 
     <div id="building">
       <div class="title size-2">Lorem Ipsum</div>
