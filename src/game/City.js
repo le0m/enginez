@@ -39,8 +39,8 @@ export default class City extends Observable {
    */
   _initHeader () {
     let elem = document.createElement('resources-header')
-    this.rootNode.appendChild(elem)
     elem.resourcesTemplate(Object.keys(this.resources))
+    this.rootNode.appendChild(elem)
 
     return elem
   }
