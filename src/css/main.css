@@ -20,26 +20,26 @@ html, body {
 }
 
 .size-1 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 .size-2 {
+    font-size: 1.2rem;
+}
+
+.size-3 {
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.02rem;
 }
 
-.size-3 {
+.size-4 {
     font-size: 0.8rem;
     font-family: 'Hind Light', sans-serif;
 }
 
-.size-4 {
-    font-size: 0.6rem;
-}
-
 .size-5 {
-    font-size: 0.4rem;
+    font-size: 0.6rem;
 }
 
 .invert {
@@ -128,6 +128,40 @@ canvas {
     padding: 0.8rem;
 }
 
+
+/*        BUILDING        */
+
+#building {
+    width: 30%;
+    background-color: #ffffff;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#building .img {
+    width: 100%;
+    height: 15%;
+    background-color: #eee;
+}
+
+#building .title, #building .content, #building ul {
+    padding: 0 20px;
+}
+
+.item {display: table-row;
+}
+
+.item img {
+    max-width: 40px;
+}
+
+.item span {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 0.6rem;
+}
 
 /*        MENU        */
 
