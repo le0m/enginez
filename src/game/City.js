@@ -1,4 +1,5 @@
 import Observable from '../engine/Observable'
+import '../ResourcesHeader.js'
 
 /**
  * Logic for the City, production and management.
@@ -11,7 +12,7 @@ export default class City extends Observable {
 
   /**
    * @param {Object} config - City component configuration
-   * @param {HTMLElement} config.element - UI component for showing current City information
+   * @param {HTMLElement} config.root - Root HTML node to attach UI component for showing current City information
    * @param {Object} config.resources - Initial resources ({food: Number, wood: Number, rock: Number})
    * @param {Number} config.population - Initial population (int)
    * @param {Boolean} [config.debug=false] - Debug mode
@@ -19,14 +20,29 @@ export default class City extends Observable {
   constructor (config) {
     super(config)
 
-    this.element    = config.element
+    this.rootNode   = config.root
     this.resources  = config.resources || { food: 100, wood: 100, rock: 100 }
     this.population = config.population
     this.workers    = 0
     this.buildings  = []
+    this.element    = this._initHeader()
 
     // other
     this.debug      = config.debug || false
+  }
+
+  /**
+   * Initialize header HTML component.
+   *
+   * @returns {HTMLElement} - The HTML component
+   * @private
+   */
+  _initHeader () {
+    let elem = document.createElement('resources-header')
+    this.rootNode.appendChild(elem)
+    elem.resourcesTemplate(Object.keys(this.resources))
+
+    return elem
   }
 
   /**
@@ -143,12 +159,6 @@ export default class City extends Observable {
   }
 
   updateElement () {
-    let food = this.element.querySelector('.food span.value')
-    let wood = this.element.querySelector('.wood span.value')
-    let rock = this.element.querySelector('.rock span.value')
-
-    food.innerText = this.resources.food
-    wood.innerText = this.resources.wood
-    rock.innerText = this.resources.rock
+    this.element.updateResources(this.resources)
   }
 }

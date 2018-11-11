@@ -5,16 +5,12 @@ class ResourcesHeader extends HTMLElement {
     super()
 
     this.attachShadow({ mode: 'open' })
-    this.addTemplate()
-  }
-
-  addTemplate () {
     let template = document.getElementById('resources-template')
     let templateClone = template.content.cloneNode(true)
     this.shadowRoot.appendChild(templateClone)
   }
 
-  createResources (names) {
+  resourcesTemplate (names) {
     let resources = this.shadowRoot.querySelector('.resources')
     // clear all
     while (resources.lastChild) {
@@ -45,7 +41,7 @@ class ResourcesHeader extends HTMLElement {
         let elem = this.shadowRoot.querySelector(`.${res} .value`)
 
         if (!elem) {
-          console.warn(`[COMPONENT][resources-header] No UI element for resource ${res}. Did you declare it in the component options?`)
+          console.warn(`[COMPONENT][resources-header] No UI element for resource ${res}. Did you declare it with "resourcesTemplate()"?`)
           return false
         }
 

@@ -60,7 +60,7 @@ export default class World extends BaseWorld {
     // other
     this.objects    = objects
     this.city = new City({
-      element: document.getElementById('resources'),
+      root: this.ui.element,
       population: 5,
       resources: { food: 100, wood: 100, rock: 100 },
       debug: true
