@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = function (env, argv) {
   return {
@@ -68,7 +69,11 @@ module.exports = function (env, argv) {
       new CopyWebpackPlugin([{
         from: path.resolve(__dirname, '../static'),
         to: 'static'
-      }])
+      }]),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: false
+      })
     ],
 
     module: {

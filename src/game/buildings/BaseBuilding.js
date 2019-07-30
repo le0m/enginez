@@ -3,7 +3,7 @@ import Observable from '../../engine/Observable'
 /**
  * Base Building logic.
  *
- * TODO: use e decay system for long-paused buildings
+ * TODO: use a decay system for long-paused buildings
  *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT

@@ -5,8 +5,8 @@ import Keyboard from '../engine/Keyboard.js'
 import Tileset from '../engine/Tileset.js'
 import UI from '../engine/UI.js'
 import { ConsoleExtra } from '../utils.js'
-import BaseWorld from '../engine/BaseWorld'
-import City from './City'
+import BaseWorld from '../engine/BaseWorld.js'
+import City from './City.js'
 import { map, tilesets, keyboard, state, ui, viewport, objects } from './config.js'
 
 const console = ConsoleExtra(window.console)

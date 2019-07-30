@@ -41,7 +41,7 @@ export default class Observable {
    * @param {String} event - Name of the event
    * @param {Function} callback - Function to be removed
    * @param {Object} thisArg - Context of the callback
-   * @returns {Number|false} - Number of removed listeners, `false` if event has no listeners
+   * @returns {Number|boolean} - Number of removed listeners, `false` if event has no listeners
    */
   off (event, callback, thisArg) {
     let handlers = this._eventHandlers.get(event)
@@ -61,7 +61,7 @@ export default class Observable {
    *
    * @param {String} event - Name of the event
    * @param {Object} args - Arguments for the event listener
-   * @returns {Number} - Number of listeners triggered
+   * @returns {Number|boolean} - Number of listeners triggered
    */
   emit (event, ...args) {
     let handlers = this._eventHandlers.get(event)
