@@ -59,8 +59,8 @@ export default class Tileset {
    * @private
    */
   _initCanvas () {
-    let [width, height] = this.getSize(true)
-    let image = this.loader.getImage(this.key)
+    const [width, height] = this.getSize(true)
+    const image = this.loader.getImage(this.key)
 
     this.canvas = document.createElement('canvas')
     this.canvas.width = width

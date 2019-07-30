@@ -11,23 +11,23 @@
  * @param {Object} console - Usually `window.console`
  */
 function ConsoleExtra (console) {
-  let counts = {}
-  let timestamps = {}
+  const counts = {}
+  const timestamps = {}
 
   // Create replacement console class
-  let limited = Object.create(console)
+  const limited = Object.create(console)
 
   // Get unique ID per call based on stack trace
   console.__getCallID = function (skip) {
-    let stack = new Error().stack
+    const stack = new Error().stack
     if (stack) {
-      let lines = stack.split(/\n/g)
+      const lines = stack.split(/\n/g)
       let found = false
       let offset = 0
 
       skip++ // skip self
 
-      for (let i in lines) {
+      for (const i in lines) {
         if (offset === skip) {
           return lines[i]
         }
@@ -44,23 +44,23 @@ function ConsoleExtra (console) {
   }
 
   // Prepare limited versions of all console methods.
-  for (let i in console) {
+  for (const i in console) {
     (function (method, key) {
       limited[key] = function () {
-        let id = this.__id
+        const id = this.__id
 
         // Once every x ms
-        let timestamp = timestamps[id] || 0
-        let now = +new Date()
+        const timestamp = timestamps[id] || 0
+        const now = +new Date()
         if ((now - timestamp) >= this.__throttle) {
           timestamps[id] = now
 
           // Up to n times
-          let count = counts[id] || 0
+          const count = counts[id] || 0
           if (count < this.__limit) {
             counts[id] = count + 1
 
-            let that = console[key].consoleExtras ? this : console
+            const that = console[key].consoleExtras ? this : console
             console[key].apply(that, arguments)
           }
         }
@@ -72,7 +72,7 @@ function ConsoleExtra (console) {
 
   // Add .times() to console.
   console.times = function (n) {
-    let ret = Object.create(limited)
+    const ret = Object.create(limited)
     ret.__id = this.__id || console.__getCallID(1)
     ret.__limit = n
     ret.__throttle = this.__throttle || 0
@@ -82,7 +82,7 @@ function ConsoleExtra (console) {
 
   // Add .throttle() to console.
   console.throttle = function (time) {
-    let ret = Object.create(limited)
+    const ret = Object.create(limited)
     ret.__id = this.__id || console.__getCallID(1)
     ret.__limit = this.__limit || Infinity
     ret.__throttle = time
@@ -119,7 +119,7 @@ const filterInPlace = (array, predicate) => {
     }
   }
 
-  let removed = array.length - end
+  const removed = array.length - end
   array.length = end
 
   return removed

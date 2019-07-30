@@ -12,10 +12,13 @@ export default class Keyboard extends BaseInput {
 
   /** @static */
   static get LEFT ()  { return 37 }
+
   /** @static */
   static get UP ()    { return 38 }
+
   /** @static */
   static get RIGHT () { return 39 }
+
   /** @static */
   static get DOWN ()  { return 40 }
 
@@ -27,7 +30,7 @@ export default class Keyboard extends BaseInput {
   constructor (config) {
     super(config)
 
-    let listeners = [
+    const listeners = [
       Keyboard.LEFT,
       Keyboard.RIGHT,
       Keyboard.UP,
@@ -61,7 +64,7 @@ export default class Keyboard extends BaseInput {
    * @private
    */
   _onKeyDown (event) {
-    let keyCode = event.keyCode
+    const keyCode = event.keyCode
 
     if (keyCode in this._keys) {
       event.preventDefault()
@@ -76,7 +79,7 @@ export default class Keyboard extends BaseInput {
    * @private
    */
   _onKeyUp (event) {
-    let keyCode = event.keyCode
+    const keyCode = event.keyCode
 
     if (keyCode in this._keys) {
       event.preventDefault()

@@ -107,10 +107,10 @@ export default class Viewport {
     }
 
     // first and last visible columns and rows (-1 is because pixels are 1-indexed, but coords are 0-indexed)
-    let startCol  = this.offsetX / tileSize | 0
-    let endCol    = (this.width + this.offsetX - 1) / tileSize | 0
-    let startRow  = this.offsetY / tileSize | 0
-    let endRow    = (this.height + this.offsetY - 1) / tileSize | 0
+    const startCol  = this.offsetX / tileSize | 0
+    const endCol    = (this.width + this.offsetX - 1) / tileSize | 0
+    const startRow  = this.offsetY / tileSize | 0
+    const endRow    = (this.height + this.offsetY - 1) / tileSize | 0
 
     return [startCol, endCol, startRow, endRow]
   }
@@ -124,15 +124,15 @@ export default class Viewport {
    * @returns {Number[]} - Coordinates relative to world; column/row if `tileSize` is given
    */
   canvasToWorldPosition (x, y, tileSize = false) {
-    let offsetX = x + this.offsetX
-    let offsetY = y + this.offsetY
+    const offsetX = x + this.offsetX
+    const offsetY = y + this.offsetY
 
     if (!tileSize) {
       return [offsetX, offsetY]
     }
 
-    let col = offsetX / tileSize | 0
-    let row = offsetY / tileSize | 0
+    const col = offsetX / tileSize | 0
+    const row = offsetY / tileSize | 0
 
     return [col, row]
   }
@@ -146,15 +146,15 @@ export default class Viewport {
    * @returns {Number[]} - Coordinates relative to viewport; column/row if `tileSize` is given
    */
   worldToCanvasPosition (x, y, tileSize = false) {
-    let offsetX = x - this.offsetX
-    let offsetY = y - this.offsetY
+    const offsetX = x - this.offsetX
+    const offsetY = y - this.offsetY
 
     if (!tileSize) {
       return [offsetX, offsetY]
     }
 
-    let col = offsetX / tileSize | 0
-    let row = offsetY / tileSize | 0
+    const col = offsetX / tileSize | 0
+    const row = offsetY / tileSize | 0
 
     return [col, row]
   }

@@ -46,7 +46,7 @@ export default class BaseInput {
    * @returns {boolean}
    */
   isMoving () {
-    let [x, y] = this.getDirection()
+    const [x, y] = this.getDirection()
 
     return x !== 0 || y !== 0
   }
@@ -58,7 +58,7 @@ export default class BaseInput {
    * @returns {Number[]} - Distance traveled on both axes (int, px)
    */
   getDistance (delta) {
-    let [x, y] = this.getDirection()
+    const [x, y] = this.getDirection()
 
     return [
       x * delta * this.speed | 0,

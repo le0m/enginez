@@ -5,28 +5,28 @@ class CityHeader extends HTMLElement {
     super()
 
     this.attachShadow({ mode: 'open' })
-    let template = document.getElementById('city-header-template')
-    let templateClone = template.content.cloneNode(true)
+    const template = document.getElementById('city-header-template')
+    const templateClone = template.content.cloneNode(true)
     this.shadowRoot.appendChild(templateClone)
   }
 
   resourcesTemplate (names) {
-    let resources = this.shadowRoot.querySelector('.resources')
+    const resources = this.shadowRoot.querySelector('.resources')
     // clear all
     while (resources.lastChild) {
       resources.removeChild(resources.lastChild)
     }
 
-    for (let res of names) {
-      let resource = document.createElement('div')
+    for (const res of names) {
+      const resource = document.createElement('div')
       resource.classList.add(res)
 
-      let icon = document.createElement('span')
+      const icon = document.createElement('span')
       icon.classList.add('icon')
       icon.innerText = res.charAt(0).toUpperCase()
       resource.appendChild(icon)
 
-      let value = document.createElement('span')
+      const value = document.createElement('span')
       value.classList.add('value')
       value.innerText = '--'
       resource.appendChild(value)
@@ -36,17 +36,15 @@ class CityHeader extends HTMLElement {
   }
 
   updateResources (resources) {
-    for (let res in resources) {
-      if (resources.hasOwnProperty(res)) {
-        let elem = this.shadowRoot.querySelector(`.${res} .value`)
+    for (const res of Object.keys(resources)) {
+      const elem = this.shadowRoot.querySelector(`.${res} .value`)
 
-        if (!elem) {
-          console.warn(`[COMPONENT][resources-header] No UI element for resource ${res}. Did you declare it with "resourcesTemplate()"?`)
-          return false
-        }
-
-        elem.innerText = `${resources[res]}` // cast to string
+      if (!elem) {
+        console.warn(`[COMPONENT][resources-header] No UI element for resource ${res}. Did you declare it with "resourcesTemplate()"?`)
+        return false
       }
+
+      elem.innerText = `${resources[res]}` // cast to string
     }
   }
 }

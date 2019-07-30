@@ -145,13 +145,13 @@ export default class Engine {
   }
 
   _drawGrid () {
-    let context = this.world.viewport.context
-    let tileSize = this.world.tilesets[0].tileSize
+    const context = this.world.viewport.context
+    const tileSize = this.world.tilesets[0].tileSize
     let x = 0, y = 0, r = 0
-    let [startCol, endCol, startRow, endRow] = this.world.viewport.getRect(tileSize)
+    const [startCol, endCol, startRow, endRow] = this.world.viewport.getRect(tileSize)
     context.strokeStyle = 'black'
-    let tileOffsetX = startCol * tileSize - this.world.viewport.offsetX
-    let tileOffsetY = startRow * tileSize - this.world.viewport.offsetY
+    const tileOffsetX = startCol * tileSize - this.world.viewport.offsetX
+    const tileOffsetY = startRow * tileSize - this.world.viewport.offsetY
 
     for (let c = startCol; c <= endCol; c++) {
       for (r = startRow; r <= endRow; r++) {
@@ -169,12 +169,12 @@ export default class Engine {
   }
 
   _drawCellNumbers () {
-    let context = this.world.viewport.context
-    let tileSize = this.world.tilesets[0].tileSize
-    let mapCols = this.world.layers[0].getSize()[0]
-    let [startCol, endCol, startRow, endRow] = this.world.viewport.getRect(tileSize)
-    let tileOffsetX = startCol * tileSize - this.world.viewport.offsetX
-    let tileOffsetY = startRow * tileSize - this.world.viewport.offsetY
+    const context = this.world.viewport.context
+    const tileSize = this.world.tilesets[0].tileSize
+    const mapCols = this.world.layers[0].getSize()[0]
+    const [startCol, endCol, startRow, endRow] = this.world.viewport.getRect(tileSize)
+    const tileOffsetX = startCol * tileSize - this.world.viewport.offsetX
+    const tileOffsetY = startRow * tileSize - this.world.viewport.offsetY
     let x = 0, y = 0, c = 0, num = 0
     context.fillStyle = 'black'
     context.font = '16px sans-serif'
@@ -196,7 +196,7 @@ export default class Engine {
   }
 
   _drawDebug () {
-    let context = this.world.viewport.context
+    const context = this.world.viewport.context
 
     context.fillStyle = 'black'
     context.fillRect(

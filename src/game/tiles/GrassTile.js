@@ -39,8 +39,8 @@ export default class GrassTile extends BaseTile {
     ]
 
     // UI elements for menu clicks
-    let closeBtn = this.element.querySelector('.navigation .close')
-    let buildingBtns = this.element.querySelectorAll('.list-item .click.card') // TODO: build dinamically
+    const closeBtn = this.element.querySelector('.navigation .close')
+    const buildingBtns = this.element.querySelectorAll('.list-item .click.card') // TODO: build dinamically
 
     // block click on component from reaching game canvas
     this._handlers.set(this.element, (event) => {
@@ -113,13 +113,13 @@ export default class GrassTile extends BaseTile {
   }
 
   _attachHandlers () {
-    for (let [element, handler] of this._handlers) {
+    for (const [element, handler] of this._handlers) {
       element.addEventListener('click', handler)
     }
   }
 
   _detachHandlers () {
-    for (let [element, handler] of this._handlers) {
+    for (const [element, handler] of this._handlers) {
       element.removeEventListener('click', handler)
     }
   }

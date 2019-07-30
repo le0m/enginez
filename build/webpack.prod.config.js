@@ -30,20 +30,16 @@ module.exports = function (env, argv) {
           parallel: true,
           sourceMap: true,
           uglifyOptions: {
-            ie8: false,
+            toplevel: true, //
             compress: {
-              comparisons: true,
-              conditionals: true,
-              dead_code: true,
-              evaluate: true,
-              if_return: true,
-              join_vars: true,
-              sequences: true,
-              unused: true,
-              warnings: false
+              passes: 2, // better for mangle
+              toplevel: true // better for mangle
             },
             output: {
-              comments: false
+              beautify: false
+            },
+            mangle: {
+              toplevel: true
             }
           }
         }),
@@ -96,7 +92,7 @@ module.exports = function (env, argv) {
             loader: 'babel-loader',
             options: {
               presets: [
-                [ '@babel/preset-env', { targets: ['> 1%', 'last 2 versions', 'not ie <= 8', 'not dead'] } ]
+                ['@babel/preset-env', { targets: ['> 1%', 'last 2 versions', 'not ie <= 8', 'not dead'] }]
               ]
             }
           }

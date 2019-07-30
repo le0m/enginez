@@ -13,9 +13,9 @@ game.run()
 // TEST: mount a template
 const mount = (templateId) => {
   if (templateId) {
-    let template = document.getElementById(templateId)
-    let rootNode = document.getElementById('ui')
-    let clone = template.content.cloneNode(true)
+    const template = document.getElementById(templateId)
+    const rootNode = document.getElementById('ui')
+    const clone = template.content.cloneNode(true)
     rootNode.appendChild(clone)
   }
 }

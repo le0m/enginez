@@ -25,9 +25,9 @@ export default class Loader {
    * @return {Promise<String>} - Cache key of the loaded image
    */
   loadImage (key, src) {
-    let that = this
-    let img = new window.Image()
-    let p = new Promise((resolve, reject) => {
+    const that = this
+    const img = new window.Image()
+    const p = new Promise((resolve, reject) => {
       img.addEventListener('load', () => {
         if (that.debug) {
           console.log(`[LOADER] loaded image ${src}`)

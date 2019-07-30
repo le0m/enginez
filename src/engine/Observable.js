@@ -21,7 +21,7 @@ export default class Observable {
    */
   on (event, callback, thisArg) {
     let handlers = this._eventHandlers.get(event)
-    let listener = { callback, this: thisArg }
+    const listener = { callback, this: thisArg }
 
     if (handlers) {
       handlers.push(listener)
@@ -44,7 +44,7 @@ export default class Observable {
    * @returns {Number|boolean} - Number of removed listeners, `false` if event has no listeners
    */
   off (event, callback, thisArg) {
-    let handlers = this._eventHandlers.get(event)
+    const handlers = this._eventHandlers.get(event)
 
     if (handlers === undefined) {
       return false
@@ -64,7 +64,7 @@ export default class Observable {
    * @returns {Number|boolean} - Number of listeners triggered
    */
   emit (event, ...args) {
-    let handlers = this._eventHandlers.get(event)
+    const handlers = this._eventHandlers.get(event)
 
     if (handlers === undefined) {
       return false

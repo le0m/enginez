@@ -38,7 +38,7 @@ export default class City extends Observable {
    * @private
    */
   _initHeader () {
-    let elem = document.createElement('city-header')
+    const elem = document.createElement('city-header')
     elem.resourcesTemplate(Object.keys(this.resources))
     this.rootNode.appendChild(elem)
 
@@ -54,7 +54,7 @@ export default class City extends Observable {
    * @returns {boolean} - Whether the building was added or not
    */
   build (building) {
-    let cost = building.getCost()
+    const cost = building.getCost()
 
     if (this.spend(cost)) {
       if (this.debug) {
@@ -77,14 +77,12 @@ export default class City extends Observable {
    * @returns {{food: Number, wood: Number, rock: Number}} - Total production, already added to City stash
    */
   production (timestamp) {
-    let total = this.buildings.reduce((production, building) => {
-      let produced = building.produce(timestamp)
+    const total = this.buildings.reduce((production, building) => {
+      const produced = building.produce(timestamp)
 
       if (produced) {
-        for (let resource in produced) {
-          if (produced.hasOwnProperty(resource)) {
-            production[resource] += produced[resource]
-          }
+        for (const resource of Object.keys(produced)) {
+          production[resource] += produced[resource]
         }
       }
 
@@ -111,12 +109,10 @@ export default class City extends Observable {
   canAfford (amount) {
     let affordable = true
 
-    for (let resource in amount) {
-      if (amount.hasOwnProperty(resource)) {
-        if (this.resources[resource] < amount[resource]) {
-          affordable = false
-          break
-        }
+    for (const resource of Object.keys(amount)) {
+      if (this.resources[resource] < amount[resource]) {
+        affordable = false
+        break
       }
     }
 
@@ -134,10 +130,8 @@ export default class City extends Observable {
       return false
     }
 
-    for (let resource in amount) {
-      if (amount.hasOwnProperty(resource)) {
-        this.resources[resource] -= amount[resource]
-      }
+    for (const resource of Object.keys(amount)) {
+      this.resources[resource] -= amount[resource]
     }
 
     return true
@@ -149,8 +143,8 @@ export default class City extends Observable {
    * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
    */
   gain (amount) {
-    for (let resource in amount) {
-      if (amount.hasOwnProperty(resource) && amount[resource] > 0) {
+    for (const resource of Object.keys(amount)) {
+      if (amount[resource] > 0) {
         this.resources[resource] += amount[resource]
       }
     }

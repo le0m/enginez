@@ -49,7 +49,7 @@ export default class World extends BaseWorld {
       tileset: this.tilesets[index] || this.tilesets[0]
     }))
 
-    let [width, height] = this.layers[0].getSize(true) // use first layer size as world size
+    const [width, height] = this.layers[0].getSize(true) // use first layer size as world size
     this.viewport   = new Viewport({
       ...viewport,
       worldWidth: width,
@@ -126,7 +126,7 @@ export default class World extends BaseWorld {
   }
 
   _handleUIClick ([x, y]) {
-    let [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // use first tileset for tile size
+    const [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // use first tileset for tile size
     let tileID = 0, tileInstance = null, tileState = {}, newState = {}
 
     for (let l = this.layers.length - 1; l >= 0; l--) {
@@ -168,8 +168,8 @@ export default class World extends BaseWorld {
   }
 
   _handleResize () {
-    let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
-    let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+    const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 
     this.resize(width, height)
   }

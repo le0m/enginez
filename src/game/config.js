@@ -3,9 +3,10 @@ import World from './World'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
-let width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
-let height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 
+/* eslint-disable array-bracket-spacing */
 const map = [
   [
     [  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58,  58],

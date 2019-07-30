@@ -38,7 +38,7 @@ export default class Layer {
    */
   init () {
     // initialize layer canvas
-    let [width, height] = this.getSize(true)
+    const [width, height] = this.getSize(true)
 
     this.canvas = document.createElement('canvas')
     this.canvas.width = width
@@ -67,9 +67,9 @@ export default class Layer {
         console.log(`[LAYER] [${this.level}] drawing (${this.getSize(true).join(' x ')} px, ${this.getSize().join(' x ')} cells)`)
       }
 
-      let [cols, rows] = this.getSize()
-      let [tileSetCols] = this.tileset.getSize()
-      let tileSize = this.tileset.tileSize
+      const [cols, rows] = this.getSize()
+      const [tileSetCols] = this.tileset.getSize()
+      const tileSize = this.tileset.tileSize
       let c = 0, tileID = 0, x = 0, y = 0, srcX = 0, srcY = 0
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
