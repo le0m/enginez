@@ -27,7 +27,7 @@ export default class GrassTile extends BaseTile {
     this.menuItems = [
       { // FIELD (id: 0)
         tile: 112,
-        building: () => new Field({
+        building: () => new Field({ // TODO: why is this a function?
           name: 'field',
           tileID: 112,
           cost: { food: 10, wood: 20 },
@@ -40,7 +40,7 @@ export default class GrassTile extends BaseTile {
 
     // UI elements for menu clicks
     const closeBtn = this.element.querySelector('.navigation .close')
-    const buildingBtns = this.element.querySelectorAll('.list-item .click.card') // TODO: build dinamically
+    const buildingBtns = this.element.querySelectorAll('.list-item .click.card') // TODO: build dynamically
 
     // block click on component from reaching game canvas
     this._handlers.set(this.element, (event) => {

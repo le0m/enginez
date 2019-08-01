@@ -89,12 +89,14 @@ export default class City extends Observable {
       return production
     }, { food: 0, wood: 0, rock: 0 })
 
-    // debug & any resource produced at least 1
-    if (this.debug && Object.keys(total).filter((key) => total[key] > 0).length > 0) {
-      console.log(`[CITY] production:`, total)
-    }
+    // check if any resource was produced
+    if (Object.keys(total).filter((key) => total[key] > 0).length > 0) {
+      if (this.debug) {
+        console.log(`[CITY] production:`, total)
+      }
 
-    this.gain(total)
+      this.gain(total)
+    }
 
     return total
   }
@@ -133,6 +135,8 @@ export default class City extends Observable {
     for (const resource of Object.keys(amount)) {
       this.resources[resource] -= amount[resource]
     }
+
+    this.updateElement()
 
     return true
   }
