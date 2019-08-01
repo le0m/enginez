@@ -10,28 +10,29 @@ class CityHeader extends HTMLElement {
     this.shadowRoot.appendChild(templateClone)
   }
 
-  resourcesTemplate (names) {
-    const resources = this.shadowRoot.querySelector('.resources')
+  initResources (resources) {
+    const rootElement = this.shadowRoot.querySelector('.resources')
+
     // clear all
-    while (resources.lastChild) {
-      resources.removeChild(resources.lastChild)
+    while (rootElement.lastChild) {
+      rootElement.removeChild(rootElement.lastChild)
     }
 
-    for (const res of names) {
-      const resource = document.createElement('div')
-      resource.classList.add(res)
+    for (const res of Object.keys(resources)) {
+      const element = document.createElement('div')
+      element.classList.add(res)
 
       const icon = document.createElement('span')
       icon.classList.add('icon')
       icon.innerText = res.charAt(0).toUpperCase()
-      resource.appendChild(icon)
+      element.appendChild(icon)
 
       const value = document.createElement('span')
       value.classList.add('value')
-      value.innerText = '--'
-      resource.appendChild(value)
+      value.innerText = `${resources[res]}`
+      element.appendChild(value)
 
-      resources.appendChild(resource)
+      rootElement.appendChild(element)
     }
   }
 

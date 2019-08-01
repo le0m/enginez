@@ -1,4 +1,4 @@
-import Observable from './Observable'
+import EventEmitter from './EventEmitter'
 
 /**
  * This is a base class for tiles.
@@ -8,7 +8,7 @@ import Observable from './Observable'
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class BaseTile extends Observable {
+export default class BaseTile extends EventEmitter {
   /* eslint-disable no-multi-spaces */
 
   /**

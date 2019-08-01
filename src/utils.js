@@ -101,7 +101,7 @@ function ConsoleExtra (console) {
  *
  * credits: https://stackoverflow.com/a/16491790/2270403
  *
- * NOTE: this was used to remove all equal event listeners in Observable class
+ * NOTE: this was used to remove all equal event listeners in EventEmitter class
  *       now it removes only the first found
  *
  * @param {Array} array

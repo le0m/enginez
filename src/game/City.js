@@ -1,4 +1,4 @@
-import Observable from '../engine/Observable'
+import EventEmitter from '../engine/EventEmitter'
 import './components/CityHeader.js'
 
 /**
@@ -7,7 +7,7 @@ import './components/CityHeader.js'
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class City extends Observable {
+export default class City extends EventEmitter {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
@@ -39,7 +39,7 @@ export default class City extends Observable {
    */
   _initHeader () {
     const elem = document.createElement('city-header')
-    elem.resourcesTemplate(Object.keys(this.resources))
+    elem.initResources(this.resources)
     this.rootNode.appendChild(elem)
 
     return elem

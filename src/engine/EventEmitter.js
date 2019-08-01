@@ -4,7 +4,7 @@
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class Observable {
+export default class EventEmitter {
   constructor () {
     this._eventHandlers = new Map()
   }
@@ -15,7 +15,7 @@ export default class Observable {
    * @param {String} event - Name of the event
    * @param {Function} callback - Function to execute on event
    * @param {Object} thisArg - Context for the callback
-   * @returns {Observable} - Instance of this `Observable`, for chaining
+   * @returns {EventEmitter} - Instance of this `EventEmitter`, for chaining
    */
   on (event, callback, thisArg) {
     this._eventHandlers.has(event) || this._eventHandlers.set(event, [])

@@ -1,4 +1,4 @@
-import Observable from './Observable.js'
+import EventEmitter from './EventEmitter.js'
 
 /**
  * This component handles DOM-based game UI.
@@ -6,7 +6,7 @@ import Observable from './Observable.js'
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class UI extends Observable {
+export default class UI extends EventEmitter {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**

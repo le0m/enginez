@@ -1,4 +1,4 @@
-import Observable from '../../engine/Observable'
+import EventEmitter from '../../engine/EventEmitter'
 
 /**
  * Base Building logic.
@@ -8,7 +8,7 @@ import Observable from '../../engine/Observable'
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
-export default class BaseBuilding extends Observable {
+export default class BaseBuilding extends EventEmitter {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
