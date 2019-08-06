@@ -14,21 +14,21 @@ class BuildingsMenu extends BaseElement {
    * @inheritDoc
    */
   init (buildings) {
-    const rootElement = this.shadowRoot.querySelector('.menu .list')
+    const list = this.shadowRoot.querySelector('.menu .list')
 
     // clear all
-    while (rootElement.lastChild) {
-      rootElement.removeChild(rootElement.lastChild)
+    while (list.lastChild) {
+      list.removeChild(list.lastChild)
     }
 
     // init building list
     for (const building of buildings) {
-      const element = document.createElement('li')
-      element.classList.add('list-item')
+      const listItem = document.createElement('li')
+      listItem.classList.add('list-item')
 
       const card = document.createElement('div')
       card.classList.add('click', 'card')
-      element.appendChild(card)
+      listItem.appendChild(card)
 
       const cardHeader = document.createElement('div')
       cardHeader.classList.add('card-header', 'size-3')
@@ -68,7 +68,7 @@ class BuildingsMenu extends BaseElement {
         elem.appendChild(value)
       }
 
-      rootElement.appendChild(element)
+      list.appendChild(listItem)
     }
   }
 

@@ -14,28 +14,28 @@ class CityHeader extends BaseElement {
    * @inheritDoc
    */
   init (resources) {
-    const rootElement = this.shadowRoot.querySelector('.resources')
+    const list = this.shadowRoot.querySelector('.resources')
 
     // clear all
-    while (rootElement.lastChild) {
-      rootElement.removeChild(rootElement.lastChild)
+    while (list.lastChild) {
+      list.removeChild(list.lastChild)
     }
 
     for (const res of Object.keys(resources)) {
-      const element = document.createElement('div')
-      element.classList.add(res)
+      const resource = document.createElement('div')
+      resource.classList.add(res)
 
       const icon = document.createElement('span')
       icon.classList.add('icon')
       icon.innerText = res.charAt(0).toUpperCase()
-      element.appendChild(icon)
+      resource.appendChild(icon)
 
       const value = document.createElement('span')
       value.classList.add('value')
       value.innerText = `${resources[res]}`
-      element.appendChild(value)
+      resource.appendChild(value)
 
-      rootElement.appendChild(element)
+      list.appendChild(resource)
     }
   }
 
@@ -48,7 +48,7 @@ class CityHeader extends BaseElement {
 
       if (!elem) {
         console.warn(`[COMPONENT][resources-header] No UI element for resource ${res}. Did you declare it with init() ?`)
-        return false
+        continue
       }
 
       elem.innerText = `${resources[res]}` // cast to string
