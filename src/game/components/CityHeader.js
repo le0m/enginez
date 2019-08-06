@@ -1,6 +1,6 @@
-/* global HTMLElement */
+import BaseElement from '../../engine/BaseElement.js'
 
-class CityHeader extends HTMLElement {
+class CityHeader extends BaseElement {
   constructor () {
     super()
 
@@ -10,7 +10,10 @@ class CityHeader extends HTMLElement {
     this.shadowRoot.appendChild(templateClone)
   }
 
-  initResources (resources) {
+  /**
+   * @inheritDoc
+   */
+  init (resources) {
     const rootElement = this.shadowRoot.querySelector('.resources')
 
     // clear all
@@ -36,12 +39,15 @@ class CityHeader extends HTMLElement {
     }
   }
 
-  updateResources (resources) {
+  /**
+   * @inheritDoc
+   */
+  update (resources) {
     for (const res of Object.keys(resources)) {
       const elem = this.shadowRoot.querySelector(`.${res} .value`)
 
       if (!elem) {
-        console.warn(`[COMPONENT][resources-header] No UI element for resource ${res}. Did you declare it with "resourcesTemplate()"?`)
+        console.warn(`[COMPONENT][resources-header] No UI element for resource ${res}. Did you declare it with init() ?`)
         return false
       }
 

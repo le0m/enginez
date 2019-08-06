@@ -11,9 +11,8 @@ export default class Layer {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
-   * @param {Object} config - World component config
+   * @param {Object} config - Layer component config
    * @param {Number} config.level - Level of this layer in the map, 0-indexed (int)
-   * @param {State} config.state - {@link State} component instance, to update states when updating tiles
    * @param {Number[][]} config.map - Layer map represented as a 2-dimensional array of tile IDs (int)
    * @param {Tileset} config.tileset - {@link Tileset} component instance, source for draws
    * @param {Boolean} [config.debug=false] - Debug mode
@@ -22,7 +21,6 @@ export default class Layer {
     this.level    = config.level
     this.tileMap  = config.map
     this.tileset  = config.tileset
-    this.state    = config.state
 
     // other
     this.canvas   = null
@@ -46,14 +44,6 @@ export default class Layer {
     this.context = this.canvas.getContext('2d')
 
     this.draw() // initial render
-
-    // save tile IDs in tile states (do this better)
-    let c = 0
-    for (let r = 0; r < this.tileMap.length; r++) {
-      for (c = 0; c < this.tileMap[r].length; c++) {
-        this.state.stateMap[this.level][r][c].tileID = this.tileMap[r][c]
-      }
-    }
   }
 
   /**

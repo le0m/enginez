@@ -104,9 +104,98 @@
             :host {
               display: block;
             }
+
+            .menu {
+              position: absolute;
+              box-sizing: border-box;
+              left: 0;
+              bottom: 0;
+              width:100%;
+              background-color: white;
+              padding: 8px 20px;
+            }
+
+            .navigation {
+              text-align: center;
+            }
+
+            .navigation div {
+              display: inline-block;
+            }
+
+            .navigation .arrow {
+              padding: 0 16px;
+              margin: 0 2px;
+              border: solid 1px #777777;
+            }
+
+            .close {
+              background-color: #eeeeee;
+              padding: 4px 8px;
+              border-radius: 100%;
+              position: absolute;
+              right: 0;
+              top: 0;
+              margin: 2px;
+            }
+
+            .card {
+              border-color: #444;
+            }
+
+            .card-header {
+              word-break: break-all;
+              padding: 0.2rem;
+            }
+
+            .card-header, .card-body,.card-footer {
+              text-align: center;
+            }
+
+            .card-body img {
+              max-width: 100%;
+            }
+
+            .card-footer .resources div {
+            }
+
+            .click, .navigation div {
+              border: solid 1px transparent;
+            }
+
+            .click:hover, .navigation div:hover {
+              cursor: pointer;
+            }
+
+            .click:active, .navigation div:active {
+              cursor: pointer;
+              border-color: red;
+            }
+
+            .list-item {
+              width: 15%;
+              list-style-type: none;
+              display: inline-block;
+            }
+
+            .invert {
+              color: #ffffff;
+              background-color: #555555;
+            }
+
+            .size-3 {
+              font-size: 1rem;
+              font-weight: 600;
+              letter-spacing: 0.02rem;
+            }
+
+            .size-4 {
+              font-size: 0.8rem;
+              font-family: 'Hind Light', sans-serif;
+            }
           </style>
 
-          <div id="buildings-dev" class="menu">
+          <div id="buildings" class="menu">
             <div class="row navigation">
               <div class="arrow prev"> &lt; </div>
               <div class="arrow next"> &gt; </div>
@@ -115,6 +204,7 @@
 
             <div class="row">
               <ul class="list">
+                <!--
                 <li class="list-item">
                   <div class="click card">
                     <div class="card-header size-3">Building #1</div>
@@ -139,97 +229,11 @@
                     </div>
                   </div>
                 </li>
-
-                <li class="list-item">
-                  <div class="click card">
-                    <div class="card-header size-3">Building #2</div>
-                    <div class="card-body">
-                      <img src="/static/favicon.png">
-                    </div>
-                    <div class="card-footer">
-                      <div class="resources invert">
-                        <div class="food">
-                          <span class="icon">F</span>
-                          <span class="value size-4">25</span>
-                        </div>
-                        <div class="wood">
-                          <span class="icon">W</span>
-                          <span class="value size-4">25</span>
-                        </div>
-                        <div class="rock">
-                          <span class="icon">R</span>
-                          <span class="value size-4">25</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                -->
               </ul>
             </div>
           </div>
         </template>
-
-        <div id="buildings" class="menu hide">
-          <div class="row navigation">
-            <div class="arrow prev"> &lt; </div>
-            <div class="arrow next"> &gt; </div>
-            <div class="close">X</div>
-          </div>
-
-          <div class="row">
-            <ul class="list">
-              <li class="list-item">
-                <div class="click card">
-                  <div class="card-header size-3">Building #1</div>
-                  <div class="card-body">
-                    <img src="/static/favicon.png">
-                  </div>
-                  <div class="card-footer">
-                    <div class="resources invert">
-                      <div class="food">
-                        <span class="icon">F</span>
-                        <span class="value size-4">25</span>
-                      </div>
-                      <div class="wood">
-                        <span class="icon">W</span>
-                        <span class="value size-4">25</span>
-                      </div>
-                      <div class="rock">
-                        <span class="icon">R</span>
-                        <span class="value size-4">25</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-
-              <li class="list-item">
-                <div class="click card">
-                  <div class="card-header size-3">Building #2</div>
-                  <div class="card-body">
-                    <img src="/static/favicon.png">
-                  </div>
-                  <div class="card-footer">
-                    <div class="resources invert">
-                      <div class="food">
-                        <span class="icon">F</span>
-                        <span class="value size-4">25</span>
-                      </div>
-                      <div class="wood">
-                        <span class="icon">W</span>
-                        <span class="value size-4">25</span>
-                      </div>
-                      <div class="rock">
-                        <span class="icon">R</span>
-                        <span class="value size-4">25</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
     </div>
   </body>

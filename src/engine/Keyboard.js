@@ -107,7 +107,7 @@ export default class Keyboard extends BaseInput {
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   getDirection () {
     let x = 0, y = 0

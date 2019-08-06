@@ -12,38 +12,75 @@ export default class GrassTile extends BaseTile {
 
   /**
    * @param {Object} config - GrassTile component config
-   * @param {HTMLElement} config.element - UI element
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     super(config)
 
-    this.element    = config.element
     this._handlers  = new Map()
     this._state     = {}
     this._closed    = false
 
-    // possible menu buildings
+    // init buildings menu
     this.menuItems = [
-      { // FIELD (id: 0)
-        tile: 112,
-        building: () => new Field({ // TODO: why is this a function?
-          name: 'field',
-          tileID: 112,
-          cost: { food: 10, wood: 20 },
-          production: { food: 50 },
-          time: 10,
-          debug: true
-        })
-      }
+      new Field({ // idx: 0
+        name: 'field',
+        tileID: 112,
+        cost: { food: 10, wood: 20 },
+        production: { food: 50 },
+        time: 10,
+        debug: true
+      })
     ]
+  }
 
+  /**
+   * @inheritDoc
+   */
+  click (params = {}) {
+    console.log(`[GRASS TILE] clicked`)
+  }
+
+  /**
+   * @inheritDoc
+   */
+  open (state, component) {
+    this._state = state
+    this._closed = false
+    component.init(this.menuItems)
+    this._createHandlers(component)
+    this._attachHandlers()
+    this.emit('tile:open', this._state)
+
+    return this
+  }
+
+  /**
+   * @inheritDoc
+   */
+  close () {
+    this._detachHandlers()
+    this._handlers.clear()
+    this._closed = true
+    this.emit('tile:close', this._state)
+
+    return this
+  }
+
+  /**
+   * @inheritDoc
+   */
+  isOpen () {
+    return !this._closed
+  }
+
+  _createHandlers (component) {
     // UI elements for menu clicks
-    const closeBtn = this.element.querySelector('.navigation .close')
-    const buildingBtns = this.element.querySelectorAll('.list-item .click.card') // TODO: build dynamically
+    const closeBtn = component.shadowRoot.querySelector('.navigation .close')
+    const buildingBtns = component.shadowRoot.querySelectorAll('.list-item .click.card')
 
     // block click on component from reaching game canvas
-    this._handlers.set(this.element, (event) => {
+    this._handlers.set(component.shadowRoot, (event) => {
       event.stopPropagation()
     })
 
@@ -65,51 +102,12 @@ export default class GrassTile extends BaseTile {
         }
 
         event.stopPropagation()
-        this.emit('city.build', {
-          ...this.menuItems[index],
+        this.emit('tile:build', {
+          building: this.menuItems[index],
           state: this._state
         })
       })
     })
-  }
-
-  /**
-   * @inheritdoc
-   */
-  click (params = {}) {
-    console.log(`[GRASS TILE] clicked`)
-  }
-
-  /**
-   * @inheritdoc
-   */
-  open (state) {
-    this._state = state
-    this._closed = false
-    this.element.classList.remove('hide')
-    this._attachHandlers()
-    this.emit('open', this)
-
-    return this
-  }
-
-  /**
-   * @inheritdoc
-   */
-  close () {
-    this._detachHandlers()
-    this._closed = true
-    this.element.classList.add('hide')
-    this.emit('close', this._state)
-
-    return this._state
-  }
-
-  /**
-   * @inheritdoc
-   */
-  isOpen () {
-    return !this._closed
   }
 
   _attachHandlers () {

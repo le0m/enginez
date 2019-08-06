@@ -1,5 +1,4 @@
-import EventEmitter from '../engine/EventEmitter'
-import './components/CityHeader.js'
+import EventEmitter from '../engine/EventEmitter.js'
 
 /**
  * Logic for the City, production and management.
@@ -12,7 +11,7 @@ export default class City extends EventEmitter {
 
   /**
    * @param {Object} config - City component configuration
-   * @param {HTMLElement} config.root - Root HTML node to attach UI component for showing current City information
+   * @param {UI} config.ui - {@link UI} component instance
    * @param {Object} config.resources - Initial resources ({food: Number, wood: Number, rock: Number})
    * @param {Number} config.population - Initial population (int)
    * @param {Boolean} [config.debug=false] - Debug mode
@@ -20,7 +19,7 @@ export default class City extends EventEmitter {
   constructor (config) {
     super(config)
 
-    this.rootNode   = config.root
+    this.ui         = config.ui
     this.resources  = config.resources || { food: 100, wood: 100, rock: 100 }
     this.population = config.population
     this.workers    = 0
@@ -34,13 +33,14 @@ export default class City extends EventEmitter {
   /**
    * Initialize header HTML component.
    *
-   * @returns {HTMLElement} - The HTML component
+   * @returns {BaseElement} - The HTML component
    * @private
    */
   _initHeader () {
-    const elem = document.createElement('city-header')
-    elem.initResources(this.resources)
-    this.rootNode.appendChild(elem)
+    /** @type {BaseElement} */
+    const elem = this.ui.components.get('city-header')
+    elem.init(this.resources)
+    elem.classList.remove('hide')
 
     return elem
   }
@@ -136,7 +136,7 @@ export default class City extends EventEmitter {
       this.resources[resource] -= amount[resource]
     }
 
-    this.updateElement()
+    this.updateHeader()
 
     return true
   }
@@ -153,10 +153,10 @@ export default class City extends EventEmitter {
       }
     }
 
-    this.updateElement()
+    this.updateHeader()
   }
 
-  updateElement () {
-    this.element.updateResources(this.resources)
+  updateHeader () {
+    this.element.update(this.resources)
   }
 }

@@ -7,7 +7,7 @@ import UI from '../engine/UI.js'
 import { ConsoleExtra } from '../utils.js'
 import BaseWorld from '../engine/BaseWorld.js'
 import City from './City.js'
-import { map, tilesets, keyboard, state, ui, viewport, objects } from './config.js'
+import { map, tilesets, keyboard, state, ui, viewport, tiles } from './config.js'
 
 const console = ConsoleExtra(window.console)
 
@@ -44,7 +44,6 @@ export default class World extends BaseWorld {
     this.layers     = this.map.map((layerMap, index) => new Layer({
       debug: this.debug,
       level: index,
-      state: this.state,
       map: layerMap,
       tileset: this.tilesets[index] || this.tilesets[0]
     }))
@@ -58,11 +57,12 @@ export default class World extends BaseWorld {
     this.ui         = new UI(ui)
 
     // other
-    this.objects    = objects
+    this.tiles    = tiles
     this.city = new City({
       root: this.ui.element,
       population: 5,
       resources: { food: 100, wood: 100, rock: 100 },
+      ui: this.ui,
       debug: true
     })
 
@@ -71,24 +71,26 @@ export default class World extends BaseWorld {
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   load () {
     return this.tilesets.map((tileset) => tileset.load())
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   init () {
     window.addEventListener('resize', this._handleResize.bind(this))
 
     this.layers.forEach((layer) => layer.init())
-    this.ui.on('click', this._handleUIClick, this)
+    this.ui.on('ui:click', this._handleUIClick, this)
+    this.ui.on('ui:component-opened', this._handleComponentOpen, this)
+    this.ui.on('ui:component-closed', this._handleComponentClose, this)
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   update (delta, timestamp) {
     if (this.input.isMoving()) {
@@ -100,7 +102,7 @@ export default class World extends BaseWorld {
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   draw () {
     // clear frame
@@ -113,7 +115,7 @@ export default class World extends BaseWorld {
   }
 
   /**
-   * @inheritdoc
+   * @inheritDoc
    */
   resize (width, height) {
     if (this.debug) {
@@ -126,34 +128,28 @@ export default class World extends BaseWorld {
   }
 
   _handleUIClick ([x, y]) {
-    const [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize) // use first tileset for tile size
-    let tileID = 0, tileInstance = null, tileState = {}, newState = {}
+    // use first tileset for tile size
+    const [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize)
+    let tileID = 0, tileInstance = null
 
     for (let l = this.layers.length - 1; l >= 0; l--) {
       tileID = this.layers[l].getTileID(col, row)
 
       // skip empty tiles
       if (tileID > 0) {
-        tileInstance = this.objects.get('tiles').get(tileID)
+        tileInstance = this.tiles.get(tileID)
 
         if (tileInstance) {
           if (this.debug) {
             console.log(`[WORLD] handling component for tile ${tileID}, clicked at ${col} | ${row}`)
           }
 
-          tileState = this.state.getTileState(l, col, row)
-
-          if (this.ui.component !== null) {
-            this.ui.component.off('city.build', this._handleCityEvent, this)
+          if (this.ui.isOpen()) {
+            this.ui.close()
           }
 
-          // pass tile component to UI for handling menu
-          newState = this.ui.handleComponent(tileInstance, tileState)
-          this.ui.component.on('city.build', this._handleCityEvent, this)
-
-          if (newState !== null) {
-            this.state.setTileState(newState, newState.layer, newState.col, newState.row)
-          }
+          this.ui.mount(tileInstance)
+          this.ui.open(this.state.getTileState(l, col, row))
         }
 
         break
@@ -161,10 +157,20 @@ export default class World extends BaseWorld {
     }
   }
 
-  _handleCityEvent ({ tile, building, state }) {
-    if (this.city.build(building())) {
-      this.layers[state.layer].setTileID(tile, state.col, state.row)
+  _handleTileBuild ({ building, state }) {
+    if (this.city.build(building)) {
+      this.layers[state.layer].setTileID(building.tileID, state.col, state.row)
+      this.ui.close()
     }
+  }
+
+  _handleComponentOpen () {
+    this.ui.currentTile.on('tile:build', this._handleTileBuild, this)
+  }
+
+  _handleComponentClose (state) {
+    this.ui.currentTile.off('tile:build', this._handleTileBuild, this)
+    this.state.setTileState(state, state.layer, state.col, state.row)
   }
 
   _handleResize () {

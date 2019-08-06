@@ -1,5 +1,7 @@
 import { Grass } from './tiles'
 import World from './World'
+import './components/CityHeader.js'
+import './components/BuildingsMenu.js'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
@@ -98,11 +100,6 @@ const viewport = {
   startY: height / 2 | 0
 }
 
-const ui = {
-  debug: true,
-  element: document.getElementById('ui')
-}
-
 const keyboard = {
   debug: true,
   speed: 0.512
@@ -112,11 +109,19 @@ const state = {
   debug: true
 }
 
-const objects = new Map()
 const tiles = new Map([
   [1, Grass]
 ])
-objects.set('tiles', tiles)
+const components = new Map([
+  ['city-header', document.createElement('city-header')],
+  ['buildings-menu', document.createElement('buildings-menu')]
+])
+
+const ui = {
+  debug: true,
+  element: document.getElementById('ui'),
+  components
+}
 
 const engine = {
   debug: 2,
@@ -129,4 +134,4 @@ const engine = {
   })
 }
 
-export { map, tilesets, viewport, ui, keyboard, state, objects, engine }
+export { map, tilesets, viewport, ui, keyboard, state, tiles, components, engine }

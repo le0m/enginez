@@ -100,10 +100,18 @@ export default class BaseBuilding extends EventEmitter {
   }
 
   assignWorker () {
-    this.emit('worker.request', this)
+    this.workers++
+
+    return true
   }
 
   removeWorker () {
-    this.emit('worker.free', this)
+    if (this.workers > 0) {
+      this.workers--
+
+      return true
+    }
+
+    return false
   }
 }

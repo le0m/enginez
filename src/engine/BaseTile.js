@@ -14,15 +14,19 @@ export default class BaseTile extends EventEmitter {
   /**
    * @param {Object} config - BaseTile component config
    * @param {Number} config.id - Tile ID (int)
+   * @param {String} config.name - Tile name
+   * @param {String} config.component - UI component name
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     super()
 
-    this.id = config.id
+    this.id        = config.id
+    this.name      = config.name
+    this.component = config.component
 
     // other
-    this.debug  = config.debug || false
+    this.debug     = config.debug || false
   }
 
   /**
@@ -49,14 +53,15 @@ export default class BaseTile extends EventEmitter {
    * Open the tile UI menu.
    *
    * @param {Object} state - Current tile state
-   * @returns {this} - For chaining (?)
+   * @param {BaseElement} component - Custom web component DOM element
+   * @returns {this} - For chaining
    */
-  open (state) {}
+  open (state, component) {}
 
   /**
    * Close the tile UI menu.
    *
-   * @returns {Object} - Updated tile state
+   * @returns {this} - For chaining
    */
   close () {}
 
