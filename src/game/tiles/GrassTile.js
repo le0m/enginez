@@ -28,7 +28,12 @@ export default class GrassTile extends BaseTile {
         cost: { food: 10, wood: 20 },
         production: { food: 50 },
         time: 10,
-        debug: true
+        debug: true,
+        icon: {
+          image: '/static/tileset.png',
+          x: -(128 * 3),
+          y: -(128 * 6)
+        }
       })
     ]
   }

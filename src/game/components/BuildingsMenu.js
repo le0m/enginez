@@ -64,9 +64,13 @@ class BuildingsMenu extends BaseElement {
       cardBody.classList.add('card-body')
       card.appendChild(cardBody)
 
-      const img = document.createElement('img')
-      img.src = '/static/favicon.png'
-      cardBody.appendChild(img)
+      const icon = document.createElement('div')
+      icon.style.display = 'inline-block'
+      icon.style.width = '128px'
+      icon.style.height = '128px'
+      icon.style.background = 'url(/static/tileset.png)'
+      icon.style.backgroundPosition = `${building.icon.x}px ${building.icon.y}px`
+      cardBody.appendChild(icon)
 
       const cardFooter = document.createElement('div')
       cardFooter.classList.add('card-footer')

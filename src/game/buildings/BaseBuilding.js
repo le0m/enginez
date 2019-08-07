@@ -18,6 +18,7 @@ export default class BaseBuilding extends EventEmitter {
    * @param {Object} config.cost - Resources cost to build ({food: Number, wood: Number, rock: Number})
    * @param {Object} config.production - Building production ({food: Number, wood: Number, rock: Number})
    * @param {Number} config.time - Production time (int, s)
+   * @param {Object} config.icon - Icon position in tileset, for UI icon of this building
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
@@ -28,6 +29,7 @@ export default class BaseBuilding extends EventEmitter {
     this.cost               = config.cost
     this.production         = config.production
     this.time               = config.time * 1000
+    this.icon               = config.icon
     this.begin              = Date.now()
     this.end                = this.begin + this.time
     this._previousTimestamp = 0
