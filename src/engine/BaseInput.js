@@ -43,7 +43,7 @@ export default class BaseInput {
   /**
    * Check if the user is moving.
    *
-   * @returns {boolean}
+   * @returns {Boolean}
    */
   isMoving () {
     const [x, y] = this.getDirection()

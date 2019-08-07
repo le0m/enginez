@@ -4,6 +4,9 @@ class BuildingsMenu extends BaseElement {
   constructor () {
     super()
 
+    this._handlers = new Map()
+
+    // attach shadow root
     this.attachShadow({ mode: 'open' })
     const template = document.getElementById('buildings-template')
     const templateClone = template.content.cloneNode(true)
@@ -15,6 +18,19 @@ class BuildingsMenu extends BaseElement {
    */
   init (buildings) {
     const list = this.shadowRoot.querySelector('.menu .list')
+
+    // block click on component from reaching game canvas
+    this._handlers.set(this.shadowRoot, (event) => event.stopPropagation())
+
+    // close button
+    this._handlers.set(this.shadowRoot.querySelector('.navigation .close'), (event) => {
+      if (this.debug) {
+        console.log(`[MENU][buildings] closing menu`)
+      }
+
+      event.stopPropagation()
+      this.dispatchEvent(new CustomEvent('menu:close'))
+    })
 
     // clear all
     while (list.lastChild) {
@@ -28,6 +44,15 @@ class BuildingsMenu extends BaseElement {
 
       const card = document.createElement('div')
       card.classList.add('click', 'card')
+      // listen for clicks on buildings
+      this._handlers.set(card, (event) => {
+        if (this.debug) {
+          console.log(`[MENU][buildings] clicked building:`, building)
+        }
+
+        event.stopPropagation()
+        this.dispatchEvent(new CustomEvent('menu:build', { detail: building }))
+      })
       listItem.appendChild(card)
 
       const cardHeader = document.createElement('div')
@@ -70,16 +95,30 @@ class BuildingsMenu extends BaseElement {
 
       list.appendChild(listItem)
     }
+
+    this._attachHandlers()
   }
 
   /**
    * @inheritDoc
    */
   update (buildings) {
+    this._detachHandlers()
+    this._handlers.clear()
     this.init(buildings)
   }
 
-  _onClick () {}
+  _attachHandlers () {
+    for (const [element, handler] of this._handlers) {
+      element.addEventListener('click', handler)
+    }
+  }
+
+  _detachHandlers () {
+    for (const [element, handler] of this._handlers) {
+      element.removeEventListener('click', handler)
+    }
+  }
 }
 
 try {

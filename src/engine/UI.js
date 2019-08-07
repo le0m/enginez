@@ -42,19 +42,73 @@ export default class UI extends EventEmitter {
   }
 
   /**
+   * Check if a component is mounted.
+   *
+   * @return {Boolean}
+   */
+  isMounted () {
+    return this.currentTile && this.currentComponent
+  }
+
+  /**
    * Mounts an UI component.
    *
    * Only one component can be open at a time.
-   * The previous one will be unmounted if needed.
    *
    * @param {BaseTile} tile - Tile implementing UI logic
-   * @return {boolean} - Success of mounting
+   * @param {Object} state - Current Tile state
+   * @return {Boolean} - Success of mounting
    */
-  mount (tile) {
+  mountComponent (tile, state) {
     if (this.isMounted()) {
-      this.unmount()
+      return false
     }
 
+    if (!this._mount(tile)) {
+      return false
+    }
+
+    if (this.debug) {
+      console.log(`[UI] opening component:`, this.currentTile.name)
+    }
+
+    if (!this.currentTile.open(state, this.currentComponent)) {
+      return false
+    }
+
+    this.emit('ui:component-opened', {
+      state: state,
+      component: this.currentTile
+    })
+
+    return true
+  }
+
+  /**
+   * Unmounts an UI component.
+   *
+   * @return {Object|Boolean} - Updated Tile state, or `false` on error
+   */
+  unmountComponent () {
+    if (!this.isMounted()) {
+      return false
+    }
+
+    if (this.debug) {
+      console.log(`[UI] closing component:`, this.currentTile.name)
+    }
+
+    const newState = this.currentTile.close(this.currentComponent)
+    this.emit('ui:component-closed', {
+      state: newState,
+      component: this.currentTile
+    })
+    this._unmount()
+
+    return true
+  }
+
+  _mount (tile) {
     if (!this.components.has(tile.component)) {
       console.warn(`[UI] component '${tile.component}' not found`)
       return false
@@ -66,72 +120,32 @@ export default class UI extends EventEmitter {
 
     this.currentComponent = this.components.get(tile.component)
     this.currentTile = tile
-    this.currentTile.on('tile:open', this._onComponentOpen, this)
-    this.currentTile.on('tile:close', this._onComponentClose, this)
+    this.currentTile.on('tile:close', this._handleComponentClose, this)
 
     return true
   }
 
-  /**
-   * Unmounts an UI component.
-   *
-   * @return {boolean} - Success of unmounting
-   */
-  unmount () {
-    if (!this.isMounted()) {
-      return false
-    }
-
+  _unmount () {
     if (this.debug) {
       console.log(`[UI] unmounting component:`, this.currentTile.name)
     }
 
-    this.currentTile.off('tile:open', this._onComponentOpen, this)
-    this.currentTile.off('tile:close', this._onComponentClose, this)
+    this.currentTile.off('tile:close', this._handleComponentClose, this)
     this.currentTile = null
     this.currentComponent = null
-
-    return true
   }
 
-  /**
-   * Check if a component is mounted and visible.
-   *
-   * @return {boolean}
-   */
-  isMounted () {
-    return this.currentTile && this.currentComponent
-  }
-
-  open (state) {
-    if (this.debug) {
-      console.log(`[UI] opening component:`, this.currentTile.name)
-    }
-
-    this.currentTile.open(state, this.currentComponent)
-    this.currentComponent.classList.remove('hide')
-  }
-
-  close () {
+  _handleComponentClose (data) {
     if (this.debug) {
       console.log(`[UI] closing component:`, this.currentTile.name)
     }
 
-    this.currentComponent.classList.add('hide')
-    this.currentTile.close()
-  }
+    this.currentTile.close(this.currentComponent)
+    this.emit('ui:component-closed', {
+      state: data.state,
+      component: this.currentTile
+    })
 
-  isOpen () {
-    return this.currentTile && this.currentTile.isOpen()
-  }
-
-  _onComponentOpen (data) {
-    this.emit('ui:component-opened', data)
-  }
-
-  _onComponentClose (data) {
-    this.currentComponent.classList.add('hide')
-    this.emit('ui:component-closed', data)
-    this.unmount()
+    this._unmount()
   }
 }

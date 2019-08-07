@@ -17,9 +17,8 @@ export default class GrassTile extends BaseTile {
   constructor (config) {
     super(config)
 
-    this._handlers  = new Map()
-    this._state     = {}
-    this._closed    = false
+    this._state    = {}
+    this._closed   = false
 
     // init buildings menu
     this.menuItems = [
@@ -47,24 +46,22 @@ export default class GrassTile extends BaseTile {
   open (state, component) {
     this._state = state
     this._closed = false
-    component.init(this.menuItems)
-    this._createHandlers(component)
-    this._attachHandlers()
-    this.emit('tile:open', this._state)
+    component.update(this.menuItems)
+    this._attachHandlers(component)
+    component.classList.remove('hide')
 
-    return this
+    return true
   }
 
   /**
    * @inheritDoc
    */
-  close () {
-    this._detachHandlers()
-    this._handlers.clear()
+  close (component) {
+    component.classList.add('hide')
+    this._detachHandlers(component)
     this._closed = true
-    this.emit('tile:close', this._state)
 
-    return this
+    return this._state
   }
 
   /**
@@ -74,51 +71,28 @@ export default class GrassTile extends BaseTile {
     return !this._closed
   }
 
-  _createHandlers (component) {
-    // UI elements for menu clicks
-    const closeBtn = component.shadowRoot.querySelector('.navigation .close')
-    const buildingBtns = component.shadowRoot.querySelectorAll('.list-item .click.card')
+  _attachHandlers (component) {
+    component.addEventListener('menu:close', this._handleClose.bind(this))
+    component.addEventListener('menu:build', this._handleBuild.bind(this))
+  }
 
-    // block click on component from reaching game canvas
-    this._handlers.set(component.shadowRoot, (event) => {
-      event.stopPropagation()
-    })
+  _detachHandlers (component) {
+    component.removeEventListener('menu:close', this._handleClose.bind(this))
+    component.removeEventListener('menu:build', this._handleBuild.bind(this))
+  }
 
-    // menu close button
-    this._handlers.set(closeBtn, (event) => {
-      if (this.debug) {
-        console.log(`[GRASS TILE] closing menu`)
-      }
-
-      event.stopPropagation()
-      this.close()
-    })
-
-    // buildings buttons
-    buildingBtns.forEach((buildingBtn, index) => {
-      this._handlers.set(buildingBtn, (event) => {
-        if (this.debug) {
-          console.log(`[GRASS TILE] clicked menu item`)
-        }
-
-        event.stopPropagation()
-        this.emit('tile:build', {
-          building: this.menuItems[index],
-          state: this._state
-        })
-      })
+  _handleClose (event) {
+    event.stopPropagation()
+    this.emit('tile:close', {
+      state: this._state
     })
   }
 
-  _attachHandlers () {
-    for (const [element, handler] of this._handlers) {
-      element.addEventListener('click', handler)
-    }
-  }
-
-  _detachHandlers () {
-    for (const [element, handler] of this._handlers) {
-      element.removeEventListener('click', handler)
-    }
+  _handleBuild (event) {
+    event.stopPropagation()
+    this.emit('tile:build', {
+      building: event.detail,
+      state: this._state
+    })
   }
 }

@@ -45,7 +45,7 @@ export default class BaseTile extends EventEmitter {
    * Click the tile.
    *
    * @param {Object} [params={}] - Optional parameters
-   * @returns {*|false} - `false` to stop the click event from propagating to other layers
+   * @returns {*|Boolean} - `false` to stop the click event from propagating to other layers
    */
   click (params = {}) {}
 
@@ -54,16 +54,17 @@ export default class BaseTile extends EventEmitter {
    *
    * @param {Object} state - Current tile state
    * @param {BaseElement} component - Custom web component DOM element
-   * @returns {this} - For chaining
+   * @returns {Boolean} - Success of opening
    */
   open (state, component) {}
 
   /**
    * Close the tile UI menu.
    *
-   * @returns {this} - For chaining
+   * @param {BaseElement} component - Custom web component DOM element
+   * @returns {Object|Boolean} - Current Tile state, or `false` on failure
    */
-  close () {}
+  close (component) {}
 
   /**
    * Check if tile UI menu is currently open.

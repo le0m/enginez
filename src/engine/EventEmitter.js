@@ -34,7 +34,7 @@ export default class EventEmitter {
    * @param {String} event - Name of the event
    * @param {Function} callback - Function to be removed
    * @param {Object} thisArg - Context of the callback
-   * @returns {boolean} - `false` if the handler is not found
+   * @returns {Boolean} - `false` if the handler is not found
    */
   off (event, callback, thisArg) {
     const handlers = this._eventHandlers.get(event)
@@ -59,7 +59,7 @@ export default class EventEmitter {
    *
    * @param {String} event - Name of the event
    * @param {Object} args - Arguments for the event handler
-   * @returns {Number|boolean} - Number of handlers triggered, `false` if event has no handlers
+   * @returns {Number|Boolean} - Number of handlers triggered, `false` if event has no handlers
    */
   emit (event, ...args) {
     const handlers = this._eventHandlers.get(event)

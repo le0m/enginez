@@ -51,7 +51,7 @@ export default class City extends EventEmitter {
    * Validates the building cost.
    *
    * @param {BaseBuilding} building - The Building component to check and add
-   * @returns {boolean} - Whether the building was added or not
+   * @returns {Boolean} - Whether the building was added or not
    */
   build (building) {
     const cost = building.getCost()

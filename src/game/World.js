@@ -144,12 +144,11 @@ export default class World extends BaseWorld {
             console.log(`[WORLD] handling component for tile ${tileID}, clicked at ${col} | ${row}`)
           }
 
-          if (this.ui.isOpen()) {
-            this.ui.close()
+          if (this.ui.isMounted()) {
+            this.ui.unmountComponent()
           }
 
-          this.ui.mount(tileInstance)
-          this.ui.open(this.state.getTileState(l, col, row))
+          this.ui.mountComponent(tileInstance, this.state.getTileState(l, col, row))
         }
 
         break
@@ -160,16 +159,16 @@ export default class World extends BaseWorld {
   _handleTileBuild ({ building, state }) {
     if (this.city.build(building)) {
       this.layers[state.layer].setTileID(building.tileID, state.col, state.row)
-      this.ui.close()
+      this.ui.unmountComponent()
     }
   }
 
-  _handleComponentOpen () {
-    this.ui.currentTile.on('tile:build', this._handleTileBuild, this)
+  _handleComponentOpen ({ component }) {
+    component.on('tile:build', this._handleTileBuild, this)
   }
 
-  _handleComponentClose (state) {
-    this.ui.currentTile.off('tile:build', this._handleTileBuild, this)
+  _handleComponentClose ({ state, component }) {
+    component.off('tile:build', this._handleTileBuild, this)
     this.state.setTileState(state, state.layer, state.col, state.row)
   }
 
