@@ -1,6 +1,8 @@
 /**
  * A queue to use for event updates.
  *
+ * REMOVE: deprecated and unused
+ *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */

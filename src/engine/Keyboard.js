@@ -61,6 +61,7 @@ export default class Keyboard extends BaseInput {
    * Press a key.
    *
    * @param {KeyboardEvent} event
+   * @listens Document#keydown
    * @private
    */
   _onKeyDown (event) {
@@ -76,6 +77,7 @@ export default class Keyboard extends BaseInput {
    * Release a key.
    *
    * @param {KeyboardEvent} event
+   * @listens Document#keyup
    * @private
    */
   _onKeyUp (event) {

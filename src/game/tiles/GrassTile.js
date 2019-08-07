@@ -20,7 +20,8 @@ export default class GrassTile extends BaseTile {
     this._state    = {}
     this._closed   = false
 
-    // init buildings menu
+    // init menu items
+    /** @type Array<BaseBuilding> */
     this.menuItems = [
       new Field({ // idx: 0
         name: 'field',
@@ -76,25 +77,67 @@ export default class GrassTile extends BaseTile {
     return !this._closed
   }
 
+  /**
+   * Attach event handlers to wrap specific events.
+   *
+   * @param {BaseElement} component - Custom web component DOM element
+   * @private
+   */
   _attachHandlers (component) {
     component.addEventListener('menu:close', this._handleClose.bind(this))
     component.addEventListener('menu:build', this._handleBuild.bind(this))
   }
 
+  /**
+   * Detach event handlers of wrapped events.
+   *
+   * @param {BaseElement} component - Custom web component DOM element
+   * @private
+   */
   _detachHandlers (component) {
     component.removeEventListener('menu:close', this._handleClose.bind(this))
     component.removeEventListener('menu:build', this._handleBuild.bind(this))
   }
 
+  /**
+   * Handle close menu event.
+   * Emits a wrapper event with more data.
+   *
+   * @param {CustomEvent} event
+   * @listens BuildingsMenu#event:menu-close
+   * @fires GrassTile#tile-close
+   * @private
+   */
   _handleClose (event) {
     event.stopPropagation()
+    /**
+     * @event GrassTile#tile-close
+     * @type Object
+     * @property {Object} state - Current Tile state
+     */
     this.emit('tile:close', {
       state: this._state
     })
   }
 
+  /**
+   * Handle build button event.
+   * Emits a wrapper event with more data.
+   *
+   * @param {CustomEvent} event
+   * @param {BaseBuilding} event.detail
+   * @listens BuildingsMenu#event:menu-build
+   * @fires GrassTile#tile-build
+   * @private
+   */
   _handleBuild (event) {
     event.stopPropagation()
+    /**
+     * @event GrassTile#tile-build
+     * @type Object
+     * @property {BaseBuilding} building - Clicked building
+     * @property {Object} state - Current Tile state
+     */
     this.emit('tile:build', {
       building: event.detail,
       state: this._state

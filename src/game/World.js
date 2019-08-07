@@ -85,8 +85,8 @@ export default class World extends BaseWorld {
 
     this.layers.forEach((layer) => layer.init())
     this.ui.on('ui:click', this._handleUIClick, this)
-    this.ui.on('ui:component-opened', this._handleComponentOpen, this)
-    this.ui.on('ui:component-closed', this._handleComponentClose, this)
+    this.ui.on('ui:open', this._handleUIOpen, this)
+    this.ui.on('ui:close', this._handleUIClose, this)
   }
 
   /**
@@ -127,6 +127,16 @@ export default class World extends BaseWorld {
     this.viewport.resize(width, height)
   }
 
+  /**
+   * Handle UI clicks.
+   * This retrieves Tile instance and State, before mounting the component
+   * on the UI layer.
+   *
+   * @param {Number} x
+   * @param {Number} y
+   * @listens UI#event:ui-click
+   * @private
+   */
   _handleUIClick ([x, y]) {
     // use first tileset for tile size
     const [col, row] = this.viewport.canvasToWorldPosition(x, y, this.tilesets[0].tileSize)
@@ -145,10 +155,10 @@ export default class World extends BaseWorld {
           }
 
           if (this.ui.isMounted()) {
-            this.ui.unmountComponent()
+            this.ui.close()
           }
 
-          this.ui.mountComponent(tileInstance, this.state.getTileState(l, col, row))
+          this.ui.open(tileInstance, this.state.getTileState(l, col, row))
         }
 
         break
@@ -156,22 +166,53 @@ export default class World extends BaseWorld {
     }
   }
 
-  _handleTileBuild ({ building, state }) {
-    if (this.city.build(building)) {
-      this.layers[state.layer].setTileID(building.tileID, state.col, state.row)
-      this.ui.unmountComponent()
-    }
+  /**
+   * Handle opening of a new component, attaching event listeners.
+   *
+   * @param {BaseTile} tile - Current Tile instance
+   * @listens UI#event:ui-open
+   * @private
+   */
+  _handleUIOpen ({ tile }) {
+    tile.on('tile:build', this._handleTileBuild, this)
   }
 
-  _handleComponentOpen ({ component }) {
-    component.on('tile:build', this._handleTileBuild, this)
-  }
-
-  _handleComponentClose ({ state, component }) {
-    component.off('tile:build', this._handleTileBuild, this)
+  /**
+   * Handle closing of the current component, detaching event listeners.
+   *
+   * @param {Object} state - Current tile state
+   * @param {BaseTile} tile - Current Tile instance
+   * @listens UI#event:ui-close
+   * @private
+   */
+  _handleUIClose ({ state, tile }) {
+    tile.off('tile:build', this._handleTileBuild, this)
     this.state.setTileState(state, state.layer, state.col, state.row)
   }
 
+  /**
+   * Handle Tile build request.
+   * This tries to build in the City and saves the new tile ID if successful,
+   * then closes the current component.
+   *
+   * @param {BaseBuilding} building
+   * @param {Object} state
+   * @listens GrassTile#event:tile-build
+   * @private
+   */
+  _handleTileBuild ({ building, state }) {
+    if (this.city.build(building)) {
+      this.layers[state.layer].setTileID(building.tileID, state.col, state.row)
+      this.ui.close()
+    }
+  }
+
+  /**
+   * Handle window resizing.
+   *
+   * @listens window#resize
+   * @private
+   */
   _handleResize () {
     const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
     const height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)

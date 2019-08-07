@@ -1,6 +1,9 @@
 import BaseElement from '../../engine/BaseElement.js'
 
 class BuildingsMenu extends BaseElement {
+  /**
+   * Create the element and attach the shadow root.
+   */
   constructor () {
     super()
 
@@ -15,6 +18,10 @@ class BuildingsMenu extends BaseElement {
 
   /**
    * @inheritDoc
+   *
+   * @param {Array<BaseBuilding>} buildings
+   * @fires BuildingsMenu#menu-close
+   * @fires BuildingsMenu#menu-build
    */
   init (buildings) {
     const list = this.shadowRoot.querySelector('.menu .list')
@@ -22,7 +29,10 @@ class BuildingsMenu extends BaseElement {
     // block click on component from reaching game canvas
     this._handlers.set(this.shadowRoot, (event) => event.stopPropagation())
 
-    // close button
+    /**
+     * @event BuildingsMenu#menu-close
+     * @type CustomEvent
+     */
     this._handlers.set(this.shadowRoot.querySelector('.navigation .close'), (event) => {
       if (this.debug) {
         console.log(`[MENU][buildings] closing menu`)
@@ -44,7 +54,11 @@ class BuildingsMenu extends BaseElement {
 
       const card = document.createElement('div')
       card.classList.add('click', 'card')
-      // listen for clicks on buildings
+      /**
+       * @event BuildingsMenu#menu-build
+       * @type CustomEvent
+       * @property {BaseBuilding} detail - Clicked building
+       */
       this._handlers.set(card, (event) => {
         if (this.debug) {
           console.log(`[MENU][buildings] clicked building:`, building)
@@ -105,6 +119,8 @@ class BuildingsMenu extends BaseElement {
 
   /**
    * @inheritDoc
+   *
+   * @param {Array<BaseBuilding>} buildings
    */
   update (buildings) {
     this._detachHandlers()
@@ -112,12 +128,22 @@ class BuildingsMenu extends BaseElement {
     this.init(buildings)
   }
 
+  /**
+   * Attach event handlers to their elements.
+   *
+   * @private
+   */
   _attachHandlers () {
     for (const [element, handler] of this._handlers) {
       element.addEventListener('click', handler)
     }
   }
 
+  /**
+   * Detach event handlers from their elements.
+   *
+   * @private
+   */
   _detachHandlers () {
     for (const [element, handler] of this._handlers) {
       element.removeEventListener('click', handler)

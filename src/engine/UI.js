@@ -35,9 +35,23 @@ export default class UI extends EventEmitter {
     this.element.addEventListener('click', this._onClick.bind(this), false)
   }
 
+  /**
+   * Handle UI root element clicks, emitting an event with coordinates.
+   *
+   * @param {MouseEvent} event
+   * @listens Element#click
+   * @fires UI#ui-click
+   * @private
+   */
   _onClick (event) {
     event.preventDefault()
     event.stopPropagation()
+    /**
+     * @event UI#ui-click
+     * @type Array
+     * @property {Number} 0 - X position
+     * @property {Number} 1 - Y position
+     */
     this.emit('ui:click', [event.layerX, event.layerY])
   }
 
@@ -51,64 +65,19 @@ export default class UI extends EventEmitter {
   }
 
   /**
-   * Mounts an UI component.
-   *
+   * Open an UI component.
    * Only one component can be open at a time.
    *
    * @param {BaseTile} tile - Tile implementing UI logic
    * @param {Object} state - Current Tile state
    * @return {Boolean} - Success of mounting
+   * @fires UI#ui-open
    */
-  mountComponent (tile, state) {
+  open (tile, state) {
     if (this.isMounted()) {
       return false
     }
 
-    if (!this._mount(tile)) {
-      return false
-    }
-
-    if (this.debug) {
-      console.log(`[UI] opening component:`, this.currentTile.name)
-    }
-
-    if (!this.currentTile.open(state, this.currentComponent)) {
-      return false
-    }
-
-    this.emit('ui:component-opened', {
-      state: state,
-      component: this.currentTile
-    })
-
-    return true
-  }
-
-  /**
-   * Unmounts an UI component.
-   *
-   * @return {Object|Boolean} - Updated Tile state, or `false` on error
-   */
-  unmountComponent () {
-    if (!this.isMounted()) {
-      return false
-    }
-
-    if (this.debug) {
-      console.log(`[UI] closing component:`, this.currentTile.name)
-    }
-
-    const newState = this.currentTile.close(this.currentComponent)
-    this.emit('ui:component-closed', {
-      state: newState,
-      component: this.currentTile
-    })
-    this._unmount()
-
-    return true
-  }
-
-  _mount (tile) {
     if (!this.components.has(tile.component)) {
       console.warn(`[UI] component '${tile.component}' not found`)
       return false
@@ -122,10 +91,53 @@ export default class UI extends EventEmitter {
     this.currentTile = tile
     this.currentTile.on('tile:close', this._handleComponentClose, this)
 
+    if (this.debug) {
+      console.log(`[UI] opening component:`, this.currentTile.name)
+    }
+
+    if (!this.currentTile.open(state, this.currentComponent)) {
+      return false
+    }
+
+    /**
+     * @event UI#ui-open
+     * @type Object
+     * @property {BaseTile} tile - Tile instance, to attach events
+     */
+    this.emit('ui:open', {
+      tile: this.currentTile
+    })
+
     return true
   }
 
-  _unmount () {
+  /**
+   * Close an UI component.
+   *
+   * @return {Object|Boolean} - Updated Tile state, or `false` on error
+   * @fires UI#ui-close
+   */
+  close () {
+    if (!this.isMounted()) {
+      return false
+    }
+
+    if (this.debug) {
+      console.log(`[UI] closing component:`, this.currentTile.name)
+    }
+
+    const newState = this.currentTile.close(this.currentComponent)
+    /**
+     * @event UI#ui-close
+     * @type Object
+     * @property {Object} state - Current Tile state
+     * @property {BaseTile} tile - Tile instance
+     */
+    this.emit('ui:close', {
+      state: newState,
+      tile: this.currentTile
+    })
+
     if (this.debug) {
       console.log(`[UI] unmounting component:`, this.currentTile.name)
     }
@@ -133,19 +145,20 @@ export default class UI extends EventEmitter {
     this.currentTile.off('tile:close', this._handleComponentClose, this)
     this.currentTile = null
     this.currentComponent = null
+
+    return true
   }
 
+  /**
+   * Handle component close event.
+   *
+   * @param {Object} data
+   * @param {Object} data.state - Current Tile state
+   * @listens GrassTile#event:tile-close
+   * @fires UI#ui-close
+   * @private
+   */
   _handleComponentClose (data) {
-    if (this.debug) {
-      console.log(`[UI] closing component:`, this.currentTile.name)
-    }
-
-    this.currentTile.close(this.currentComponent)
-    this.emit('ui:component-closed', {
-      state: data.state,
-      component: this.currentTile
-    })
-
-    this._unmount()
+    this.close()
   }
 }

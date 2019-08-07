@@ -101,12 +101,22 @@ export default class BaseBuilding extends EventEmitter {
     return this.cost
   }
 
+  /**
+   * Assign a worker to the building.
+   *
+   * @return {Boolean} - Success of assignment
+   */
   assignWorker () {
     this.workers++
 
     return true
   }
 
+  /**
+   * Remove a worker from the building.
+   *
+   * @return {Boolean} - Success of removal
+   */
   removeWorker () {
     if (this.workers > 0) {
       this.workers--

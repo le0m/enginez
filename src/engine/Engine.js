@@ -144,6 +144,12 @@ export default class Engine {
     }
   }
 
+  /**
+   * Draw a grid on top of the game map.
+   * This is a debug function.
+   *
+   * @private
+   */
   _drawGrid () {
     const context = this.world.viewport.context
     const tileSize = this.world.tilesets[0].tileSize
@@ -168,6 +174,12 @@ export default class Engine {
     }
   }
 
+  /**
+   * Draw cell rows and columns on top of game map.
+   * This is a debug function.
+   *
+   * @private
+   */
   _drawCellNumbers () {
     const context = this.world.viewport.context
     const tileSize = this.world.tilesets[0].tileSize
@@ -195,6 +207,12 @@ export default class Engine {
     }
   }
 
+  /**
+   * Draw rendering info.
+   * This is a debug function.
+   *
+   * @private
+   */
   _drawDebug () {
     const context = this.world.viewport.context
 

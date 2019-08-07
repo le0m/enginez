@@ -156,6 +156,9 @@ export default class City extends EventEmitter {
     this.updateHeader()
   }
 
+  /**
+   * Update the City header UI component.
+   */
   updateHeader () {
     this.element.update(this.resources)
   }
