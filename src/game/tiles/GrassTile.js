@@ -42,13 +42,6 @@ export default class GrassTile extends BaseTile {
   /**
    * @inheritDoc
    */
-  click (params = {}) {
-    console.log(`[GRASS TILE] clicked`)
-  }
-
-  /**
-   * @inheritDoc
-   */
   open (state, component) {
     this._state = state
     this._closed = false

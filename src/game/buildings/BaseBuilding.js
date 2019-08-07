@@ -3,8 +3,6 @@ import EventEmitter from '../../engine/EventEmitter'
 /**
  * Base Building logic.
  *
- * TODO: use a decay system for long-paused buildings
- *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */

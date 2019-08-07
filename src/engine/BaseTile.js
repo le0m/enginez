@@ -30,26 +30,6 @@ export default class BaseTile extends EventEmitter {
   }
 
   /**
-   * Calculate new tile state.
-   *
-   * Override this method to handle tile
-   * status updates.
-   *
-   * @param {Number} delta - Time since last update (int, ms)
-   * @param {Object} prevState - Previous tile state
-   * @returns {Object} - New tile state
-   */
-  update (delta, prevState) {}
-
-  /**
-   * Click the tile.
-   *
-   * @param {Object} [params={}] - Optional parameters
-   * @returns {*|Boolean} - `false` to stop the click event from propagating to other layers
-   */
-  click (params = {}) {}
-
-  /**
    * Open the tile UI menu.
    *
    * @param {Object} state - Current tile state
