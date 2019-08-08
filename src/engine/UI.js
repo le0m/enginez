@@ -70,7 +70,7 @@ export default class UI extends EventEmitter {
    *
    * @param {BaseTile} tile - Tile implementing UI logic
    * @param {Object} state - Current Tile state
-   * @return {Boolean} - Success of mounting
+   * @return {Boolean} - Success of opening
    * @fires UI#ui-open
    */
   open (tile, state) {
