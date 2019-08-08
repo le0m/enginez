@@ -20,7 +20,7 @@ export default class BaseBuilding extends EventEmitter {
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
-    super(config)
+    super()
 
     this.name               = config.name
     this.tileID             = config.tileID
