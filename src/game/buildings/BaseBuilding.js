@@ -23,10 +23,7 @@ export default class BaseBuilding extends BaseTile {
   /**
    * Building information.
    *
-   * @typedef BuildingInfo
-   * @property {Number} id
-   * @property {String} name
-   * @property {String} component
+   * @typedef {TileInfo} BuildingInfo
    * @property {Resources} cost
    * @property {Resources} production
    * @property {Number} time
@@ -34,7 +31,7 @@ export default class BaseBuilding extends BaseTile {
    */
 
   /**
-   * Building info, used by UI to show menu and constructor to initialize properties.
+   * Static Building information.
    *
    * @return {BuildingInfo}
    */

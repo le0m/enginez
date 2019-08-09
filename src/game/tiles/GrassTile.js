@@ -13,15 +13,25 @@ export default class GrassTile extends BaseTile {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
+   * @inheritDoc
+   */
+  static info () {
+    return {
+      id: 1,
+      name: 'Grass',
+      component: 'buildings-menu'
+    }
+  }
+
+  /**
    * @param {Object} config - GrassTile component config
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
-    super(Object.assign({ // TODO: use static method like in `BaseBuilding`
-      id: 1,
-      name: 'GrassTile',
-      component: 'buildings-menu'
-    }, config))
+    // deep-clone info to prevent changing the default from
+    // an instance by reference (child objects)
+    const info = JSON.parse(JSON.stringify(GrassTile.info()))
+    super(Object.assign(info, config))
 
     this._state    = {} // TODO: remove state from simple Tiles
     this._closed   = false

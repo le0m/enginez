@@ -10,6 +10,22 @@ export default class BaseTile extends EventEmitter {
   /* eslint-disable no-multi-spaces */
 
   /**
+   * Tile information.
+   *
+   * @typedef TileInfo
+   * @property {Number} id
+   * @property {String} name
+   * @property {String} component
+   */
+
+  /**
+   * Static Tile information.
+   *
+   * @return {TileInfo}
+   */
+  static info () {}
+
+  /**
    * @param {Object} config - BaseTile component config
    * @param {Number} config.id - Tile ID
    * @param {String} config.name - Tile name

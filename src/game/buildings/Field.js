@@ -36,6 +36,6 @@ export default class Field extends BaseBuilding {
     // deep-clone info to prevent changing the default from
     // an instance by reference (child objects)
     const info = JSON.parse(JSON.stringify(Field.info()))
-    super(Object.assign({}, info, config))
+    super(Object.assign(info, config))
   }
 }
