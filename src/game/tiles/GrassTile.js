@@ -4,6 +4,8 @@ import Field from '../buildings/Field.js'
 /**
  * Logic for grass tile.
  *
+ * @extends BaseTile
+ *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
@@ -15,34 +17,26 @@ export default class GrassTile extends BaseTile {
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
-    super(config)
+    super(Object.assign({ // TODO: use static method like in `BaseBuilding`
+      id: 1,
+      name: 'GrassTile',
+      component: 'buildings-menu'
+    }, config))
 
-    this._state    = {}
+    this._state    = {} // TODO: remove state from simple Tiles
     this._closed   = false
 
     // init menu items
-    /** @type Array<BaseBuilding> */
+    /** @type Array<BaseBuilding.> */
     this.menuItems = [
-      new Field({ // idx: 0
-        name: 'field',
-        tileID: 112,
-        cost: { food: 10, wood: 20 },
-        production: { food: 50 },
-        time: 10,
-        debug: true,
-        icon: {
-          image: '/static/tileset.png',
-          x: -(128 * 3),
-          y: -(128 * 6)
-        }
-      })
+      Field // idx: 0
     ]
   }
 
   /**
    * @inheritDoc
    */
-  open (state, component) {
+  open (component, state = {}) {
     this._state = state
     this._closed = false
     component.update(this.menuItems)
@@ -118,7 +112,7 @@ export default class GrassTile extends BaseTile {
    * Emits a wrapper event with more data.
    *
    * @param {CustomEvent} event
-   * @param {BaseBuilding} event.detail
+   * @param {BaseBuilding.} event.detail - Building class definition
    * @listens BuildingsMenu#event:menu-build
    * @fires GrassTile#tile-build
    * @private
@@ -128,11 +122,11 @@ export default class GrassTile extends BaseTile {
     /**
      * @event GrassTile#tile-build
      * @type Object
-     * @property {BaseBuilding} building - Clicked building
+     * @property {BaseBuilding.} building - Class definition of clicked building
      * @property {Object} state - Current Tile state
      */
     this.emit('tile:build', {
-      building: event.detail,
+      Building: event.detail,
       state: this._state
     })
   }

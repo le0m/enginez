@@ -7,6 +7,8 @@
 export default class State {
   /* eslint-disable no-multi-spaces, one-var */
 
+  // TODO: state object @typedef
+
   /**
    * @param {Object} config - State component config
    * @param {Number} config.layers - Map layers (int)

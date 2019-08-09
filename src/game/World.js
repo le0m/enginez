@@ -14,6 +14,8 @@ const console = ConsoleExtra(window.console)
 /**
  * World implementation.
  *
+ * @extends BaseWorld
+ *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
@@ -132,8 +134,9 @@ export default class World extends BaseWorld {
    * This retrieves Tile instance and State, before mounting the component
    * on the UI layer.
    *
-   * @param {Number} x
-   * @param {Number} y
+   * @param {Number[]} event
+   * @param {Number} event[0] - X pixel coordinate
+   * @param {Number} event[1] - Y pixel coordinate
    * @listens UI#event:ui-click
    * @private
    */
@@ -169,7 +172,8 @@ export default class World extends BaseWorld {
   /**
    * Handle opening of a new component, attaching event listeners.
    *
-   * @param {BaseTile} tile - Current Tile instance
+   * @param {Object} event
+   * @param {BaseTile} event.tile - Current Tile instance
    * @listens UI#event:ui-open
    * @private
    */
@@ -180,8 +184,9 @@ export default class World extends BaseWorld {
   /**
    * Handle closing of the current component, detaching event listeners.
    *
-   * @param {Object} state - Current tile state
-   * @param {BaseTile} tile - Current Tile instance
+   * @param {Object} event
+   * @param {Object} event.state - Current tile state
+   * @param {BaseTile} event.tile - Current Tile instance
    * @listens UI#event:ui-close
    * @private
    */
@@ -195,14 +200,17 @@ export default class World extends BaseWorld {
    * This tries to build in the City and saves the new tile ID if successful,
    * then closes the current component.
    *
-   * @param {BaseBuilding} building
-   * @param {Object} state
+   * @param {Object} event
+   * @param {BaseBuilding.} event.Building - Building class definition
+   * @param {Object} event.state - Current Tile state
    * @listens GrassTile#event:tile-build
    * @private
    */
-  _handleTileBuild ({ building, state }) {
-    if (this.city.build(building)) {
-      this.layers[state.layer].setTileID(building.tileID, state.col, state.row)
+  _handleTileBuild ({ Building, state }) {
+    const building = this.city.build(Building, [state.col, state.row])
+
+    if (building) {
+      this.layers[state.layer].setTileID(building.id, state.col, state.row)
       this.ui.close()
     }
   }

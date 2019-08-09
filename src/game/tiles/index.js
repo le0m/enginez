@@ -8,11 +8,6 @@ import GrassTile from './GrassTile.js'
  * @license MIT
  */
 
-const Grass = new GrassTile({
-  id: 1,
-  name: 'GrassTile',
-  component: 'buildings-menu',
-  debug: true
-})
+const Grass = new GrassTile({ debug: true })
 
 export { Grass }

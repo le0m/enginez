@@ -10,9 +10,18 @@ export default class City extends EventEmitter {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
+   * Resource object definition.
+   *
+   * @typedef Resources
+   * @property {Number} [food]
+   * @property {Number} [wood]
+   * @property {Number} [rock]
+   */
+
+  /**
    * @param {Object} config - City component configuration
    * @param {UI} config.ui - {@link UI} component instance
-   * @param {Object} config.resources - Initial resources ({food: Number, wood: Number, rock: Number})
+   * @param {Resources} config.resources - Initial resources
    * @param {Number} config.population - Initial population (int)
    * @param {Boolean} [config.debug=false] - Debug mode
    */
@@ -50,20 +59,28 @@ export default class City extends EventEmitter {
    *
    * Validates the building cost.
    *
-   * @param {BaseBuilding} building - The Building component to check and add
-   * @returns {Boolean} - Whether the building was added or not
+   * @param {BaseBuilding.} Building - Class definition of the Building to check and add
+   * @param {Number[]} position
+   * @param {Number} position[0] - Map column
+   * @param {Number} position[1] - Map row
+   * @returns {BaseBuilding|Boolean} - Created building instance, or `false` if couldn't build
    */
-  build (building) {
-    const cost = building.getCost()
+  build (Building, position) {
+    const cost = Building.info().cost
 
     if (this.spend(cost)) {
+      const building = new Building({
+        position: position,
+        debug: this.debug
+      })
+
       if (this.debug) {
-        console.log(`[CITY] building '${building.name}'`)
+        console.log(`[CITY] building '${building.name}' in position ${building.position[0]} | ${building.position[1]}`)
       }
 
       this.buildings.push(building)
 
-      return true
+      return building
     }
 
     return false
@@ -77,6 +94,7 @@ export default class City extends EventEmitter {
    * @returns {{food: Number, wood: Number, rock: Number}} - Total production, already added to City stash
    */
   production (timestamp) {
+    // TODO: this is not working; try building 2+ Fields and see
     const total = this.buildings.reduce((production, building) => {
       const produced = building.produce(timestamp)
 

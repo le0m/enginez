@@ -19,7 +19,7 @@ class BuildingsMenu extends BaseElement {
   /**
    * @inheritDoc
    *
-   * @param {Array<BaseBuilding>} buildings
+   * @param {Array<BaseBuilding.>} buildings - Buildings classes definitions
    * @fires BuildingsMenu#menu-close
    * @fires BuildingsMenu#menu-build
    */
@@ -47,8 +47,10 @@ class BuildingsMenu extends BaseElement {
       list.removeChild(list.lastChild)
     }
 
-    // init building list
-    for (const building of buildings) {
+    // init building list (capital letter because it's a constructor)
+    for (const Building of buildings) {
+      const bInfo = Building.info()
+
       const listItem = document.createElement('li')
       listItem.classList.add('list-item')
 
@@ -57,21 +59,21 @@ class BuildingsMenu extends BaseElement {
       /**
        * @event BuildingsMenu#menu-build
        * @type CustomEvent
-       * @property {BaseBuilding} detail - Clicked building
+       * @property {BaseBuilding.} detail - Class definition of clicked building
        */
       this._handlers.set(card, (event) => {
         if (this.debug) {
-          console.log(`[MENU][buildings] clicked building:`, building)
+          console.log(`[MENU][buildings] clicked building:`, bInfo.name)
         }
 
         event.stopPropagation()
-        this.dispatchEvent(new CustomEvent('menu:build', { detail: building }))
+        this.dispatchEvent(new CustomEvent('menu:build', { detail: Building }))
       })
       listItem.appendChild(card)
 
       const cardHeader = document.createElement('div')
       cardHeader.classList.add('card-header', 'size-3')
-      cardHeader.innerText = building.name
+      cardHeader.innerText = bInfo.name
       card.appendChild(cardHeader)
 
       const cardBody = document.createElement('div')
@@ -82,8 +84,8 @@ class BuildingsMenu extends BaseElement {
       icon.style.display = 'inline-block'
       icon.style.width = '128px'
       icon.style.height = '128px'
-      icon.style.background = 'url(/static/tileset.png)'
-      icon.style.backgroundPosition = `${building.icon.x}px ${building.icon.y}px`
+      icon.style.background = `url(${bInfo.icon.image})`
+      icon.style.backgroundPosition = `${bInfo.icon.x}px ${bInfo.icon.y}px`
       cardBody.appendChild(icon)
 
       const cardFooter = document.createElement('div')
@@ -95,7 +97,7 @@ class BuildingsMenu extends BaseElement {
       cardFooter.appendChild(resources)
 
       // init building cost
-      for (const res of Object.keys(building.cost)) {
+      for (const res of Object.keys(bInfo.cost)) {
         const elem = document.createElement('div')
         elem.classList.add(res)
         resources.appendChild(elem)
@@ -107,7 +109,7 @@ class BuildingsMenu extends BaseElement {
 
         const value = document.createElement('span')
         value.classList.add('value', 'size-4')
-        value.innerText = `${building.cost[res]}`
+        value.innerText = `${bInfo.cost[res]}`
         elem.appendChild(value)
       }
 
@@ -120,7 +122,7 @@ class BuildingsMenu extends BaseElement {
   /**
    * @inheritDoc
    *
-   * @param {Array<BaseBuilding>} buildings
+   * @param {Array<BaseBuilding.>} buildings - Buildings classes definitions
    */
   update (buildings) {
     this._detachHandlers()

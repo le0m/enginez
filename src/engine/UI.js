@@ -26,6 +26,7 @@ export default class UI extends EventEmitter {
     }
 
     // other
+    /** @type {BaseTile|null} */
     this.currentTile      = null // current tile UI component
     this.currentComponent = null // current custom component
     this.debug            = config.debug || false
@@ -69,11 +70,11 @@ export default class UI extends EventEmitter {
    * Only one component can be open at a time.
    *
    * @param {BaseTile} tile - Tile implementing UI logic
-   * @param {Object} state - Current Tile state
+   * @param {Object} [state={}] - Current Tile state
    * @return {Boolean} - Success of opening
    * @fires UI#ui-open
    */
-  open (tile, state) {
+  open (tile, state = {}) {
     if (this.isMounted()) {
       return false
     }
@@ -95,7 +96,7 @@ export default class UI extends EventEmitter {
       console.log(`[UI] opening component:`, this.currentTile.name)
     }
 
-    if (!this.currentTile.open(state, this.currentComponent)) {
+    if (!this.currentTile.open(this.currentComponent, state)) {
       return false
     }
 
@@ -152,13 +153,13 @@ export default class UI extends EventEmitter {
   /**
    * Handle component close event.
    *
-   * @param {Object} data
-   * @param {Object} data.state - Current Tile state
+   * @param {Object} event
+   * @param {Object} event.state - Current Tile state
    * @listens GrassTile#event:tile-close
    * @fires UI#ui-close
    * @private
    */
-  _handleComponentClose (data) {
+  _handleComponentClose (event) {
     this.close()
   }
 }

@@ -3,8 +3,6 @@ import EventEmitter from './EventEmitter'
 /**
  * This is a base class for tiles.
  *
- * @interface
- *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
  */
@@ -13,7 +11,7 @@ export default class BaseTile extends EventEmitter {
 
   /**
    * @param {Object} config - BaseTile component config
-   * @param {Number} config.id - Tile ID (int)
+   * @param {Number} config.id - Tile ID
    * @param {String} config.name - Tile name
    * @param {String} config.component - UI component name
    * @param {Boolean} [config.debug=false] - Debug mode
@@ -32,11 +30,11 @@ export default class BaseTile extends EventEmitter {
   /**
    * Open the tile UI menu.
    *
-   * @param {Object} state - Current tile state
    * @param {BaseElement} component - Custom web component DOM element
+   * @param {Object} [state={}] - Current tile state
    * @returns {Boolean} - Success of opening
    */
-  open (state, component) {}
+  open (component, state = {}) {}
 
   /**
    * Close the tile UI menu.

@@ -22,14 +22,14 @@
  */
 export default class BaseElement extends HTMLElement {
   /**
-   * Create here dynamic parts of the component template.
+   * Create dynamic parts of the component template.
    *
    * @param {*} data - Data used by the component to build the template
    */
   init (data) {}
 
   /**
-   * Update here dynamic parts of the component template.
+   * Update dynamic parts of the component template.
    *
    * @param {*} data - Data used by the component to update the template
    */
