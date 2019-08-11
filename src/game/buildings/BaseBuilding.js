@@ -12,6 +12,15 @@ export default class BaseBuilding extends BaseTile {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
+   * @typedef {TileState} BuildingState
+   * @property {Number} workers - Number of workers assigned to this building
+   * @property {Number} begin - Production begin time
+   * @property {Number} end - Production end time
+   * @property {Number} previousTimestamp - Previous production check timestamp
+   * @property {Number} paused - Production status
+   */
+
+  /**
    * Building UI icon object definition.
    *
    * @typedef BuildingIcon
@@ -42,7 +51,6 @@ export default class BaseBuilding extends BaseTile {
    * @param {Resources} config.cost - Resources cost to build
    * @param {Resources} config.production - Building production
    * @param {Number} config.time - Production time (int, s)
-   * @param {Number[]} config.position - Building position on map, [0] is column and [1] is row
    * @param {BuildingIcon} config.icon - Icon sprite and position, for UI icon of this building
    * @param {Boolean} [config.debug=false] - Debug mode
    */
@@ -52,13 +60,42 @@ export default class BaseBuilding extends BaseTile {
     this.cost               = config.cost
     this.production         = config.production
     this.time               = config.time * 1000
-    this.position           = config.position || null // building position on the map (col, row)
     this.icon               = config.icon
     this.begin              = Date.now()
     this.end                = this.begin + this.time
     this._previousTimestamp = 0
     this.paused             = false
     this.workers            = 0
+  }
+
+  /**
+   * @inheritDoc
+   *
+   * @return {TileState & BuildingState}
+   */
+  getState () {
+    return {
+      ...super.getState(),
+      workers: this.workers,
+      begin: this.begin,
+      end: this.end,
+      previousTimestamp: this._previousTimestamp,
+      paused: this.paused
+    }
+  }
+
+  /**
+   * @inheritDoc
+   *
+   * @param {TileState & BuildingState} newState
+   */
+  setState (newState) {
+    super.setState(newState)
+    this.workers = newState.workers || this.workers
+    this.begin = newState.begin || this.begin
+    this.end = newState.end || this.end
+    this._previousTimestamp = newState.previousTimestamp || this._previousTimestamp
+    this.paused = newState.paused || this.paused
   }
 
   /**

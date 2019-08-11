@@ -103,7 +103,7 @@ export default class UI extends EventEmitter {
     /**
      * @event UI#ui-open
      * @type Object
-     * @property {BaseTile} tile - Tile instance, to attach events
+     * @property {BaseTile} tile - Tile instance
      */
     this.emit('ui:open', {
       tile: this.currentTile

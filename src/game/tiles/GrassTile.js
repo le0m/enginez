@@ -33,9 +33,6 @@ export default class GrassTile extends BaseTile {
     const info = JSON.parse(JSON.stringify(GrassTile.info()))
     super(Object.assign(info, config))
 
-    this._state    = {} // TODO: remove state from simple Tiles
-    this._closed   = false
-
     // init menu items
     /** @type Array<BaseBuilding.> */
     this.menuItems = [
@@ -47,38 +44,12 @@ export default class GrassTile extends BaseTile {
    * @inheritDoc
    */
   open (component, state = {}) {
-    this._state = state
-    this._closed = false
     component.update(this.menuItems)
-    this._attachHandlers(component)
-    component.classList.remove('hide')
-
-    return true
+    return super.open(component, state)
   }
 
   /**
    * @inheritDoc
-   */
-  close (component) {
-    component.classList.add('hide')
-    this._detachHandlers(component)
-    this._closed = true
-
-    return this._state
-  }
-
-  /**
-   * @inheritDoc
-   */
-  isOpen () {
-    return !this._closed
-  }
-
-  /**
-   * Attach event handlers to wrap specific events.
-   *
-   * @param {BaseElement} component - Custom web component DOM element
-   * @private
    */
   _attachHandlers (component) {
     component.addEventListener('menu:close', this._handleClose.bind(this))
@@ -86,10 +57,7 @@ export default class GrassTile extends BaseTile {
   }
 
   /**
-   * Detach event handlers of wrapped events.
-   *
-   * @param {BaseElement} component - Custom web component DOM element
-   * @private
+   * @inheritDoc
    */
   _detachHandlers (component) {
     component.removeEventListener('menu:close', this._handleClose.bind(this))
@@ -107,13 +75,14 @@ export default class GrassTile extends BaseTile {
    */
   _handleClose (event) {
     event.stopPropagation()
+
     /**
      * @event GrassTile#tile-close
      * @type Object
      * @property {Object} state - Current Tile state
      */
     this.emit('tile:close', {
-      state: this._state
+      state: this.getState()
     })
   }
 
@@ -129,6 +98,7 @@ export default class GrassTile extends BaseTile {
    */
   _handleBuild (event) {
     event.stopPropagation()
+
     /**
      * @event GrassTile#tile-build
      * @type Object
@@ -137,7 +107,7 @@ export default class GrassTile extends BaseTile {
      */
     this.emit('tile:build', {
       Building: event.detail,
-      state: this._state
+      state: this.getState()
     })
   }
 }

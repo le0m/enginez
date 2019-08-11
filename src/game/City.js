@@ -61,21 +61,25 @@ export default class City extends EventEmitter {
    *
    * @param {BaseBuilding.} Building - Class definition of the Building to check and add
    * @param {Number[]} position
-   * @param {Number} position[0] - Map column
-   * @param {Number} position[1] - Map row
+   * @param {Number} position[0] - Map layer
+   * @param {Number} position[1] - Map column
+   * @param {Number} position[2] - Map row
    * @returns {BaseBuilding|Boolean} - Created building instance, or `false` if couldn't build
    */
   build (Building, position) {
     const cost = Building.info().cost
 
     if (this.spend(cost)) {
-      const building = new Building({
-        position: position,
-        debug: this.debug
+      const building = new Building({ debug: this.debug })
+
+      building.setState({
+        layer: position[0],
+        col: position[1],
+        row: position[2]
       })
 
       if (this.debug) {
-        console.log(`[CITY] building '${building.name}' in position ${building.position[0]} | ${building.position[1]}`)
+        console.log(`[CITY] building '${building.name}' in position ${position[1]} | ${position[2]} (${position[0]})`)
       }
 
       this.buildings.push(building)
@@ -94,7 +98,6 @@ export default class City extends EventEmitter {
    * @returns {{food: Number, wood: Number, rock: Number}} - Total production, already added to City stash
    */
   production (timestamp) {
-    // TODO: this is not working; try building 2+ Fields and see
     const total = this.buildings.reduce((production, building) => {
       const produced = building.produce(timestamp)
 

@@ -185,32 +185,32 @@ export default class World extends BaseWorld {
    * Handle closing of the current component, detaching event listeners.
    *
    * @param {Object} event
-   * @param {Object} event.state - Current tile state
    * @param {BaseTile} event.tile - Current Tile instance
    * @listens UI#event:ui-close
    * @private
    */
-  _handleUIClose ({ state, tile }) {
+  _handleUIClose ({ tile }) {
     tile.off('tile:build', this._handleTileBuild, this)
-    this.state.setTileState(state, state.layer, state.col, state.row)
   }
 
   /**
    * Handle Tile build request.
-   * This tries to build in the City and saves the new tile ID if successful,
-   * then closes the current component.
+   * This tries to build in the City, set the new Tile state, then closes
+   * the current component.
    *
    * @param {Object} event
    * @param {BaseBuilding.} event.Building - Building class definition
-   * @param {Object} event.state - Current Tile state
+   * @param {TileState} event.state - Current Tile state
    * @listens GrassTile#event:tile-build
    * @private
    */
   _handleTileBuild ({ Building, state }) {
-    const building = this.city.build(Building, [state.col, state.row])
+    const building = this.city.build(Building, [state.layer, state.col, state.row])
 
     if (building) {
-      this.layers[state.layer].setTileID(building.id, state.col, state.row)
+      const bState = building.getState()
+      this.state.setTileState(bState, bState.layer, bState.col, bState.row)
+      this.layers[state.layer].setTileID(building.id, bState.col, bState.row)
       this.ui.close()
     }
   }

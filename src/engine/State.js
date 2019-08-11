@@ -7,8 +7,6 @@
 export default class State {
   /* eslint-disable no-multi-spaces, one-var */
 
-  // TODO: state object @typedef
-
   /**
    * @param {Object} config - State component config
    * @param {Number} config.layers - Map layers (int)
@@ -65,7 +63,7 @@ export default class State {
    * @param {Number} layer - 0-indexed tile layer (int)
    * @param {Number} col - 0-indexed tile column (int)
    * @param {Number} row - 0-indexed tile row (int)
-   * @returns {Object} - Tile state
+   * @returns {TileState|BuildingState} - Tile state
    */
   getTileState (layer, col, row) {
     return this.stateMap[layer][row][col]
@@ -74,7 +72,7 @@ export default class State {
   /**
    * Set the current (updated) state of a tile.
    *
-   * @param {Object} state - New tile state
+   * @param {TileState|BuildingState} state - New tile state
    * @param {Number} layer - 0-indexed tile layer (int)
    * @param {Number} col - 0-indexed tile column (int)
    * @param {Number} row - 0-indexed tile row (int)

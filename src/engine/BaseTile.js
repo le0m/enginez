@@ -10,6 +10,15 @@ export default class BaseTile extends EventEmitter {
   /* eslint-disable no-multi-spaces */
 
   /**
+   * Tile state.
+   *
+   * @typedef TileState
+   * @property {Number} layer
+   * @property {Number} col
+   * @property {Number} row
+   */
+
+  /**
    * Tile information.
    *
    * @typedef TileInfo
@@ -40,30 +49,81 @@ export default class BaseTile extends EventEmitter {
     this.component = config.component
 
     // other
+    this._state    = {}
+    this._closed   = true
     this.debug     = config.debug || false
+  }
+
+  /**
+   * Get current Tile state.
+   *
+   * @return {TileState}
+   */
+  getState () {
+    return this._state
+  }
+
+  /**
+   * Set new Tile state, or part of it.
+   *
+   * @param {TileState} newState
+   */
+  setState (newState) {
+    Object.assign(this._state, newState)
   }
 
   /**
    * Open the tile UI menu.
    *
    * @param {BaseElement} component - Custom web component DOM element
-   * @param {Object} [state={}] - Current tile state
+   * @param {Object} state - Current tile state
    * @returns {Boolean} - Success of opening
    */
-  open (component, state = {}) {}
+  open (component, state) {
+    this.setState(state)
+    this._attachHandlers(component)
+    component.classList.remove('hide')
+    this._closed = false
+
+    return true
+  }
 
   /**
    * Close the tile UI menu.
    *
    * @param {BaseElement} component - Custom web component DOM element
-   * @returns {Object|Boolean} - Current Tile state, or `false` on failure
+   * @returns {Object} - Current Tile state
    */
-  close (component) {}
+  close (component) {
+    this._detachHandlers(component)
+    component.classList.add('hide')
+    this._closed = true
+
+    return this.getState()
+  }
 
   /**
    * Check if tile UI menu is currently open.
    *
    * @returns {Boolean}
    */
-  isOpen () {}
+  isOpen () {
+    return !this._closed
+  }
+
+  /**
+   * Attach event handlers to wrap specific events.
+   *
+   * @param {BaseElement} component - Custom web component DOM element
+   * @private
+   */
+  _attachHandlers (component) {}
+
+  /**
+   * Detach event handlers of wrapped events.
+   *
+   * @param {BaseElement} component - Custom web component DOM element
+   * @private
+   */
+  _detachHandlers (component) {}
 }
