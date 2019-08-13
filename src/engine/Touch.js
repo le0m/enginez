@@ -131,7 +131,14 @@ export default class Touch extends BaseInput {
    * @inheritDoc
    */
   getDistance (delta) {
-    console.throttle(1000).log(`[DEBUG] touch distance: ${this.startX} - ${this.endX} | ${this.startY} - ${this.endY}`)
-    return [this.startX - this.endX, this.startY - this.endY]
+    const [x, y] = this.getDirection()
+
+    if (x !== 0 || y !== 0) {
+      console.throttle(1000).log(`[DEBUG] direction: ${x} | ${y}`)
+      console.throttle(1000).log(`[DEBUG] touch distance: ${this.startX} - ${this.endX} | ${this.startY} - ${this.endY}`)
+      return [this.startX - this.endX, this.startY - this.endY]
+    }
+
+    return [0, 0]
   }
 }
