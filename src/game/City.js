@@ -10,12 +10,21 @@ export default class City extends EventEmitter {
   /* eslint-disable no-multi-spaces, one-var */
 
   /**
-   * Resource object definition.
+   * Game resources.
    *
    * @typedef Resources
    * @property {Number} [food]
    * @property {Number} [wood]
    * @property {Number} [rock]
+   */
+
+  /**
+   * City information.
+   *
+   * @typedef CityInfo
+   * @property {Resources} resources
+   * @property {Number} workers
+   * @property {Number} population
    */
 
   /**
@@ -49,7 +58,11 @@ export default class City extends EventEmitter {
   _initHeader () {
     /** @type {BaseElement} */
     const elem = this.ui.components.get('city-header')
-    elem.init(this.resources)
+    elem.init({
+      resources: this.resources,
+      workers: this.workers,
+      population: this.population
+    })
     elem.classList.remove('hide')
 
     return elem
@@ -96,7 +109,7 @@ export default class City extends EventEmitter {
    * Produced resources are added to the City stash.
    *
    * @param {Number} timestamp - Time since start (int, ms)
-   * @returns {{food: Number, wood: Number, rock: Number}} - Total production, already added to City stash
+   * @returns {Resources} - Total production, already added to City stash
    */
   production (timestamp) {
     const total = this.buildings.reduce((production, building) => {
@@ -126,7 +139,7 @@ export default class City extends EventEmitter {
   /**
    * Check if the City can afford spending an amount of resources.
    *
-   * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
+   * @param {Resources} amount - Can be one or more resources
    * @returns {Boolean}
    */
   canAfford (amount) {
@@ -145,7 +158,7 @@ export default class City extends EventEmitter {
   /**
    * Spend an amount of City resources.
    *
-   * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
+   * @param {Resources} amount - Can be one or more resources
    * @returns {Boolean} - `false` if the City can't afford the amount of resources
    */
   spend (amount) {
@@ -165,7 +178,7 @@ export default class City extends EventEmitter {
   /**
    * Add an amount of resources to the City stash.
    *
-   * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
+   * @param {Resources} amount - Can be one or more resources
    */
   gain (amount) {
     for (const resource of Object.keys(amount)) {
@@ -206,6 +219,7 @@ export default class City extends EventEmitter {
 
     if (building.assignWorker()) {
       this.workers++
+      this.updateHeader()
 
       return true
     }
@@ -222,6 +236,7 @@ export default class City extends EventEmitter {
   removeWorker (building) {
     if (building.removeWorker()) {
       this.workers--
+      this.updateHeader()
 
       return true
     }
@@ -233,6 +248,10 @@ export default class City extends EventEmitter {
    * Update the City header UI component.
    */
   updateHeader () {
-    this.element.update(this.resources)
+    this.element.update({
+      resources: this.resources,
+      workers: this.workers,
+      population: this.population
+    })
   }
 }

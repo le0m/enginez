@@ -24,16 +24,17 @@
 
             .header {
               padding: 20px;
+              text-align: center;
             }
 
-            .header .resources {
+            .header .resources, .header .population {
               box-sizing: border-box;
               padding: 0.8rem;
               color: #ffffff;
               background-color: #555555;
             }
 
-            .resources div {
+            .header div, .resources div, .population div {
               display: inline-block;
             }
           </style>
@@ -46,6 +47,11 @@
                 <span class="value">100</span>
               </div>
               -->
+            </div>
+            <div class="population">
+              <div class="workers">0</div>
+              /
+              <div class="total">0</div>
             </div>
           </div>
         </template>

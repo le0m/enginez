@@ -12,8 +12,10 @@ class CityHeader extends BaseElement {
 
   /**
    * @inheritDoc
+   *
+   * @param {CityInfo} info
    */
-  init (resources) {
+  init (info) {
     const list = this.shadowRoot.querySelector('.resources')
 
     // clear all
@@ -21,7 +23,9 @@ class CityHeader extends BaseElement {
       list.removeChild(list.lastChild)
     }
 
-    for (const res of Object.keys(resources)) {
+    console.log(`[DEBUG] resources:`, info)
+
+    for (const res of Object.keys(info.resources)) {
       const resource = document.createElement('div')
       resource.classList.add(res)
 
@@ -32,18 +36,26 @@ class CityHeader extends BaseElement {
 
       const value = document.createElement('span')
       value.classList.add('value')
-      value.innerText = `${resources[res]}`
+      value.innerText = `${info.resources[res]}`
       resource.appendChild(value)
 
       list.appendChild(resource)
     }
+
+    const workers = this.shadowRoot.querySelector('.population .workers')
+    workers.innerText = info.workers
+
+    const population = this.shadowRoot.querySelector('.population .total')
+    population.innerText = info.population
   }
 
   /**
    * @inheritDoc
+   *
+   * @param {CityInfo} info
    */
-  update (resources) {
-    for (const res of Object.keys(resources)) {
+  update (info) {
+    for (const res of Object.keys(info.resources)) {
       const elem = this.shadowRoot.querySelector(`.${res} .value`)
 
       if (!elem) {
@@ -51,8 +63,14 @@ class CityHeader extends BaseElement {
         continue
       }
 
-      elem.innerText = `${resources[res]}` // cast to string
+      elem.innerText = `${info.resources[res]}` // cast to string
     }
+
+    const workers = this.shadowRoot.querySelector('.population .workers')
+    workers.innerText = info.workers
+
+    const population = this.shadowRoot.querySelector('.population .total')
+    population.innerText = info.population
   }
 }
 
