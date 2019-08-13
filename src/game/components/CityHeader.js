@@ -23,8 +23,6 @@ class CityHeader extends BaseElement {
       list.removeChild(list.lastChild)
     }
 
-    console.log(`[DEBUG] resources:`, info)
-
     for (const res of Object.keys(info.resources)) {
       const resource = document.createElement('div')
       resource.classList.add(res)

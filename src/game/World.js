@@ -2,12 +2,13 @@ import State from '../engine/State.js'
 import Viewport from '../engine/Viewport.js'
 import Layer from '../engine/Layer.js'
 import Keyboard from '../engine/Keyboard.js'
+import Touch from '../engine/Touch.js'
 import Tileset from '../engine/Tileset.js'
 import UI from '../engine/UI.js'
 import { ConsoleExtra } from '../utils.js'
 import BaseWorld from '../engine/BaseWorld.js'
 import City from './City.js'
-import { map, tilesets, keyboard, state, ui, viewport, tiles } from './config.js'
+import { map, tilesets, keyboard, touch, state, ui, viewport, tiles } from './config.js'
 
 const console = ConsoleExtra(window.console)
 
@@ -36,7 +37,10 @@ export default class World extends BaseWorld {
       ...tileset,
       loader: this.loader
     }))
-    this.input      = new Keyboard(keyboard)
+    this.input      = [
+      new Keyboard(keyboard),
+      new Touch(touch)
+    ]
     this.state      = new State({
       ...state,
       layers: this.map.length,
@@ -95,8 +99,11 @@ export default class World extends BaseWorld {
    * @inheritDoc
    */
   update (delta, timestamp) {
-    if (this.input.isMoving()) {
-      this.viewport.move(this.input.getDistance(delta))
+    for (const input of this.input) {
+      if (input.isMoving()) {
+        this.viewport.move(input.getDistance(delta))
+        break
+      }
     }
 
     this.layers.forEach((layer) => layer.update(delta, timestamp))

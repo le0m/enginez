@@ -1,8 +1,7 @@
 import BaseInput from './BaseInput.js'
 
 /**
- * This component implements {@link BaseInput} for
- * keyboard devices.
+ * This component implements {@link BaseInput} for keyboard devices.
  *
  * @author Leo Mainardi <mainardi.leo@gmail.com>
  * @license MIT
@@ -24,8 +23,6 @@ export default class Keyboard extends BaseInput {
 
   /**
    * @param {Object} config - Keyboard component config
-   * @param {Number} config.speed - Movement speed (float, px per time step)
-   * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
     super(config)

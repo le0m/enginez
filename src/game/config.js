@@ -105,6 +105,11 @@ const keyboard = {
   debug: true,
   speed: 0.512
 }
+const touch = {
+  debug: true,
+  speed: 0.512,
+  sensitivity: 16
+}
 
 const state = {
   debug: true
@@ -137,4 +142,4 @@ const engine = {
   })
 }
 
-export { map, tilesets, viewport, ui, keyboard, state, tiles, components, engine }
+export { map, tilesets, viewport, ui, keyboard, touch, state, tiles, components, engine }
