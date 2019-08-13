@@ -107,8 +107,7 @@ const keyboard = {
 }
 const touch = {
   debug: true,
-  speed: 0.512,
-  sensitivity: 1
+  speed: 0.512
 }
 
 const state = {
