@@ -50,54 +50,144 @@
           </div>
         </template>
 
-        <div id="building" class="hide">
-          <div class="title size-2">Lorem Ipsum</div>
-          <div class="img"></div>
+        <template id="building-template">
+          <style>
+            :host {
+              display: block;
+            }
 
-          <div class="row">
-            <div class="title size-2">Description</div>
-            <div class="content size-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-          </div>
+            .navigation {
+              text-align: center;
+            }
 
-          <div class="row">
-            <div class="title size-2">Info</div>
-            <div class="content size-4">
-              <ul>
-                <li>Lorem Ipsum</li>
-                <li>Lorem Ipsum</li>
-                <li>Lorem Ipsum</li>
-                <li>Lorem Ipsum</li>
-              </ul>
+            .navigation div {
+              display: inline-block;
+            }
+
+            .navigation .arrow {
+              padding: 0 16px;
+              margin: 0 2px;
+              border: solid 1px #777777;
+            }
+
+            .close {
+              background-color: #eeeeee;
+              padding: 4px 8px;
+              border-radius: 100%;
+              position: absolute;
+              right: 0;
+              top: 0;
+              margin: 2px;
+            }
+
+            .click, .navigation div {
+              border: solid 1px transparent;
+            }
+
+            .click:hover, .navigation div:hover {
+              cursor: pointer;
+            }
+
+            .click:active, .navigation div:active {
+              cursor: pointer;
+              border-color: red;
+            }
+
+            .menu {
+              width: 30%;
+              background-color: #ffffff;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              right: 0;
+            }
+
+            .menu .img {
+              width: 100%;
+              height: 15%;
+              background-color: #eee;
+            }
+
+            .menu .title, .menu .content, .menu ul {
+              padding: 0 20px;
+            }
+
+            .item {
+              display: table-row;
+            }
+
+            .item img {
+              max-width: 40px;
+            }
+
+            .item span {
+              display: table-cell;
+              vertical-align: middle;
+              padding: 0 0.6rem;
+            }
+
+            .size-2 {
+              font-size: 1.2rem;
+            }
+
+            .size-4 {
+              font-size: 0.8rem;
+              font-family: 'Hind Light', sans-serif;
+            }
+
+            .hide {
+              display: none;
+            }
+          </style>
+
+          <div id="building" class="menu">
+            <div class="navigation">
+              <div class="close">X</div>
+            </div>
+
+            <div class="title size-2 name">Lorem Ipsum</div>
+            <div class="img picture"></div>
+
+            <div class="row">
+              <div class="title size-2">Description</div>
+              <div class="content size-4 description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+            </div>
+
+            <div class="row info">
+              <div class="title size-2">Info</div>
+              <div class="content size-4">
+                <ul>
+                  <!--<li>Lorem Ipsum</li>-->
+                </ul>
+              </div>
+            </div>
+
+            <div class="row abilities">
+              <div class="title size-2">Ability</div>
+              <div class="content size-4">
+                <!--
+                <div class="item click">
+                  <img class="icon" src="/static/favicon.png">
+                  <span class="text">Lorem Ipsum</span>
+                </div>
+                -->
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="title size-2">Workers</div>
+              <div class="content size-4">
+                <div class="row navigation workers">
+                  <div class="arrow add"> + </div>
+                  <span class="current">x</span>
+                  /
+                  <span class="max">y</span>
+                  <div class="arrow remove"> - </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <div class="row">
-            <div class="title size-2">Ability</div>
-            <div class="content size-4">
-              <div class="item"><img src="/static/favicon.png">
-                <span>Lorem Ipsum</span>
-              </div>
-              <div class="item"><img src="/static/favicon.png">
-                <span>Lorem Ipsum</span>
-              </div>
-              <div class="item"><img src="/static/favicon.png">
-                <span>Lorem Ipsum</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="title size-2">Workers</div>
-            <div class="content size-4">
-              <div class="row navigation">
-                <div class="arrow prev"> &lt; </div>
-                <span class="current">x</span>
-                <span class="max">y</span>
-                <div class="arrow next"> &gt; </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        </template>
 
         <template id="buildings-template">
           <style>

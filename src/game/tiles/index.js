@@ -1,4 +1,5 @@
 import GrassTile from './GrassTile.js'
+import FieldTile from './FieldTile.js'
 
 /**
  * Instantiate one for each tile class.
@@ -9,5 +10,6 @@ import GrassTile from './GrassTile.js'
  */
 
 const Grass = new GrassTile({ debug: true })
+const Field = new FieldTile({ debug: true })
 
-export { Grass }
+export { Grass, Field }

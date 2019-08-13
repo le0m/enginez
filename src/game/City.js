@@ -32,6 +32,7 @@ export default class City extends EventEmitter {
     this.resources  = config.resources || { food: 100, wood: 100, rock: 100 }
     this.population = config.population
     this.workers    = 0
+    /** @type {Array<BaseBuilding>} */
     this.buildings  = []
     this.element    = this._initHeader()
 
@@ -123,8 +124,7 @@ export default class City extends EventEmitter {
   }
 
   /**
-   * Check if the City can afford spending an amount
-   * of resources.
+   * Check if the City can afford spending an amount of resources.
    *
    * @param {{food: Number, wood: Number, rock: Number}} amount - Can be one or more resources
    * @returns {Boolean}
@@ -175,6 +175,58 @@ export default class City extends EventEmitter {
     }
 
     this.updateHeader()
+  }
+
+  /**
+   * Get a City's building at some specific position, if available.
+   *
+   * @param {Number} layer
+   * @param {Number} col
+   * @param {Number} row
+   */
+  getBuildingAt (layer, col, row) {
+    let bInfo = null
+
+    return this.buildings.find((building) => {
+      bInfo = building.getState()
+      return bInfo.layer === layer && bInfo.col === col && bInfo.row === row
+    })
+  }
+
+  /**
+   * Assign a worker to a building.
+   *
+   * @param {BaseBuilding} building
+   * @return {Boolean} - Success of assignment
+   */
+  assignWorker (building) {
+    if (this.population <= this.workers) {
+      return false
+    }
+
+    if (building.assignWorker()) {
+      this.workers++
+
+      return true
+    }
+
+    return false
+  }
+
+  /**
+   * Remove a worker from a building.
+   *
+   * @param {BaseBuilding} building
+   * @return {Boolean} - Success of removal
+   */
+  removeWorker (building) {
+    if (building.removeWorker()) {
+      this.workers--
+
+      return true
+    }
+
+    return false
   }
 
   /**

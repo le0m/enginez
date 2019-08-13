@@ -89,6 +89,16 @@ export default class BaseTile extends EventEmitter {
   }
 
   /**
+   * Update the tile UI menu.
+   *
+   * @param {BaseElement} component - Custom web component DOM element
+   * @return {Boolean} - Success of updating
+   */
+  update (component) {
+    return true
+  }
+
+  /**
    * Close the tile UI menu.
    *
    * @param {BaseElement} component - Custom web component DOM element
@@ -115,7 +125,6 @@ export default class BaseTile extends EventEmitter {
    * Attach event handlers to wrap specific events.
    *
    * @param {BaseElement} component - Custom web component DOM element
-   * @private
    */
   _attachHandlers (component) {}
 
@@ -123,7 +132,6 @@ export default class BaseTile extends EventEmitter {
    * Detach event handlers of wrapped events.
    *
    * @param {BaseElement} component - Custom web component DOM element
-   * @private
    */
   _detachHandlers (component) {}
 }

@@ -127,6 +127,7 @@ canvas {
 
 /*        BUILDING        */
 
+/* INTEGRATED
 #building {
     width: 30%;
     background-color: #ffffff;
@@ -146,7 +147,8 @@ canvas {
     padding: 0 20px;
 }
 
-.item {display: table-row;
+.item {
+    display: table-row;
 }
 
 .item img {
@@ -158,6 +160,7 @@ canvas {
     vertical-align: middle;
     padding: 0 0.6rem;
 }
+*/
 
 
 /*        MENU        */

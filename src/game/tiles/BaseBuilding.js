@@ -37,6 +37,7 @@ export default class BaseBuilding extends BaseTile {
    * @property {Resources} production
    * @property {Number} time
    * @property {BuildingIcon} icon
+   * @property {Number} maxWorkers
    */
 
   /**
@@ -52,6 +53,7 @@ export default class BaseBuilding extends BaseTile {
    * @param {Resources} config.production - Building production
    * @param {Number} config.time - Production time (int, s)
    * @param {BuildingIcon} config.icon - Icon sprite and position, for UI icon of this building
+   * @param {Number} config.maxWorkers - Maximum number of workers in this building
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
@@ -66,6 +68,8 @@ export default class BaseBuilding extends BaseTile {
     this._previousTimestamp = 0
     this.paused             = false
     this.workers            = 0
+    this.maxWorkers         = config.maxWorkers || 0
+    this.pause() // start paused because 0 workers
   }
 
   /**
@@ -139,7 +143,7 @@ export default class BaseBuilding extends BaseTile {
       this._previousTimestamp = timestamp
     }
 
-    if (!this.paused && (this.begin + (timestamp - this._previousTimestamp)) > this.end) {
+    if (!this.paused && this.workers > 0 && (this.begin + (timestamp - this._previousTimestamp)) > this.end) {
       this.reset()
       this._previousTimestamp = timestamp
 
@@ -164,9 +168,17 @@ export default class BaseBuilding extends BaseTile {
    * @return {Boolean} - Success of assignment
    */
   assignWorker () {
-    this.workers++
+    if (this.workers < this.maxWorkers) {
+      if (this.workers === 0) {
+        this.resume()
+      }
 
-    return true
+      this.workers++
+
+      return true
+    }
+
+    return false
   }
 
   /**
@@ -177,6 +189,10 @@ export default class BaseBuilding extends BaseTile {
   removeWorker () {
     if (this.workers > 0) {
       this.workers--
+
+      if (this.workers === 0) {
+        this.pause()
+      }
 
       return true
     }

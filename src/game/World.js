@@ -150,7 +150,7 @@ export default class World extends BaseWorld {
 
       // skip empty tiles
       if (tileID > 0) {
-        tileInstance = this.tiles.get(tileID)
+        tileInstance = this.city.getBuildingAt(l, col, row) || this.tiles.get(tileID)
 
         if (tileInstance) {
           if (this.debug) {
@@ -179,6 +179,9 @@ export default class World extends BaseWorld {
    */
   _handleUIOpen ({ tile }) {
     tile.on('tile:build', this._handleTileBuild, this)
+    tile.on('building:add-worker', this._handleBuildingAddWorker, this)
+    tile.on('building:remove-worker', this._handleBuildingRemoveWorker, this)
+    tile.on('building:ability', this._handleBuildingAbility, this)
   }
 
   /**
@@ -191,12 +194,13 @@ export default class World extends BaseWorld {
    */
   _handleUIClose ({ tile }) {
     tile.off('tile:build', this._handleTileBuild, this)
+    tile.off('building:add-worker', this._handleBuildingAddWorker, this)
+    tile.off('building:remove-worker', this._handleBuildingRemoveWorker, this)
+    tile.off('building:ability', this._handleBuildingAbility, this)
   }
 
   /**
    * Handle Tile build request.
-   * This tries to build in the City, set the new Tile state, then closes
-   * the current component.
    *
    * @param {Object} event
    * @param {BaseBuilding.} event.Building - Building class definition
@@ -214,6 +218,48 @@ export default class World extends BaseWorld {
       this.ui.close()
     }
   }
+
+  /**
+   * Handle Building request to add a worker.
+   *
+   * @param {Object} event
+   * @param {BaseBuilding} event.building
+   * @listens BaseBuilding#event:building-add-worker
+   * @private
+   */
+  _handleBuildingAddWorker ({ building }) {
+    if (this.city.assignWorker(building)) {
+      if (this.debug) {
+        console.log(`[CITY] assigned worker to building: ${building.name}`)
+      }
+
+      const bState = building.getState()
+      this.state.setTileState(bState, bState.layer, bState.col, bState.row)
+      this.ui.update()
+    }
+  }
+
+  /**
+   * Handle Building request to remove worker.
+   *
+   * @param {Object} event
+   * @param {BaseBuilding} event.building
+   * @listens BaseBuilding#event:building-remove-worker
+   * @private
+   */
+  _handleBuildingRemoveWorker ({ building }) {
+    if (this.city.removeWorker(building)) {
+      if (this.debug) {
+        console.log(`[CITY] removed worker from building: ${building.name}`)
+      }
+
+      const bState = building.getState()
+      this.state.setTileState(bState, bState.layer, bState.col, bState.row)
+      this.ui.update()
+    }
+  }
+
+  _handleBuildingAbility () {}
 
   /**
    * Handle window resizing.

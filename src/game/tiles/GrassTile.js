@@ -1,5 +1,5 @@
 import BaseTile from '../../engine/BaseTile.js'
-import Field from '../buildings/Field.js'
+import FieldTile from './FieldTile.js'
 
 /**
  * Logic for grass tile.
@@ -36,14 +36,14 @@ export default class GrassTile extends BaseTile {
     // init menu items
     /** @type Array<BaseBuilding.> */
     this.menuItems = [
-      Field // idx: 0
+      FieldTile // idx: 0
     ]
   }
 
   /**
    * @inheritDoc
    */
-  open (component, state = {}) {
+  open (component, state) {
     component.update(this.menuItems)
     return super.open(component, state)
   }
@@ -66,20 +66,19 @@ export default class GrassTile extends BaseTile {
 
   /**
    * Handle close menu event.
-   * Emits a wrapper event with more data.
    *
    * @param {CustomEvent} event
    * @listens BuildingsMenu#event:menu-close
-   * @fires GrassTile#tile-close
+   * @fires BaseTile#tile-close
    * @private
    */
   _handleClose (event) {
     event.stopPropagation()
 
     /**
-     * @event GrassTile#tile-close
+     * @event BaseTile#tile-close
      * @type Object
-     * @property {Object} state - Current Tile state
+     * @property {TileState} state - Current Tile state
      */
     this.emit('tile:close', {
       state: this.getState()
@@ -88,7 +87,6 @@ export default class GrassTile extends BaseTile {
 
   /**
    * Handle build button event.
-   * Emits a wrapper event with more data.
    *
    * @param {CustomEvent} event
    * @param {BaseBuilding.} event.detail - Building class definition
@@ -103,7 +101,7 @@ export default class GrassTile extends BaseTile {
      * @event GrassTile#tile-build
      * @type Object
      * @property {BaseBuilding.} building - Class definition of clicked building
-     * @property {Object} state - Current Tile state
+     * @property {TileState} state - Current Tile state
      */
     this.emit('tile:build', {
       Building: event.detail,

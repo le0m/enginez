@@ -24,8 +24,6 @@ class BuildingsMenu extends BaseElement {
    * @fires BuildingsMenu#menu-build
    */
   init (buildings) {
-    const list = this.shadowRoot.querySelector('.menu .list')
-
     // block click on component from reaching game canvas
     this._handlers.set(this.shadowRoot, (event) => event.stopPropagation())
 
@@ -41,6 +39,8 @@ class BuildingsMenu extends BaseElement {
       event.stopPropagation()
       this.dispatchEvent(new CustomEvent('menu:close'))
     })
+
+    const list = this.shadowRoot.querySelector('.menu .list')
 
     // clear all
     while (list.lastChild) {
@@ -100,7 +100,6 @@ class BuildingsMenu extends BaseElement {
       for (const res of Object.keys(bInfo.cost)) {
         const elem = document.createElement('div')
         elem.classList.add(res)
-        resources.appendChild(elem)
 
         const icon = document.createElement('span')
         icon.classList.add('icon')
@@ -111,6 +110,8 @@ class BuildingsMenu extends BaseElement {
         value.classList.add('value', 'size-4')
         value.innerText = `${bInfo.cost[res]}`
         elem.appendChild(value)
+
+        resources.appendChild(elem)
       }
 
       list.appendChild(listItem)

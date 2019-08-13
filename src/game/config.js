@@ -1,7 +1,8 @@
-import { Grass } from './tiles'
+import { Grass, Field } from './tiles'
 import World from './World'
 import './components/CityHeader.js'
 import './components/BuildingsMenu.js'
+import './components/BuildingPanel.js'
 
 /* eslint-disable no-multi-spaces, standard/array-bracket-even-spacing */
 
@@ -110,11 +111,13 @@ const state = {
 }
 
 const tiles = new Map([
-  [1, Grass]
+  [1, Grass],
+  [112, Field]
 ])
 const components = new Map([
   ['city-header', document.createElement('city-header')],
-  ['buildings-menu', document.createElement('buildings-menu')]
+  ['buildings-menu', document.createElement('buildings-menu')],
+  ['building-panel', document.createElement('building-panel')]
 ])
 
 const ui = {

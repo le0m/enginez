@@ -20,16 +20,20 @@ export default class UI extends EventEmitter {
 
     this.element          = config.element
     this.components       = config.components
+
+    // other
+    /** @type {BaseTile|BaseBuilding|null} */
+    this.currentTile      = null // current tile UI component
+    /** @type {BaseElement|null} */
+    this.currentComponent = null // current custom component
+    this.debug            = config.debug || false
+
+    // init UI components
     for (const component of this.components.values()) {
+      component.debug = this.debug
       component.classList.add('hide')
       this.element.appendChild(component)
     }
-
-    // other
-    /** @type {BaseTile|null} */
-    this.currentTile      = null // current tile UI component
-    this.currentComponent = null // current custom component
-    this.debug            = config.debug || false
 
     // ensure z-index
     this.element.style.zIndex = '1'
@@ -62,7 +66,7 @@ export default class UI extends EventEmitter {
    * @return {Boolean}
    */
   isMounted () {
-    return this.currentTile && this.currentComponent
+    return this.currentTile !== null && this.currentComponent !== null
   }
 
   /**
@@ -70,11 +74,11 @@ export default class UI extends EventEmitter {
    * Only one component can be open at a time.
    *
    * @param {BaseTile} tile - Tile implementing UI logic
-   * @param {Object} [state={}] - Current Tile state
+   * @param {Object} state - Current Tile state
    * @return {Boolean} - Success of opening
    * @fires UI#ui-open
    */
-  open (tile, state = {}) {
+  open (tile, state) {
     if (this.isMounted()) {
       return false
     }
@@ -113,6 +117,13 @@ export default class UI extends EventEmitter {
   }
 
   /**
+   * Update an UI component.
+   */
+  update () {
+    this.currentTile.update(this.currentComponent)
+  }
+
+  /**
    * Close an UI component.
    *
    * @return {Object|Boolean} - Updated Tile state, or `false` on error
@@ -131,7 +142,7 @@ export default class UI extends EventEmitter {
     /**
      * @event UI#ui-close
      * @type Object
-     * @property {Object} state - Current Tile state
+     * @property {TileState|BuildingState} state - Current Tile state
      * @property {BaseTile} tile - Tile instance
      */
     this.emit('ui:close', {
@@ -154,8 +165,8 @@ export default class UI extends EventEmitter {
    * Handle component close event.
    *
    * @param {Object} event
-   * @param {Object} event.state - Current Tile state
-   * @listens GrassTile#event:tile-close
+   * @param {TileState|BuildingState} event.state - Current Tile state
+   * @listens BaseTile#event:tile-close
    * @fires UI#ui-close
    * @private
    */

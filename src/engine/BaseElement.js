@@ -21,6 +21,12 @@
  * @license MIT
  */
 export default class BaseElement extends HTMLElement {
+  constructor () {
+    super()
+
+    this.debug = false
+  }
+
   /**
    * Create dynamic parts of the component template.
    *
