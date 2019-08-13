@@ -131,6 +131,7 @@ export default class Touch extends BaseInput {
    * @inheritDoc
    */
   getDistance (delta) {
+    console.throttle(1000).log(`[DEBUG] touch distance: ${this.startX} - ${this.endX} | ${this.startY} - ${this.endY}`)
     return [this.startX - this.endX, this.startY - this.endY]
   }
 }
