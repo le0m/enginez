@@ -135,11 +135,11 @@ export default class Touch extends BaseInput {
     console.throttle(1000).log(`[DEBUG] direction: ${x} | ${y}`)
 
     if (x !== 0) {
-      x = this.currX - this.startX
+      x = this.startX - this.currX
     }
 
     if (y !== 0) {
-      y = this.currY - this.startY
+      y = this.startY - this.currY
     }
 
     console.throttle(1000).log(`[DEBUG] touch distance: ${x} | ${y}`)
