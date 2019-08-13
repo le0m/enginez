@@ -18,16 +18,18 @@ export default class Layer {
    * @param {Boolean} [config.debug=false] - Debug mode
    */
   constructor (config) {
-    this.level    = config.level
-    this.tileMap  = config.map
-    this.tileset  = config.tileset
+    this.level        = config.level
+    this.tileMap      = config.map
+    this.tileset      = config.tileset
 
     // other
-    this.canvas   = null
-    this.context  = null
-    this.queue    = new EventQueue()
-    this._dirty   = true
-    this.debug    = config.debug || false // debug mode
+    this.canvas       = null
+    /** @type CanvasRenderingContext2D */
+    this.context      = null
+    this.queue        = new EventQueue()
+    this._dirty       = true
+    this.selectedTile = null
+    this.debug        = config.debug || false // debug mode
   }
 
   /**
@@ -84,6 +86,16 @@ export default class Layer {
               tileSize,             // target width
               tileSize              // target height
             )
+
+            // draw stroke around selected tile
+            if (this.selectedTile !== null && this.selectedTile[0] === c && this.selectedTile[1] === r) {
+              this.context.strokeStyle = 'orange'
+              this.context.lineWidth = 10
+              // adjust the stroke to be inside the tile
+              this.context.strokeRect(x + 5, y + 5, tileSize - 10, tileSize - 10)
+              this.context.strokeStyle = 'white'
+              this.context.lineWidth = 1
+            }
           }
         }
       }
@@ -134,5 +146,27 @@ export default class Layer {
   setTileID (tileID, col, row) {
     this.tileMap[row][col] = tileID
     this._dirty = true
+  }
+
+  /**
+   * Select a tile to show as stroked.
+   *
+   * @param {Number} col
+   * @param {Number} row
+   */
+  setSelection (col, row) {
+    this.selectedTile = [col, row]
+    this._dirty = true
+  }
+
+  /**
+   * Clear current selected tile.
+   */
+  clearSelection () {
+    if (this.selectedTile !== null) {
+      this._dirty = true
+    }
+
+    this.selectedTile = null
   }
 }

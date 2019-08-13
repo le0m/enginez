@@ -162,6 +162,8 @@ export default class World extends BaseWorld {
           }
 
           this.ui.open(tileInstance, this.state.getTileState(l, col, row))
+        } else {
+          console.warn(`[WORLD] no instance defined for tile ID ${tileID}`)
         }
 
         break
@@ -178,6 +180,8 @@ export default class World extends BaseWorld {
    * @private
    */
   _handleUIOpen ({ tile }) {
+    const tState = tile.getState()
+    this.layers[tState.layer].setSelection(tState.col, tState.row)
     tile.on('tile:build', this._handleTileBuild, this)
     tile.on('building:add-worker', this._handleBuildingAddWorker, this)
     tile.on('building:remove-worker', this._handleBuildingRemoveWorker, this)
@@ -193,6 +197,8 @@ export default class World extends BaseWorld {
    * @private
    */
   _handleUIClose ({ tile }) {
+    const tState = tile.getState()
+    this.layers[tState.layer].clearSelection()
     tile.off('tile:build', this._handleTileBuild, this)
     tile.off('building:add-worker', this._handleBuildingAddWorker, this)
     tile.off('building:remove-worker', this._handleBuildingRemoveWorker, this)
