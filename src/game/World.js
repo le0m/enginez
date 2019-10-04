@@ -161,7 +161,7 @@ export default class World extends BaseWorld {
 
         if (tileInstance) {
           if (this.debug) {
-            console.log(`[WORLD] handling component for tile ${tileID}, clicked at ${col} | ${row}`)
+            console.log(`[WORLD] handling component for tile ${tileID}, clicked at ${col} | ${row} (${l})`)
           }
 
           if (this.ui.isMounted()) {
@@ -243,7 +243,7 @@ export default class World extends BaseWorld {
   _handleBuildingAddWorker ({ building }) {
     if (this.city.assignWorker(building)) {
       if (this.debug) {
-        console.log(`[CITY] assigned worker to building: ${building.name}`)
+        console.log(`[WORLD] assigned worker to building: ${building.name}`)
       }
 
       const bState = building.getState()
@@ -263,7 +263,7 @@ export default class World extends BaseWorld {
   _handleBuildingRemoveWorker ({ building }) {
     if (this.city.removeWorker(building)) {
       if (this.debug) {
-        console.log(`[CITY] removed worker from building: ${building.name}`)
+        console.log(`[WORLD] removed worker from building: ${building.name}`)
       }
 
       const bState = building.getState()
