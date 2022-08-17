@@ -1,0 +1,195 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,user-scalable=no"><link rel=icon href=static/favicon.png><title>EngineZ -- Game Engine</title><link href=app.min.css rel=stylesheet></head><body><div class=container><canvas id=canvas></canvas><div id=ui><template id=city-header-template><style>:host {
+              display: block;
+            }
+
+            .header {
+              padding: 20px;
+              text-align: center;
+            }
+
+            .header .resources, .header .population {
+              box-sizing: border-box;
+              padding: 0.8rem;
+              color: #ffffff;
+              background-color: #555555;
+            }
+
+            .header div, .resources div, .population div {
+              display: inline-block;
+            }</style><div class=header><div class=resources></div><div class=population><div class=workers>0</div>/<div class=total>0</div></div></div></template><template id=building-template><style>:host {
+              display: block;
+            }
+
+            .navigation {
+              text-align: center;
+            }
+
+            .navigation div {
+              display: inline-block;
+            }
+
+            .navigation .arrow {
+              padding: 0 16px;
+              margin: 0 2px;
+              border: solid 1px #777777;
+            }
+
+            .close {
+              background-color: #eeeeee;
+              padding: 4px 8px;
+              border-radius: 100%;
+              position: absolute;
+              right: 0;
+              top: 0;
+              margin: 2px;
+            }
+
+            .click, .navigation div {
+              border: solid 1px transparent;
+            }
+
+            .click:hover, .navigation div:hover {
+              cursor: pointer;
+            }
+
+            .click:active, .navigation div:active {
+              cursor: pointer;
+              border-color: red;
+            }
+
+            .menu {
+              width: 30%;
+              background-color: #ffffff;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              right: 0;
+            }
+
+            .menu .img {
+              width: 100%;
+              height: 15%;
+              background-color: #eee;
+            }
+
+            .menu .title, .menu .content, .menu ul {
+              padding: 0 20px;
+            }
+
+            .item {
+              display: table-row;
+            }
+
+            .item img {
+              max-width: 40px;
+            }
+
+            .item span {
+              display: table-cell;
+              vertical-align: middle;
+              padding: 0 0.6rem;
+            }
+
+            .size-2 {
+              font-size: 1.2rem;
+            }
+
+            .size-4 {
+              font-size: 0.8rem;
+              font-family: 'Hind Light', sans-serif;
+            }
+
+            .hide {
+              display: none;
+            }</style><div id=building class=menu><div class=navigation><div class=close>X</div></div><div class="title size-2 name">Lorem Ipsum</div><div class="img picture"></div><div class=row><div class="title size-2">Description</div><div class="content size-4 description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div></div><div class="row info"><div class="title size-2">Info</div><div class="content size-4"><ul></ul></div></div><div class="row abilities"><div class="title size-2">Ability</div><div class="content size-4"></div></div><div class=row><div class="title size-2">Workers</div><div class="content size-4"><div class="row navigation workers"><div class="arrow add">+</div><span class=current>x</span>/<span class=max>y</span><div class="arrow remove">-</div></div></div></div></div></template><template id=buildings-template><style>:host {
+              display: block;
+            }
+
+            .menu {
+              position: absolute;
+              box-sizing: border-box;
+              left: 0;
+              bottom: 0;
+              width:100%;
+              background-color: white;
+              padding: 8px 20px;
+            }
+
+            .navigation {
+              text-align: center;
+            }
+
+            .navigation div {
+              display: inline-block;
+            }
+
+            .navigation .arrow {
+              padding: 0 16px;
+              margin: 0 2px;
+              border: solid 1px #777777;
+            }
+
+            .close {
+              background-color: #eeeeee;
+              padding: 4px 8px;
+              border-radius: 100%;
+              position: absolute;
+              right: 0;
+              top: 0;
+              margin: 2px;
+            }
+
+            .card {
+              border-color: #444;
+            }
+
+            .card-header {
+              word-break: break-all;
+              padding: 0.2rem;
+            }
+
+            .card-header, .card-body,.card-footer {
+              text-align: center;
+            }
+
+            .card-body img {
+              max-width: 100%;
+            }
+
+            .card-footer .resources div {
+            }
+
+            .click, .navigation div {
+              border: solid 1px transparent;
+            }
+
+            .click:hover, .navigation div:hover {
+              cursor: pointer;
+            }
+
+            .click:active, .navigation div:active {
+              cursor: pointer;
+              border-color: red;
+            }
+
+            .list-item {
+              width: 15%;
+              list-style-type: none;
+              display: inline-block;
+            }
+
+            .invert {
+              color: #ffffff;
+              background-color: #555555;
+            }
+
+            .size-3 {
+              font-size: 1rem;
+              font-weight: 600;
+              letter-spacing: 0.02rem;
+            }
+
+            .size-4 {
+              font-size: 0.8rem;
+              font-family: 'Hind Light', sans-serif;
+            }</style><div id=buildings class=menu><div class="row navigation"><div class="arrow prev">&lt;</div><div class="arrow next">&gt;</div><div class=close>X</div></div><div class=row><ul class=list></ul></div></div></template></div></div><script type=text/javascript src=app.min.js></script></body></html>
